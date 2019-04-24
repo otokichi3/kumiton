@@ -1,4 +1,37 @@
 <?php
+function get_kumis_by_level(array $pairs_by_level) : array {
+    $kumi = [];
+    $cnt  = count($pairs_by_level);
+    $j    = 0;
+
+    try {
+        foreach ($pairs_by_level as $key => $member) {
+            ++$j;
+            for ($i = $j; $i < $cnt; $i++) {
+                $arr = array_slice($pairs_by_level, $i, 1);
+                $kumi[] = [$key => $member] + [key($arr) => current($arr)];
+            }
+        }
+    } catch (Exception $e) {
+        return $e->getMessage();
+    } finally {
+        return $kumi;
+    }
+}
+
+function get_pairs_by_level(array $all_pairs, array $sum_list, array $sum_numbers) : array {
+    $ret = [];
+
+    foreach ($sum_numbers as $sum_number) {
+        foreach ($sum_list as $key2 => $val2) {
+            if ($val2 === $sum_number) {
+                $ret[$sum_number][] = array_keys($all_pairs[$key2]);
+            }
+        }
+    }
+    return $ret;
+}
+
 function get_all_sum(array $all_pairs)
 {
     $sum_list = [];
@@ -12,7 +45,7 @@ function get_all_sum(array $all_pairs)
 
 function get_all_pairs(array $members)
 {
-    $kumi = [];
+    $pair= [];
     $cnt  = count($members);
     $j    = 0;
 
@@ -21,13 +54,13 @@ function get_all_pairs(array $members)
             ++$j;
             for ($i = $j; $i < $cnt; $i++) {
                 $arr = array_slice($members, $i, 1);
-                $kumi[] = [$key => $member] + [key($arr) => current($arr)];
+                $pair[] = [$key => $member] + [key($arr) => current($arr)];
             }
         }
     } catch (Exception $e) {
         return $e->getMessage();
     } finally {
-        return $kumi;
+        return $pair;
     }
 }
 
