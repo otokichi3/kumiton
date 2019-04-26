@@ -38,5 +38,17 @@ $pairs_by_level = get_pairs_by_level($all_pairs, $sum_list, $sum_numbers);
 //     echo '</ul>';
 // }
 
-$kumis_by_level = get_kumis_by_level($pairs_by_level);
-dump($kumis_by_level);
+$level7 = $pairs_by_level[7];
+// dump($level7);
+// $test_keys = array_keys($level7);
+// dump($test_keys);
+// $kumis_by_level = get_kumis_by_level($test_keys);
+$kumis_by_level = get_kumis_by_level($level7);
+// dump($kumis_by_level);
+foreach ($kumis_by_level as $key => $kumis) {
+    echo sprintf('%d組目<br>', (int)$key + 1);
+    foreach ($kumis as $key2 => $kumi) {
+        echo sprintf('　ペア%d：%s<br>', (int)$key2 + 1, implode(' － ', $kumi));
+    }
+
+}

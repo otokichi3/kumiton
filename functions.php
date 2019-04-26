@@ -1,21 +1,22 @@
 <?php
 function get_kumis_by_level(array $pairs_by_level) : array {
-    $kumi = [];
+    $kumis = [];
     $cnt  = count($pairs_by_level);
     $j    = 0;
 
     try {
-        foreach ($pairs_by_level as $key => $member) {
+        foreach ($pairs_by_level as $key => $pairs) {
             ++$j;
             for ($i = $j; $i < $cnt; $i++) {
                 $arr = array_slice($pairs_by_level, $i, 1);
-                $kumi[] = [$key => $member] + [key($arr) => current($arr)];
+                $kumis[$key][0] = $pairs;
+                $kumis[$key][1] = $arr[0];
             }
         }
     } catch (Exception $e) {
         return $e->getMessage();
     } finally {
-        return $kumi;
+        return $kumis;
     }
 }
 
