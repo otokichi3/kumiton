@@ -9,6 +9,9 @@ function get_kumis_by_level(array $pairs_by_level) : array {
             ++$j;
             for ($i = $j; $i < $cnt; $i++) {
                 $arr = array_slice($pairs_by_level, $i, 1);
+                if (is_duplicate($pairs, $arr)) {
+                    break;
+                } 
                 $kumis[$key][0] = $pairs;
                 $kumis[$key][1] = $arr[0];
             }
@@ -18,6 +21,21 @@ function get_kumis_by_level(array $pairs_by_level) : array {
     } finally {
         return $kumis;
     }
+}
+
+/**
+ * ２ペアの中に同一人物がいるかどうかを判定する
+ *
+ * @param array $pairs
+ * @param array $arr
+ * @return boolean
+ */
+function is_duplicate (array $pairs, array $arr) : bool
+{
+    $gattai = array_merge($pairs, $arr[0]);
+    $org_cnt = count($gattai);
+    $unq_cnt = count(array_unique($gattai));
+    return $org_cnt !== $unq_cnt;
 }
 
 function get_pairs_by_level(array $all_pairs, array $sum_list, array $sum_numbers) : array {
@@ -33,6 +51,12 @@ function get_pairs_by_level(array $all_pairs, array $sum_list, array $sum_number
     return $ret;
 }
 
+/**
+ * ペアそれぞれのレベル合計値を算出し配列を返却する
+ *
+ * @param array $all_pairs
+ * @return void
+ */
 function get_all_sum(array $all_pairs)
 {
     $sum_list = [];
@@ -63,11 +87,6 @@ function get_all_pairs(array $members)
     } finally {
         return $pair;
     }
-}
-
-function make_pair($p1, $p2)
-{
-    return [$p1, $p2];
 }
 
 function dump($arg)
