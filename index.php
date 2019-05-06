@@ -1,23 +1,47 @@
 <?php
 require_once('functions.php');
-require_once('data.php');
+// require_once('data.php');
 
-$all_pairs = get_all_pairs($members1);
+$sanka_file = 'sanka_member.json';
+$sanka_data = file_get_contents($sanka_file);
+$sanka_member = json_decode($sanka_data, true);
 
-$sum_list = get_all_sum($all_pairs);
-asort($sum_list);
-$sum_numbers = array_unique(array_values($sum_list));
-$pairs_by_level = get_pairs_by_level($all_pairs, $sum_list, $sum_numbers);
-
-$kumis_by_level = [];
-foreach ($pairs_by_level as $level => $pairs) {
-    $kumis = get_kumis_by_level($pairs);
-    if (count($kumis) === 0) {
-        continue;
-    } else {
-        $kumis_by_level[$level][] = $kumis;
+// メンバー追加
+$add_member = [];
+$add_member_name = filter_input(INPUT_POST, 'add_member_name', FILTER_DEFAULT, FILTER_REQUIRE_ARRAY);
+// dump($add_member_name);
+$add_member_level = filter_input(INPUT_POST, 'add_member_level', FILTER_DEFAULT, FILTER_REQUIRE_ARRAY);
+if ( ! is_null(add_member_name) && ! is_null($add_member_level)) {
+    foreach ($add_member_name as $key => $value) {
+        if ( ! $value) {
+            unset($add_member_name[$key]);
+            unset($add_member_level[$key]);
+        }
+    }
+    $add_member = array_combine($add_member_name, $add_member_level);
+    $sanka_member += $add_member;
+    if (file_put_contents($sanka_file, json_encode($sanka_member)) === FALSE) {
+        echo 'Failed to write.';
     }
 }
+
+$husanka_file = 'husanka_member.json';
+$husanka_data = file_get_contents($husanka_file);
+$husanka_member = json_decode($husanka_data, true);
+
+// $file = 'all_member.json';
+// $content = file_get_contents($file);
+// $all_member = json_decode($content, true);
+$all_member = $sanka_member + $husanka_member;
+asort($all_member);
+// dump($all_member);
+
+
+
+$selected_member = filter_input(INPUT_POST, 'selected_member', FILTER_DEFAULT, FILTER_REQUIRE_ARRAY);
+// if (file_put_contents($file, json_encode($member)) === FALSE) {
+//     echo 'Failed to write.';
+// }
 ?>
 
 <!DOCTYPE html>
@@ -34,41 +58,62 @@ foreach ($pairs_by_level as $level => $pairs) {
     </style>
 </head>
 <body>
-    <h3>今回の参加者</h3>
-    <table>
-        <tr>
-            <th>名前</th>
-            <th>レベル</th>
-        </tr>
-        <?php foreach ($members1 as $name => $level): ?>
+    <?php if ( ! empty($add_member)): ?>
+        <p><strong style="color: red;">メンバーを追加しました。</strong></p>
+    <?php endif ?>
+    <form action="main.php" method="post">
+        <h3>メンバー一覧</h3>
+        <table>
             <tr>
-                <td><?= $name ?></td>
-                <td><?= $level ?></td>
+                <th>名前</th>
+                <th>レベル</th>
+                <th>参加</th>
             </tr>
-        <?php endforeach ?>
-    </table>
-    <h3>試合の組み合わせ</h3>
-    <?php foreach ($kumis_by_level as $level => $kumis): ?>
-        <?= sprintf('Level %d<br>', $level) ?>
-        <hr>
-        <?php foreach ($kumis as $key => $kumi): ?>
-            <?php $game_cnt = 1; ?>
-            <?php foreach ($kumi as $key2 => $value): ?>
-                組<?= $game_cnt++; ?>
-                <table class="court" style="background: lightgreen;">
-                    <tr style="height: 50px;">
-                        <td style="border-right: none;"><?= $value[0][0] ?></td>
-                        <td style="border-left: none;"><?= $value[0][1] ?></td>
-                    </tr>
-                    <tr style="height: 50px;">
-                        <td style="border-right: none;"><?= $value[1][0] ?></td>
-                        <td style="border-left: none;"><?= $value[1][1] ?></td>
-                    </tr>
-                </table>
+            <?php foreach ($all_member as $name => $level): ?>
+            <?php $checked = (array_search($name, (array)$selected_member) !== false) ? 'checked' : '' ?>
+                <tr>
+                    <td><?= $name ?></td>
+                    <td><?= $level ?></td>
+                    <td>
+                        <input type="checkbox" name="selected_member[]" value="<?= $name ?>" <?= $checked ?>>
+                    </td>
+                </tr>
             <?php endforeach ?>
-        <?php endforeach ?>
-        <br>
-        <br>
-    <?php endforeach ?>
+        </table>
+        <button type="submit">次へ</button>
+    </form>
+
+    <form action="index.php" method="post">
+        <h3>メンバー追加</h3>
+        <table>
+            <tr>
+                <th>名前</th>
+                <th>レベル</th>
+            </tr>
+            <?php for ($i = 0; $i < 5; $i++): ?>
+                <tr>
+                    <td>
+                        <input type="text" name="add_member_name[]">
+                    </td>
+                    <td>
+                        <select name="add_member_level[]">
+                            <option value="0" selected>選択してください</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                            <option value="9">9</option>
+                            <option value="10">10</option>
+                        </select>
+                    </td>
+                </tr>
+            <?php endfor ?>
+        </table>
+        <button type="submit">追加</button>
+    </form>
 </body>
 </html>

@@ -1,19 +1,52 @@
 <?php
-function get_kumis_by_level(array $pairs_by_level) : array {
+/**
+ * メンバーリストから参加者 or 不参加者を取得する
+ *
+ * @param array $sanka
+ * @param array $all_member
+ * @param bool  $is_sanka
+ * @return array
+ */
+function get_member(array $sanka, array $all_member, bool $is_sanka) : array
+{
+    $list = [];
+
+    foreach ($sanka as $val) {
+        if (isset($all_member[$val])) {
+            if ($is_sanka) {
+                $list[$val] = $all_member[$val];
+            } else {
+                unset($all_member[$val]);
+
+            }
+        }
+    }
+    return $is_sanka ? $list : $all_member;
+
+}
+
+/**
+ * レベルごとの試合のすべての組み合わせを返却する
+ *
+ * @param array $pairs_by_level
+ * @return array
+ */
+function get_kumis_by_level(array $pairs_by_level) : array
+{
     $kumis = [];
-    $cnt  = count($pairs_by_level);
-    $j    = 0;
+    $cnt   = count($pairs_by_level);
+    $j     = 0;
 
     try {
         foreach ($pairs_by_level as $key => $pairs) {
             ++$j;
             for ($i = $j; $i < $cnt; $i++) {
                 $arr = array_slice($pairs_by_level, $i, 1);
-                if (is_duplicate($pairs, $arr)) {
-                    break;
-                } 
-                $kumis[$key][0] = $pairs;
-                $kumis[$key][1] = $arr[0];
+                if (is_duplicate($pairs, $arr[0])) {
+                    continue;
+                }
+                $kumis[$key][$i][0] = $pairs;
+                $kumis[$key][$i][1] = $arr[0];
             }
         }
     } catch (Exception $e) {
@@ -30,15 +63,24 @@ function get_kumis_by_level(array $pairs_by_level) : array {
  * @param array $arr
  * @return boolean
  */
-function is_duplicate (array $pairs, array $arr) : bool
+function is_duplicate(array $pair1, array $pair2) : bool
 {
-    $gattai = array_merge($pairs, $arr[0]);
+    $gattai = array_merge($pair1, $pair2);
     $org_cnt = count($gattai);
-    $unq_cnt = count(array_unique($gattai));
+    $unq_cnt = count(array_unique($gattai, SORT_STRING));
     return $org_cnt !== $unq_cnt;
 }
 
-function get_pairs_by_level(array $all_pairs, array $sum_list, array $sum_numbers) : array {
+/**
+ * レベルごとのペアのすべての組み合わせを返却する
+ *
+ * @param array $all_pairs
+ * @param array $sum_list
+ * @param array $sum_numbers
+ * @return array
+ */
+function get_pairs_by_level(array $all_pairs, array $sum_list, array $sum_numbers) : array
+{
     $ret = [];
 
     foreach ($sum_numbers as $sum_number) {
@@ -68,6 +110,12 @@ function get_all_sum(array $all_pairs)
     return $sum_list;
 }
 
+/**
+ * 参加者からすべての組み合わせを作成し、返却する
+ *
+ * @param array $members
+ * @return void
+ */
 function get_all_pairs(array $members)
 {
     $pair= [];
@@ -89,6 +137,12 @@ function get_all_pairs(array $members)
     }
 }
 
+/**
+ * var_export を pre タグで囲んで出力するラッパー
+ *
+ * @param [type] $arg
+ * @return void
+ */
 function dump($arg)
 {
     echo '<pre>';
