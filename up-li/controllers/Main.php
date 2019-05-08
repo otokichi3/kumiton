@@ -39,6 +39,8 @@ class Main extends CI_Controller {
 
         // $selected_member = filter_input(INPUT_POST, 'selected_member', FILTER_DEFAULT, FILTER_REQUIRE_ARRAY);
         $selected_member = $this->input->post('selected_member');
+        // $test = $this->db->get('t_member')->result();
+        // $this->dump($test);
 
         $view_data = [
             'all_member'      => $all_member,

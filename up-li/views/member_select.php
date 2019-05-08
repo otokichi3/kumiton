@@ -46,12 +46,10 @@
                 </thead>
                 <tbody>
                     <?php foreach ($all_member as $name => $level): ?>
-                    <?php $checked = (array_search($name, (array)$selected_member) !== false) ? 'checked' : '' ?>
+                    <?php $checked = (array_search($name, (array)$selected_member) !== FALSE) ? 'checked' : '' ?>
                     <tr>
-                        <td><?= $name ?>
-                        </td>
-                        <td><?= $level ?>
-                        </td>
+                        <td><?= $name ?></td>
+                        <td><?= $level ?></td>
                         <td>
                             <input type="checkbox" name="selected_member[]" value="<?= $name ?>" <?= $checked ?>>
                         </td>

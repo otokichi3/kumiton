@@ -1,0 +1,1 @@
+CREATE TABLE `kumiton`.`t_member` ( `deleted` TINYINT(1) NOT NULL DEFAULT '0' , `id` INT NOT NULL AUTO INCREMENT, `name` VARCHAR(256) NOT NULL , `sex` SMALLINT NOT NULL , `level` DECIMAL(3,1) NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
