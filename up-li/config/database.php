@@ -79,7 +79,7 @@ $db['default'] = array(
     'username' => '',
     'password' => '',
     'database' => '',
-    'dbdriver' => 'mysqli',
+    'dbdriver' => 'mysql',
     'dbprefix' => '',
     'pconnect' => FALSE,
     'db_debug' => (ENVIRONMENT !== 'production'),
@@ -92,5 +92,6 @@ $db['default'] = array(
     'compress' => FALSE,
     'stricton' => FALSE,
     'failover' => array(),
-    'save_queries' => TRUE
+    'save_queries' => TRUE,
+    'autoinit' => TRUE
 );

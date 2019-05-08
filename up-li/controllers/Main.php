@@ -5,7 +5,46 @@ class Main extends CI_Controller {
 
     public function index()
     {
-        $this->load->view('main');
+        $view_data = [];
+
+        $sanka_data = file_get_contents('json/'.SANKA_FILE);
+        $sanka_member = json_decode($sanka_data, true);
+
+        // メンバー追加
+        $add_member = [];
+        // $add_member_name = filter_input(INPUT_POST, 'add_member_name', FILTER_DEFAULT, FILTER_REQUIRE_ARRAY);
+        $add_member_name = $this->input->post('add_member_name');
+        // $add_member_level = filter_input(INPUT_POST, 'add_member_level', FILTER_DEFAULT, FILTER_REQUIRE_ARRAY);
+        $add_member_level = $this->input->post('add_member_level');
+        if ( ! is_null($add_member_name) && ! is_null($add_member_level)) {
+            foreach ($add_member_name as $key => $value) {
+                if ( ! $value) {
+                    unset($add_member_name[$key]);
+                    unset($add_member_level[$key]);
+                }
+            }
+            $add_member = array_combine($add_member_name, $add_member_level);
+            $sanka_member += $add_member;
+            if (file_put_contents($sanka_file, json_encode($sanka_member)) === FALSE) {
+                echo 'Failed to write.';
+            }
+        }
+
+        $husanka_data = file_get_contents('json/'.HUSANKA_FILE);
+        $husanka_member = json_decode($husanka_data, true);
+
+        $all_member = $sanka_member + $husanka_member;
+        asort($all_member);
+
+
+        // $selected_member = filter_input(INPUT_POST, 'selected_member', FILTER_DEFAULT, FILTER_REQUIRE_ARRAY);
+        $selected_member = $this->input->post('selected_member');
+
+        $view_data = [
+            'all_member'      => $all_member,
+            'selected_member' => $selected_member,
+        ];
+        $this->load->view('member_select', $view_data);
     }
 
     /**
