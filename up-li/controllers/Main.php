@@ -39,14 +39,26 @@ class Main extends CI_Controller {
 
         // $selected_member = filter_input(INPUT_POST, 'selected_member', FILTER_DEFAULT, FILTER_REQUIRE_ARRAY);
         $selected_member = $this->input->post('selected_member');
-        // $test = $this->db->get('t_member')->result();
-        // $this->dump($test);
+        $member_data = $this->db->get('t_member')->result();
+
+        $member_list = [];
+        $member_info_list = [];
+        foreach ($member_data as $member) {
+            $member_list[$member->name] = (int)$member->level;
+        }
+        // $this->dump($member_list);
 
         $view_data = [
             'all_member'      => $all_member,
+            // 'all_member'      => $member_list,
             'selected_member' => $selected_member,
         ];
         $this->load->view('member_select', $view_data);
+    }
+
+    public function show_game()
+    {
+        $this->load->view('main.php');
     }
 
     /**

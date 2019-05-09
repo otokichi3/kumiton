@@ -30,11 +30,11 @@
                 メンバーを追加しました。
             </div>
         <?php endif ?>
-        <form action="main.php" method="post">
-        <div class="jumbotron">
-            <h1 class="display-5">メンバー</h1>
-            <p class="lead">メンバーの選択、追加、削除を行えます。</p>
-        </div>
+        <form action="<?= base_url('main/show_game') ?>" method="post">
+            <div class="jumbotron">
+                <h1 class="display-5">メンバー</h1>
+                <p class="lead">メンバーの選択、追加、削除を行えます。</p>
+            </div>
             <table class="table table-bordered table-hover table-sm table-responsive-md">
                 <caption>メンバーリスト</caption>
                 <thead class="thead-light">
