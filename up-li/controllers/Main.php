@@ -1,9 +1,15 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
-class Main extends CI_Controller {
+class Main extends CI_Controller
+{
+    function __construct()
+    {
+        parent::__construct();
+        $this->load->model('t_member');
+    }
 
-    public function index()
+    public function index ()
     {
         $view_data = [];
 
@@ -12,21 +18,19 @@ class Main extends CI_Controller {
 
         // メンバー追加
         $add_member = [];
-        // $add_member_name = filter_input(INPUT_POST, 'add_member_name', FILTER_DEFAULT, FILTER_REQUIRE_ARRAY);
         $add_member_name = $this->input->post('add_member_name');
-        // $add_member_level = filter_input(INPUT_POST, 'add_member_level', FILTER_DEFAULT, FILTER_REQUIRE_ARRAY);
         $add_member_level = $this->input->post('add_member_level');
-        if ( ! is_null($add_member_name) && ! is_null($add_member_level)) {
+        if (! is_null($add_member_name) && ! is_null($add_member_level)) {
             foreach ($add_member_name as $key => $value) {
-                if ( ! $value) {
+                if (! $value) {
                     unset($add_member_name[$key]);
                     unset($add_member_level[$key]);
                 }
             }
             $add_member = array_combine($add_member_name, $add_member_level);
             $sanka_member += $add_member;
-            if (file_put_contents($sanka_file, json_encode($sanka_member)) === FALSE) {
-                echo 'Failed to write.';
+            if (file_put_contents($sanka_file, json_encode($sanka_member)) === false) {
+                die('Failed to write.');
             }
         }
 
@@ -37,12 +41,10 @@ class Main extends CI_Controller {
         asort($all_member);
 
 
-        // $selected_member = filter_input(INPUT_POST, 'selected_member', FILTER_DEFAULT, FILTER_REQUIRE_ARRAY);
         $selected_member = $this->input->post('selected_member');
         $member_data = $this->db->get('t_member')->result();
 
         $member_list = [];
-        $member_info_list = [];
         foreach ($member_data as $member) {
             $member_list[$member->name] = (int)$member->level;
         }
@@ -58,7 +60,67 @@ class Main extends CI_Controller {
 
     public function show_game()
     {
-        $this->load->view('main.php');
+        $selected_member = $this->input->post('selected_member');
+        $all_member = $this->t_member->get_all_member();
+
+        if ( ! is_array($selected_member)  || count($selected_member) < 4) {
+            die('参加者は４人以上必要です。');
+        }
+        
+        // $sanka_data = json_decode(file_get_contents(FILE_SANKA), true);
+        // $husanka_data = json_decode(file_get_contents(FILE_HUSANKA), true);
+        // $all_member = $sanka_data + $husanka_data;
+        // asort($all_member);
+        
+        // 参加者
+        $all_member_name = array_keys($all_member);
+        $sanka = array_intersect($all_member_name, $selected_member);
+        
+        // 参加者（名前ーレベル形式）
+        $sanka_member = $this->get_member($selected_member, $all_member, TRUE);
+        
+        // $sanka_json = json_encode($sanka_member);
+        // if (file_put_contents(FILE_SANKA, $sanka_json) === FALSE) {
+        //     echo 'Failed to write.';
+        // }
+        
+        // 不参加者
+        // $husanka_member = $this->get_member($selected_member, $all_member, false);
+        // $husanka_json = json_encode($husanka_member);
+        // if (file_put_contents(FILE_HUSANKA, $husanka_json) === FALSE) {
+        //     echo 'Failed to write.';
+        // }
+        
+        
+        // 全ペア算出
+        $all_pairs = $this->get_all_pairs($sanka_member);
+        
+        // 全ペアのレベル合計値算出
+        $sum_list = $this->get_all_sum($all_pairs);
+        asort($sum_list);
+        $sum_numbers = array_unique(array_values($sum_list));
+        $pairs_by_level = $this->get_pairs_by_level($all_pairs, $sum_list, $sum_numbers);
+        
+        $kumis_by_level = [];
+        foreach ($pairs_by_level as $level => $pairs) {
+            $kumis = $this->get_kumis_by_level($pairs);
+            if (count($kumis) === 0) {
+                continue;
+            } else {
+                foreach ($kumis as $key => $val) {
+                    foreach ($val as $key2 => $val2) {
+                        $kumis_by_level[$level][] = $val2;
+                    }
+                }
+            }
+        }
+
+        $view_data = [
+            'all_member'      => $all_member,
+            'selected_member' => $selected_member,
+            'kumis_by_level'  => $kumis_by_level
+        ];
+        $this->load->view('main.php', $view_data);
     }
 
     /**
@@ -69,7 +131,7 @@ class Main extends CI_Controller {
      * @param bool  $is_sanka
      * @return array
      */
-    function get_member(array $sanka, array $all_member, bool $is_sanka) : array
+    private function get_member(array $sanka, array $all_member, bool $is_sanka) : array
     {
         $list = [];
 
@@ -79,12 +141,10 @@ class Main extends CI_Controller {
                     $list[$val] = $all_member[$val];
                 } else {
                     unset($all_member[$val]);
-
                 }
             }
         }
         return $is_sanka ? $list : $all_member;
-
     }
 
     /**
@@ -93,7 +153,7 @@ class Main extends CI_Controller {
      * @param array $pairs_by_level
      * @return array
      */
-    function get_kumis_by_level(array $pairs_by_level) : array
+    private function get_kumis_by_level(array $pairs_by_level) : array
     {
         $kumis = [];
         $cnt   = count($pairs_by_level);
@@ -125,7 +185,7 @@ class Main extends CI_Controller {
      * @param array $arr
      * @return boolean
      */
-    function is_duplicate(array $pair1, array $pair2) : bool
+    private function is_duplicate(array $pair1, array $pair2) : bool
     {
         $gattai = array_merge($pair1, $pair2);
         $org_cnt = count($gattai);
@@ -141,7 +201,7 @@ class Main extends CI_Controller {
      * @param array $sum_numbers
      * @return array
      */
-    function get_pairs_by_level(array $all_pairs, array $sum_list, array $sum_numbers) : array
+    private function get_pairs_by_level(array $all_pairs, array $sum_list, array $sum_numbers) : array
     {
         $ret = [];
 
@@ -161,7 +221,7 @@ class Main extends CI_Controller {
      * @param array $all_pairs
      * @return void
      */
-    function get_all_sum(array $all_pairs)
+    private function get_all_sum(array $all_pairs)
     {
         $sum_list = [];
 
@@ -178,7 +238,7 @@ class Main extends CI_Controller {
      * @param array $members
      * @return void
      */
-    function get_all_pairs(array $members)
+    private function get_all_pairs(array $members)
     {
         $pair= [];
         $cnt  = count($members);
@@ -205,11 +265,10 @@ class Main extends CI_Controller {
      * @param [type] $arg
      * @return void
      */
-    function dump($arg)
+    public function dump($arg)
     {
         echo '<pre>';
         var_export($arg);
         echo '</pre>';
     }
-
-    }
+}
