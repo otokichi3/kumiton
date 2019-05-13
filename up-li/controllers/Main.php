@@ -3,6 +3,8 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 class Main extends CI_Controller
 {
+    public $view_data = [];
+
     function __construct()
     {
         parent::__construct();
@@ -11,8 +13,6 @@ class Main extends CI_Controller
 
     public function index ()
     {
-        $view_data = [];
-
         /*
         $sanka_data = file_get_contents('json/'.SANKA_FILE);
         $sanka_member = json_decode($sanka_data, true);
@@ -47,11 +47,11 @@ class Main extends CI_Controller
 
         $all_member = $this->t_member->get_all_member();
 
-        $view_data = [
+        $this->view_data = [
             'all_member'      => $all_member,
             'selected_member' => $selected_member,
         ];
-        $this->load->view('member_select', $view_data);
+        $this->load->view('member_select', $this->view_data);
     }
 
     public function add_member()
@@ -129,6 +129,7 @@ class Main extends CI_Controller
         asort($sum_list);
         $sum_numbers = array_unique(array_values($sum_list));
         $pairs_by_level = $this->get_pairs_by_level($all_pairs, $sum_list, $sum_numbers);
+        // dump($pairs_by_level);
         
         $kumis_by_level = [];
         foreach ($pairs_by_level as $level => $pairs) {
@@ -144,12 +145,12 @@ class Main extends CI_Controller
             }
         }
 
-        $view_data = [
+        $this->view_data = [
             'all_member'      => $all_member,
             'selected_member' => $selected_member,
-            'kumis_by_level'  => $kumis_by_level
+            'kumis_by_level'  => $kumis_by_level,
         ];
-        $this->load->view('main.php', $view_data);
+        $this->load->view('main.php', $this->view_data);
     }
 
     /**
@@ -193,7 +194,7 @@ class Main extends CI_Controller
                 ++$j;
                 for ($i = $j; $i < $cnt; $i++) {
                     $arr = array_slice($pairs_by_level, $i, 1);
-                    if (is_duplicate($pairs, $arr[0])) {
+                    if ($this->is_duplicate($pairs, $arr[0])) {
                         continue;
                     }
                     $kumis[$key][$i][0] = $pairs;

@@ -7,7 +7,6 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>くみとん</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
-
 </head>
 
 <body>
@@ -30,7 +29,7 @@
                 メンバーを追加しました。
             </div>
         <?php endif ?>
-        <form action="main/show_game" method="post">
+        <form action="show_game" method="post">
             <div class="jumbotron">
                 <h1 class="display-5">メンバー</h1>
                 <p class="lead">メンバーの選択、追加、削除を行えます。</p>
