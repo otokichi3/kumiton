@@ -57,24 +57,41 @@
                     <?php endforeach ?>
                 </tbody>
             </table>
-            <button type="submit">次へ</button>
+            <button type="submit" class="btn btn-primary">次へ</button>
         </form>
 
-        <form action="index.php" method="post">
-            <h3>メンバー追加</h3>
-            <table>
-                <tr>
-                    <th>名前</th>
-                    <th>レベル</th>
-                </tr>
+        <form action="main/add_member" method="post">
+            <h2>メンバー追加</h2>
+            <table class="table table-bordered table-hover table-sm table-responsive-md">
+                <thead class="thead-light">
+                    <tr>
+                        <th>名前</th>
+                        <th>性別</th>
+                        <th>レベル</th>
+                    </tr>
+                </thead>
                 <?php for ($i = 0; $i < 5; $i++): ?>
                 <tr>
                     <td>
-                        <input type="text" name="add_member_name[]">
+                        <input type="text" name="add_member_name[<?= $i ?>]" class="form-control">
                     </td>
                     <td>
-                        <select name="add_member_level[]">
-                            <option value="0" selected>選択してください</option>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="add_member_sex[<?= $i ?>]" id="inlineRadio1" value="1">
+                            <label class="form-check-label" for="inlineRadio1">男</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="add_member_sex[<?= $i ?>]" id="inlineRadio2" value="2">
+                            <label class="form-check-label" for="inlineRadio2">女</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="add_member_sex[<?= $i ?>]" id="inlineRadio3" value="3">
+                            <label class="form-check-label" for="inlineRadio3">その他</label>
+                        </div>
+                    </td>
+                    <td>
+                        <select name="add_member_level[<?= $i ?>]" class="form-control">
+                            <option value="" selected>選択してください</option>
                             <option value="1">1</option>
                             <option value="2">2</option>
                             <option value="3">3</option>
@@ -90,7 +107,7 @@
                 </tr>
                 <?php endfor ?>
             </table>
-            <button type="submit">追加</button>
+            <button type="submit" class="btn btn-primary">追加</button>
         </form>
     </div>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>

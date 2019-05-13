@@ -13,6 +13,7 @@ class Main extends CI_Controller
     {
         $view_data = [];
 
+        /*
         $sanka_data = file_get_contents('json/'.SANKA_FILE);
         $sanka_member = json_decode($sanka_data, true);
 
@@ -39,23 +40,51 @@ class Main extends CI_Controller
 
         $all_member = $sanka_member + $husanka_member;
         asort($all_member);
+        */
 
 
         $selected_member = $this->input->post('selected_member');
-        $member_data = $this->db->get('t_member')->result();
 
-        $member_list = [];
-        foreach ($member_data as $member) {
-            $member_list[$member->name] = (int)$member->level;
-        }
-        // $this->dump($member_list);
+        $all_member = $this->t_member->get_all_member();
 
         $view_data = [
             'all_member'      => $all_member,
-            // 'all_member'      => $member_list,
             'selected_member' => $selected_member,
         ];
         $this->load->view('member_select', $view_data);
+    }
+
+    public function add_member()
+    {
+        $add_member       = [];
+        $add_member_name  = $this->input->post('add_member_name');
+        $add_member_sex   = $this->input->post('add_member_sex');
+        $add_member_level = $this->input->post('add_member_level');
+
+        // 空を削除しつつ移し替え
+        foreach ($add_member_name as $key => $value) {
+            if ( ! $add_member_name[$key] OR ! $add_member_sex[$key] OR ! $add_member_level[$key]) {
+                unset($add_member_name[$key]);
+                unset($add_member_sex[$key]);
+                unset($add_member_level[$key]);
+            } else {
+                $add_member[$key]['name']  = $add_member_name[$key];
+                $add_member[$key]['sex']   = $add_member_sex[$key];
+                $add_member[$key]['level'] = $add_member_level[$key];
+            }
+        }
+
+        // DB に格納
+        foreach ($add_member as $val) {
+            $params = [
+                'name'  => $val['name'],
+                'sex'   => $val['sex'],
+                'level' => $val['level'],
+            ];
+            $this->db->insert('t_member', $params);
+        }
+
+        $this->index();
     }
 
     public function show_game()
@@ -257,18 +286,5 @@ class Main extends CI_Controller
         } finally {
             return $pair;
         }
-    }
-
-    /**
-     * var_export を pre タグで囲んで出力するラッパー
-     *
-     * @param [type] $arg
-     * @return void
-     */
-    public function dump($arg)
-    {
-        echo '<pre>';
-        var_export($arg);
-        echo '</pre>';
     }
 }
