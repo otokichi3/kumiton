@@ -13,6 +13,10 @@ class Main extends CI_Controller
 
     public function index ()
     {
+        if ($this->input->post('add_member_name')) {
+            $this->add_member();
+        }
+
         /*
         $sanka_data = file_get_contents('json/'.SANKA_FILE);
         $sanka_member = json_decode($sanka_data, true);
@@ -54,7 +58,7 @@ class Main extends CI_Controller
         $this->load->view('member_select', $this->view_data);
     }
 
-    public function add_member()
+    private function add_member()
     {
         $add_member       = [];
         $add_member_name  = $this->input->post('add_member_name');
@@ -83,8 +87,6 @@ class Main extends CI_Controller
             ];
             $this->db->insert('t_member', $params);
         }
-
-        $this->index();
     }
 
     public function show_game()
@@ -129,7 +131,6 @@ class Main extends CI_Controller
         asort($sum_list);
         $sum_numbers = array_unique(array_values($sum_list));
         $pairs_by_level = $this->get_pairs_by_level($all_pairs, $sum_list, $sum_numbers);
-        // dump($pairs_by_level);
         
         $kumis_by_level = [];
         foreach ($pairs_by_level as $level => $pairs) {
@@ -146,7 +147,7 @@ class Main extends CI_Controller
         }
 
         $this->view_data = [
-            'all_member'      => $all_member,
+            'sanka_member'      => $sanka_member,
             'selected_member' => $selected_member,
             'kumis_by_level'  => $kumis_by_level,
         ];
