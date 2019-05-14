@@ -11,41 +11,11 @@ class Main extends CI_Controller
         $this->load->model('t_member');
     }
 
-    public function index ()
+    public function index()
     {
         if ($this->input->post('add_member_name')) {
             $this->add_member();
         }
-
-        /*
-        $sanka_data = file_get_contents('json/'.SANKA_FILE);
-        $sanka_member = json_decode($sanka_data, true);
-
-        // メンバー追加
-        $add_member = [];
-        $add_member_name = $this->input->post('add_member_name');
-        $add_member_level = $this->input->post('add_member_level');
-        if (! is_null($add_member_name) && ! is_null($add_member_level)) {
-            foreach ($add_member_name as $key => $value) {
-                if (! $value) {
-                    unset($add_member_name[$key]);
-                    unset($add_member_level[$key]);
-                }
-            }
-            $add_member = array_combine($add_member_name, $add_member_level);
-            $sanka_member += $add_member;
-            if (file_put_contents($sanka_file, json_encode($sanka_member)) === false) {
-                die('Failed to write.');
-            }
-        }
-
-        $husanka_data = file_get_contents('json/'.HUSANKA_FILE);
-        $husanka_member = json_decode($husanka_data, true);
-
-        $all_member = $sanka_member + $husanka_member;
-        asort($all_member);
-        */
-
 
         $selected_member = $this->input->post('selected_member');
 
@@ -98,30 +68,12 @@ class Main extends CI_Controller
             die('参加者は４人以上必要です。');
         }
         
-        // $sanka_data = json_decode(file_get_contents(FILE_SANKA), true);
-        // $husanka_data = json_decode(file_get_contents(FILE_HUSANKA), true);
-        // $all_member = $sanka_data + $husanka_data;
-        // asort($all_member);
-        
         // 参加者
         $all_member_name = array_keys($all_member);
         $sanka = array_intersect($all_member_name, $selected_member);
         
         // 参加者（名前ーレベル形式）
         $sanka_member = $this->get_member($selected_member, $all_member, TRUE);
-        
-        // $sanka_json = json_encode($sanka_member);
-        // if (file_put_contents(FILE_SANKA, $sanka_json) === FALSE) {
-        //     echo 'Failed to write.';
-        // }
-        
-        // 不参加者
-        // $husanka_member = $this->get_member($selected_member, $all_member, false);
-        // $husanka_json = json_encode($husanka_member);
-        // if (file_put_contents(FILE_HUSANKA, $husanka_json) === FALSE) {
-        //     echo 'Failed to write.';
-        // }
-        
         
         // 全ペア算出
         $all_pairs = $this->get_all_pairs($sanka_member);
@@ -152,6 +104,11 @@ class Main extends CI_Controller
             'kumis_by_level'  => $kumis_by_level,
         ];
         $this->load->view('main.php', $this->view_data);
+    }
+
+    public function todo()
+    {
+        $this->load->view('todo');
     }
 
     /**
