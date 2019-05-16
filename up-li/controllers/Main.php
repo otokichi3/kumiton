@@ -14,21 +14,26 @@ class Main extends CI_Controller
     public function index()
     {
         if ($this->input->post('add_member_name')) {
-            $this->add_member();
+            $this->_add_member();
         }
-
-        $selected_member = $this->input->post('selected_member');
-
-        $all_member = $this->t_member->get_all_member();
-
-        $this->view_data = [
-            'all_member'      => $all_member,
-            'selected_member' => $selected_member,
-        ];
+        $this->view_data = $this->_get_view_data();
         $this->load->view('member_select', $this->view_data);
     }
 
-    private function add_member()
+    private function _get_view_data()
+    {
+        $selected_member = $this->input->post('selected_member');
+        $all_member      = $this->t_member->get_all_member();
+
+        $data = [
+            'all_member'      => $all_member,
+            'selected_member' => $selected_member,
+        ];
+
+        return $data;
+    }
+
+    private function _add_member()
     {
         $add_member       = [];
         $add_member_name  = $this->input->post('add_member_name');
@@ -61,22 +66,33 @@ class Main extends CI_Controller
 
     public function show_game()
     {
-        $selected_member = $this->input->post('selected_member');
-        $all_member = $this->t_member->get_all_member();
+        $selected_list = $this->input->post('selected_member');
+        $member_list   = $this->t_member->get_all_member();
 
-        if ( ! is_array($selected_member)  || count($selected_member) < 4) {
-            die('参加者は４人以上必要です。');
+        if ( ! is_array($selected_list)  || count($selected_list) < 4) {
+            $this->load->view('member_select.php', $this->_get_view_data());
         }
         
+        list($sanka_list, $match_list) = $this->_get_all_match($member_list, $selected_list);
+
+        $this->view_data = [
+            'sanka_list'    => $sanka_list,
+            'selected_list' => $selected_list,
+            'match_list'    => $match_list,
+        ];
+        $this->load->view('main.php', $this->view_data);
+    }
+
+    private function _get_all_match(array $member_list, array $selected_list)
+    {
         // 参加者
-        $all_member_name = array_keys($all_member);
-        $sanka = array_intersect($all_member_name, $selected_member);
+        $all_member_name = array_keys($member_list);
         
         // 参加者（名前ーレベル形式）
-        $sanka_member = $this->get_member($selected_member, $all_member, TRUE);
-        
+        $sanka_list = $this->get_member($selected_list, $member_list, TRUE);
+
         // 全ペア算出
-        $all_pairs = $this->get_all_pairs($sanka_member);
+        $all_pairs = $this->get_all_pairs($sanka_list);
         
         // 全ペアのレベル合計値算出
         $sum_list = $this->get_all_sum($all_pairs);
@@ -84,7 +100,7 @@ class Main extends CI_Controller
         $sum_numbers = array_unique(array_values($sum_list));
         $pairs_by_level = $this->get_pairs_by_level($all_pairs, $sum_list, $sum_numbers);
         
-        $kumis_by_level = [];
+        $match_list = [];
         foreach ($pairs_by_level as $level => $pairs) {
             $kumis = $this->get_kumis_by_level($pairs);
             if (count($kumis) === 0) {
@@ -92,20 +108,14 @@ class Main extends CI_Controller
             } else {
                 foreach ($kumis as $key => $val) {
                     foreach ($val as $key2 => $val2) {
-                        $kumis_by_level[$level][] = $val2;
+                        $match_list[$level][] = $val2;
                     }
                 }
             }
         }
 
-        $this->view_data = [
-            'sanka_member'      => $sanka_member,
-            'selected_member' => $selected_member,
-            'kumis_by_level'  => $kumis_by_level,
-        ];
-        $this->load->view('main.php', $this->view_data);
+        return [$sanka_list, $match_list];
     }
-
     public function todo()
     {
         $this->load->view('todo');
@@ -209,7 +219,7 @@ class Main extends CI_Controller
      * @param array $all_pairs
      * @return void
      */
-    private function get_all_sum(array $all_pairs)
+    private function get_all_sum(array $all_pairs) : array
     {
         $sum_list = [];
 
@@ -226,7 +236,7 @@ class Main extends CI_Controller
      * @param array $members
      * @return void
      */
-    private function get_all_pairs(array $members)
+    private function get_all_pairs(array $members) : array
     {
         $pair= [];
         $cnt  = count($members);

@@ -55,8 +55,8 @@
         </div>
     </nav>
     <div class="container">
-        <form action="main" method="post">
-            <?php foreach ($selected_member as $member): ?>
+        <form action="" method="post">
+            <?php foreach ($selected_list as $member): ?>
                 <input type="hidden" name="selected_member[]" value="<?= $member ?>">
             <?php endforeach ?>
             <input type="submit" value="戻る">
@@ -69,7 +69,7 @@
                 <th>名前</th>
                 <th>レベル</th>
             </tr>
-            <?php foreach ($sanka_member as $name => $level): ?>
+            <?php foreach ($sanka_list as $name => $level): ?>
                 <tr>
                     <td><?= $name ?></td>
                     <td><?= $level ?></td>
@@ -77,7 +77,7 @@
             <?php endforeach ?>
         </table>
         <h3>試合の組み合わせ</h3>
-        <!-- <?php foreach ($kumis_by_level as $level => $kumi): ?>
+        <!-- <?php foreach ($match_list as $level => $kumi): ?>
             <?= sprintf('レベル%d(%d)<br><hr>', $level, count($kumi)) ?>
             <?php $game_cnt = 1; ?>
             <?php foreach ($kumi as $key => $pair): ?>
@@ -96,7 +96,7 @@
             <br>
             <br>
         <?php endforeach ?> -->
-        <?php foreach ($kumis_by_level as $level => $kumi): ?>
+        <?php foreach ($match_list as $level => $kumi): ?>
             <?= sprintf('レベル%d(%d)<br><hr>', $level, count($kumi)) ?>
             <?php $game_cnt = 1; ?>
             <div class="cssgrid">
