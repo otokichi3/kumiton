@@ -1,0 +1,85 @@
+    <div class="container">
+        <?php if ( ! empty($add_member)): ?>
+            <div class="alert alert-info">
+                メンバーを追加しました。
+            </div>
+        <?php endif ?>
+        <form action="<?= base_url('main/show_game') ?>" method="post">
+            <div class="jumbotron">
+                <h1 class="display-5">メンバー</h1>
+                <p class="lead">メンバーの選択、追加、削除を行えます。</p>
+            </div>
+            <table class="table table-bordered table-hover table-sm table-responsive-md">
+                <caption>メンバーリスト</caption>
+                <thead class="thead-light">
+                    <tr>
+                        <th scope="col">名前</th>
+                        <th scope="col">レベル</th>
+                        <th scope="col">参加</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($all_member as $name => $level): ?>
+                    <?php $checked = (array_search($name, (array)$selected_member) !== FALSE) ? 'checked' : '' ?>
+                    <tr>
+                        <td><?= $name ?></td>
+                        <td><?= $level ?></td>
+                        <td>
+                            <input type="checkbox" name="selected_member[]" value="<?= $name ?>" <?= $checked ?>>
+                        </td>
+                    </tr>
+                    <?php endforeach ?>
+                </tbody>
+            </table>
+            <button type="submit" class="btn btn-primary">次へ</button>
+        </form>
+
+        <form action="<?= base_url('main') ?>" method="post">
+            <h2>メンバー追加</h2>
+            <table class="table table-bordered table-hover table-sm table-responsive-md">
+                <thead class="thead-light">
+                    <tr>
+                        <th>名前</th>
+                        <th>性別</th>
+                        <th>レベル</th>
+                    </tr>
+                </thead>
+                <?php for ($i = 0; $i < 5; $i++): ?>
+                <tr>
+                    <td>
+                        <input type="text" name="add_member_name[<?= $i ?>]" class="form-control">
+                    </td>
+                    <td>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="add_member_sex[<?= $i ?>]" id="inlineRadio1" value="1">
+                            <label class="form-check-label" for="inlineRadio1">男</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="add_member_sex[<?= $i ?>]" id="inlineRadio2" value="2">
+                            <label class="form-check-label" for="inlineRadio2">女</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="add_member_sex[<?= $i ?>]" id="inlineRadio3" value="3">
+                            <label class="form-check-label" for="inlineRadio3">その他</label>
+                        </div>
+                    </td>
+                    <td>
+                        <select name="add_member_level[<?= $i ?>]" class="form-control">
+                            <option value="" selected>選択してください</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                            <option value="9">9</option>
+                            <option value="10">10</option>
+                        </select>
+                    </td>
+                </tr>
+                <?php endfor ?>
+            </table>
+            <button type="submit" class="btn btn-primary">追加</button>
+        </form>

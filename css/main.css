@@ -1,0 +1,31 @@
+.cssgrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-auto-rows: 1fr;
+    grid-gap: 0.8em;
+    padding: 0.8em;
+    margin: 0 0 2em;
+}
+
+.cssgrid>div {
+    background: mediumaquamarine;
+    overflow: auto;
+    min-width: 0;
+    /* padding: 1em; */
+    height: 300px;
+    max-width: 261px;
+}
+
+.court {
+    width: 100%;
+    height: 100%;
+}
+
+.maru_half {
+    border-radius: 50%;
+    font-size: 8em;
+    line-height: 2em;
+    padding-top: 0.1em;
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+}
