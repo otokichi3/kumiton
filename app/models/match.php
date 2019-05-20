@@ -11,13 +11,68 @@ class Match extends CI_Model
 
     public function get_match()
     {
+        $members = [];
+
         $this->db->select('server1, server2, receiver1, receiver2');
         $this->db->where('play_flg', FLG_OFF);
         $this->db->order_by("RAND()");
-        $this->db->limit('4');
+        $this->db->limit('1');
 
-        $result_array = $this->db->get('t_match')->result_array();
-        return $result_array;
+        $match1 = $this->db->get('t_match')->result_array()[0];
+        foreach ($match1 as $member) {
+            $members[] = $member;
+        }
+
+        $this->db->select('server1, server2, receiver1, receiver2');
+        $this->db->where('play_flg', FLG_OFF);
+        $this->db->where_not_in('server1', $members);
+        $this->db->where_not_in('server2', $members);
+        $this->db->where_not_in('receiver1', $members);
+        $this->db->where_not_in('receiver2', $members);
+        $this->db->order_by("RAND()");
+        $this->db->limit('1');
+
+        $match2 = $this->db->get('t_match')->result_array()[0];
+        foreach ($match2 as $member) {
+            $members[] = $member;
+        }
+
+        $this->db->select('server1, server2, receiver1, receiver2');
+        $this->db->where('play_flg', FLG_OFF);
+        $this->db->where_not_in('server1', $members);
+        $this->db->where_not_in('server2', $members);
+        $this->db->where_not_in('receiver1', $members);
+        $this->db->where_not_in('receiver2', $members);
+        $this->db->order_by("RAND()");
+        $this->db->limit('1');
+
+        $res = $this->db->get('t_match')->result_array();
+        if (isset($res[0])) {
+            $match3 = $res[0];
+            foreach ($match3 as $member) {
+                $members[] = $member;
+            }
+        } else {
+            var_export($res);
+            die;
+        }
+
+        $this->db->select('server1, server2, receiver1, receiver2');
+        $this->db->where('play_flg', FLG_OFF);
+        $this->db->where_not_in('server1', $members);
+        $this->db->where_not_in('server2', $members);
+        $this->db->where_not_in('receiver1', $members);
+        $this->db->where_not_in('receiver2', $members);
+        $this->db->order_by("RAND()");
+        $this->db->limit('1');
+
+        $match4 = $this->db->get('t_match')->result_array()[0];
+        // foreach ($match4 as $member) {
+        //     $members[] = $member;
+        // }
+
+        return [$match1, $match2, $match3, $match4];
+
     }
 
     public function get_negotiation_list($buyer_id, $id=null, $sort=null, $count=false, $limit=null)

@@ -99,7 +99,6 @@ class Main extends CI_Controller
         }
 
         $match = $this->_get_match(NUMBER_OF_COURTS);
-        dump($match);
 
         $this->view_data = [
             'sanka_list'    => $sanka_list,
