@@ -81,7 +81,6 @@ class Main extends CI_Controller
         
         list($sanka_list, $match_list) = $this->_get_all_match($member_list, $selected_list);
 
-        // truncate t_match
         $this->db->truncate('t_match');
 
         // t_match
@@ -124,6 +123,17 @@ class Main extends CI_Controller
     {
         // 参加者（名前ーレベル形式）
         $sanka_list = $this->get_member($selected_list, $member_list, TRUE);
+        dump($sanka_list);
+        foreach ($sanka_list as $name => $level) {
+            if (in_array((int)$level, BEGINNER)) {
+                $sanka_list[$name] = 1;
+            } else if (in_array((int)$level, INTERMEDIATE)) {
+                $sanka_list[$name] = 2;
+            } else if (in_array((int)$level, SENIOR)) {
+                $sanka_list[$name] = 3;
+            }
+        }
+        dump($sanka_list);
 
         // 全ペア算出
         $all_pairs = $this->get_all_pairs($sanka_list);
@@ -150,6 +160,7 @@ class Main extends CI_Controller
 
         return [$sanka_list, $match_list];
     }
+
     public function todo()
     {
         $this->load->view('header');

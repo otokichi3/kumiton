@@ -18,9 +18,14 @@ class Match extends CI_Model
         $this->db->order_by("RAND()");
         $this->db->limit('1');
 
-        $match1 = $this->db->get('t_match')->result_array()[0];
-        foreach ($match1 as $member) {
-            $members[] = $member;
+        $res = $this->db->get('t_match')->result_array();
+        if (isset($res[0])) {
+            $match1 = $res[0];
+            foreach ($match1 as $member) {
+                $members[] = $member;
+            }
+        } else {
+            $match1 = ['server1' => '', 'server2' => '', 'receiver1' => '', 'receiver2' => ''];
         }
 
         $this->db->select('server1, server2, receiver1, receiver2');
@@ -32,9 +37,14 @@ class Match extends CI_Model
         $this->db->order_by("RAND()");
         $this->db->limit('1');
 
-        $match2 = $this->db->get('t_match')->result_array()[0];
-        foreach ($match2 as $member) {
-            $members[] = $member;
+        $res = $this->db->get('t_match')->result_array();
+        if (isset($res[0])) {
+            $match2 = $res[0];
+            foreach ($match2 as $member) {
+                $members[] = $member;
+            }
+        } else {
+            $match2 = ['server1' => '', 'server2' => '', 'receiver1' => '', 'receiver2' => ''];
         }
 
         $this->db->select('server1, server2, receiver1, receiver2');
@@ -53,8 +63,7 @@ class Match extends CI_Model
                 $members[] = $member;
             }
         } else {
-            var_export($res);
-            die;
+            $match3 = ['server1' => '', 'server2' => '', 'receiver1' => '', 'receiver2' => ''];
         }
 
         $this->db->select('server1, server2, receiver1, receiver2');
@@ -66,10 +75,15 @@ class Match extends CI_Model
         $this->db->order_by("RAND()");
         $this->db->limit('1');
 
-        $match4 = $this->db->get('t_match')->result_array()[0];
-        // foreach ($match4 as $member) {
-        //     $members[] = $member;
-        // }
+        $res = $this->db->get('t_match')->result_array();
+        if (isset($res[0])) {
+            $match4 = $res[0];
+            foreach ($match4 as $member) {
+                $members[] = $member;
+            }
+        } else {
+            $match4 = ['server1' => '', 'server2' => '', 'receiver1' => '', 'receiver2' => ''];
+        }
 
         return [$match1, $match2, $match3, $match4];
 

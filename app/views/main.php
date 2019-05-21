@@ -6,16 +6,15 @@
             <input type="submit" value="戻る">
         </form>
         <br>
-        <a href="./text.php" target="_blank">テキスト版</a>
         <h3>今回の参加者</h3>
-        <ul class="list-group list-group-horizontal-md overflow-auto" style="max-height: 300px;">
+        <ul class="list-group list-group-horizontal-md overflow-auto text-center" style="max-height: 300px;">
             <?php foreach ($sanka_list as $name => $level): ?>
                 <li class="list-group-item"><?= $name ?></li>
             <?php endforeach ?>
         </ul>
         <br>
         <h3>試合の組み合わせ</h3>
-        <div class="cssgrid">
+        <div class="cssgrid text-center">
             <?php foreach ($match as $pair): ?>
                 <div>
                     <table class="court">
