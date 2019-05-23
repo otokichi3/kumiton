@@ -99,6 +99,18 @@ class Main extends CI_Controller
 
         $match = $this->_get_match(NUMBER_OF_COURTS);
 
+        if (is_array($match)) {
+            foreach ($match as $pair) {
+                $params = [
+                    'server1'   => $pair['server1'],
+                    'server2'   => $pair['server2'],
+                    'receiver1' => $pair['receiver1'],
+                    'receiver2' => $pair['receiver2'],
+                ];
+                $this->db->insert('t_match_history', $params);
+            }
+        }
+
         $this->view_data = [
             'sanka_list'    => $sanka_list,
             'selected_list' => $selected_list,
@@ -123,17 +135,7 @@ class Main extends CI_Controller
     {
         // 参加者（名前ーレベル形式）
         $sanka_list = $this->get_member($selected_list, $member_list, TRUE);
-        dump($sanka_list);
-        foreach ($sanka_list as $name => $level) {
-            if (in_array((int)$level, BEGINNER)) {
-                $sanka_list[$name] = 1;
-            } else if (in_array((int)$level, INTERMEDIATE)) {
-                $sanka_list[$name] = 2;
-            } else if (in_array((int)$level, SENIOR)) {
-                $sanka_list[$name] = 3;
-            }
-        }
-        dump($sanka_list);
+        $sanka_list = $this->_summarize_level($sanka_list);
 
         // 全ペア算出
         $all_pairs = $this->get_all_pairs($sanka_list);
@@ -159,6 +161,27 @@ class Main extends CI_Controller
         }
 
         return [$sanka_list, $match_list];
+    }
+
+    /**
+     * レベルの粒度を低くする（要約する）
+     *
+     * @param array $list
+     * @return array
+     */
+    private function _summarize_level(array $list)
+    {
+        foreach ($list as $name => $level) {
+            if (in_array((int)$level, BEGINNER)) {
+                $list[$name] = 1;
+            } else if (in_array((int)$level, INTERMEDIATE)) {
+                $list[$name] = 2;
+            } else if (in_array((int)$level, SENIOR)) {
+                $list[$name] = 3;
+            }
+        }
+
+        return $list;
     }
 
     public function todo()
