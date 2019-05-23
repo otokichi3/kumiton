@@ -11,8 +11,8 @@ SET time_zone = "+00:00";
 CREATE DATABASE IF NOT EXISTS `kumiton` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
 USE `kumiton`;
 
-DROP TABLE IF EXISTS `t_match_history`;
-CREATE TABLE `t_match_history` (
+DROP TABLE IF EXISTS `t_match`;
+CREATE TABLE `t_match` (
   `id` int(11) NOT NULL,
   `server1` varchar(32) NOT NULL COMMENT 'サーバー一人目',
   `server2` varchar(32) NOT NULL COMMENT 'サーバー二人目',
@@ -29,24 +29,6 @@ CREATE TABLE `t_match_history` (
   `receiver1` varchar(32) NOT NULL COMMENT 'レシーバー一人目',
   `receiver2` varchar(32) NOT NULL COMMENT 'レシーバー二人目'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='試合の組み合わせを格納';
-
-INSERT INTO `t_match_history` (`id`, `server1`, `server2`, `receiver1`, `receiver2`) VALUES
-(1, '雨林綾花', '西田真弓', '中下敬識', '中川剛志'),
-(2, '田頭あゆ', 'タケさん', '藤井義博', '山下もとき'),
-(3, 'はるき', '上田さん', '吉崎広太', '仲田秀平'),
-(4, '北岡誠起', '加藤大', '平山智子', '大田先生'),
-(5, '雨林綾花', '中川剛志', '中下敬識', '上田さん'),
-(6, '吉岡みかこ', '大田先生', '平山智子', '山下もとき'),
-(7, 'タケさん', 'はるき', '藤井義博', '仲田秀平'),
-(8, '明日香', '田頭あゆ', '北岡誠起', '西田真弓'),
-(9, '藤井義博', '明日香', '平山智子', '中下敬識'),
-(10, '山本真稀', '大田先生', '田頭あゆ', '加藤大'),
-(11, '吉崎広太', 'はるき', '北岡誠起', '山下もとき'),
-(12, '雨林綾花', '中川剛志', 'タケさん', '西田真弓'),
-(13, '雨林綾花', '中川剛志', '田頭あゆ', '大田先生'),
-(14, '明日香', '山下もとき', '山本真稀', '仲田秀平'),
-(15, '吉崎広太', '中下敬識', '吉岡みかこ', '上田さん'),
-(16, '北岡誠起', '西田真弓', '藤井義博', '加藤大');
 
 DROP TABLE IF EXISTS `t_member`;
 CREATE TABLE `t_member` (
@@ -91,7 +73,7 @@ INSERT INTO `t_member` (`deleted`, `id`, `name`, `name_kana`, `nickname`, `sex`,
 ALTER TABLE `t_match_history`
   ADD PRIMARY KEY (`id`);
 
-ALTER TABLE `t_match_history`
+ALTER TABLE `t_match`
   ADD PRIMARY KEY (`id`);
 
 ALTER TABLE `t_member`
@@ -102,7 +84,7 @@ ALTER TABLE `t_member`
 ALTER TABLE `t_match_history`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
-ALTER TABLE `t_match_history`
+ALTER TABLE `t_match`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 ALTER TABLE `t_member`

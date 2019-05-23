@@ -30,3 +30,5 @@
                 </div>
             <?php endforeach ?>
         </div>
+        <button type="button" class="btn btn-primary btn-lg btn-block" id="next_match">次の組み合わせ</button>
+

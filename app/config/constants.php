@@ -92,15 +92,3 @@ defined('EXIT__AUTO_MAX')      OR define('EXIT__AUTO_MAX', 125); // highest auto
 defined('FLG_OFF') OR define('FLG_OFF', 1);
 defined('FLG_ON')  OR define('FLG_ON', 2);
 defined('NUMBER_OF_COURTS')  OR define('NUMBER_OF_COURTS', 4);
-
-// Level Category
-defined('BEGINNER')  OR define('BEGINNER', array(
-    '1', '2', '3',
-));
-defined('INTERMEDIATE')  OR define('INTERMEDIATE', array(
-    '4', '5', '6',
-));
-defined('SENIOR')  OR define('SENIOR', array(
-    '7', '8', '9', '10',
-));
-

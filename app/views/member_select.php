@@ -15,7 +15,7 @@
                     <tr>
                         <th scope="col">名前</th>
                         <th scope="col">レベル</th>
-                        <th scope="col">参加</th>
+                        <th scope="col">参加<span class="pl-1"><input type="checkbox" name="check_all"></span></th>
                     </tr>
                 </thead>
                 <tbody>

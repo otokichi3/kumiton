@@ -97,7 +97,7 @@ class Main extends CI_Controller
             }
         }
 
-        $match = $this->_get_match(NUMBER_OF_COURTS);
+        $match = $this->get_match(NUMBER_OF_COURTS);
 
         if (is_array($match)) {
             foreach ($match as $pair) {
@@ -123,11 +123,13 @@ class Main extends CI_Controller
         $this->load->view('footer');
     }
 
-    private function _get_match(int $num) : array
+    public function get_match(int $num) : array
     {
         $match = [];
 
         $match = $this->match->get_match($num);
+        if ($this->input->is_ajax_request()) {
+        }
         return $match;
     }
 
@@ -135,7 +137,7 @@ class Main extends CI_Controller
     {
         // 参加者（名前ーレベル形式）
         $sanka_list = $this->get_member($selected_list, $member_list, TRUE);
-        $sanka_list = $this->_summarize_level($sanka_list);
+        $sanka_list = $this->_summarize_level($sanka_list, 2);
 
         // 全ペア算出
         $all_pairs = $this->get_all_pairs($sanka_list);
@@ -169,18 +171,11 @@ class Main extends CI_Controller
      * @param array $list
      * @return array
      */
-    private function _summarize_level(array $list)
+    private function _summarize_level(array $list, int $num_of_level)
     {
-        foreach ($list as $name => $level) {
-            if (in_array((int)$level, BEGINNER)) {
-                $list[$name] = 1;
-            } else if (in_array((int)$level, INTERMEDIATE)) {
-                $list[$name] = 2;
-            } else if (in_array((int)$level, SENIOR)) {
-                $list[$name] = 3;
-            }
+        foreach ($list as $key => $val) {
+            $list[$key] = ceil($val / $num_of_level);
         }
-
         return $list;
     }
 
