@@ -5,18 +5,19 @@ $(document).ready(function () {
     });
 
     $('#next_match').on('click', function () {
+        callAjax();
     })
 });
 
 function callAjax() {
     $.ajax({
-        url: "http://itref.fc2web.com/javascript/jquery/sample.json",
-        dataType: "json"
-    })
-        .done(function (data, textStatus, jqXHR) {
-            alert(data.foo);
-        })
-        .fail(function (jqXHR, textStatus, errorThrown) {
-            alert("fail ");
-        });
+        url: "get_match",
+        dataType: "json",
+        type: 'POST',
+        data: { num: 4 },
+    }).done(function (data, textStatus, jqXHR) {
+        $('#court_list').html(data);
+    }).fail(function (jqXHR, textStatus, errorThrown) {
+        alert("fail");
+    });
 }

@@ -114,22 +114,26 @@ class Main extends CI_Controller
         $this->view_data = [
             'sanka_list'    => $sanka_list,
             'selected_list' => $selected_list,
-            'match_list'    => $match_list,
-            'match'         => $match,
+            'court_view'    => $this->load->view('court', ['match' => $match], TRUE),
         ];
 
         $this->load->view('header');
-        $this->load->view('main.php', $this->view_data);
+        $this->load->view('main', $this->view_data);
         $this->load->view('footer');
     }
 
-    public function get_match(int $num) : array
+    public function get_match(int $num = 0) : array
     {
-        $match = [];
+        $num_of_courts = $this->input->post('num') ?: $num;
+        $match = $this->match->get_match($num_of_courts);
 
-        $match = $this->match->get_match($num);
         if ($this->input->is_ajax_request()) {
+            $court_view = $this->load->view('court', ['match' => $match], TRUE);
+            header('Content-Type: application/json');
+            echo json_encode($court_view);
+            die;
         }
+
         return $match;
     }
 
