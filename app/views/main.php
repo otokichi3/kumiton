@@ -1,5 +1,5 @@
     <div class="container">
-        <form action="<?= base_url('main') ?>" method="post">
+        <form action="/main" method="post">
             <?php foreach ($selected_list as $member): ?>
                 <input type="hidden" name="selected_member[]" value="<?= $member ?>">
             <?php endforeach ?>
