@@ -21,11 +21,23 @@
     height: 100%;
 }
 
-.maru_half {
-    border-radius: 50%;
-    font-size: 8em;
-    line-height: 2em;
-    padding-top: 0.1em;
-    padding-left: 0.5em;
-    padding-right: 0.5em;
+@media screen and (max-width: 896px) {
+    #next_match {
+        position: fixed;
+        right: 10px;
+        bottom: 10px;
+    }
+
+    .cssgrid {
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    }
+
+    .cssgrid>div {
+        height: 80px;
+    }
+
+    .court {
+        font-size: small;
+    }
+
 }

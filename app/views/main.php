@@ -20,5 +20,5 @@
         <div id="court_list" class="cssgrid text-center">
             <?= $court_view ?>
         </div>
-        <button type="button" class="btn btn-primary btn-lg btn-block mb-5" id="next_match">次の組み合わせ</button>
+        <button type="button" class="btn btn-primary" id="next_match">次の組み合わせ</button>
         <section>
