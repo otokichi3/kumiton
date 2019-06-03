@@ -4,46 +4,11 @@
                 メンバーを追加しました。
             </div>
         <?php endif ?>
-        <form action="<?= base_url('main/show_game') ?>" method="post">
+        <form action="<?= base_url('main/manage_member') ?>" method="POST">
             <div class="jumbotron">
-                <h1 class="display-5">メンバー</h1>
-                <p class="lead">メンバーの選択、追加、削除を行えます。</p>
+                <h1 class="display-5">メンバー追加</h1>
+                <p class="lead">メンバーの追加を行えます。</p>
             </div>
-			<div class="member_grid text-center">
-				<?php foreach ($all_member as $name => $level): ?>
-				<div class="align-middle husanka" data-name="<?= $name ?>"><?= $name.'('.$level.')' ?>
-					<br><i class="fas fa-male"></i>
-				</div>
-				<?php endforeach ?>
-			</div>
-            <table class="table table-bordered table-hover table-sm table-responsive-md" style="display: none;">
-                <caption>メンバーリスト</caption>
-                <thead class="thead-light">
-                    <tr>
-                        <th scope="col">名前</th>
-                        <th scope="col">レベル</th>
-                        <th scope="col">参加<span class="pl-1"><input type="checkbox" name="check_all" id="check_all"></span></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php foreach ($all_member as $name => $level): ?>
-                    <?php $checked = (array_search($name, (array)$selected_member) !== FALSE) ? 'checked' : '' ?>
-                    <tr>
-                        <td><?= $name ?></td>
-                        <td><?= $level ?></td>
-                        <td>
-                            <input type="checkbox" name="selected_member[]" value="<?= $name ?>" <?= $checked ?>>
-                        </td>
-                    </tr>
-                    <?php endforeach ?>
-                </tbody>
-            </table>
-            <button type="button" class="btn btn-primary btn-sm float-right" id="check_all2">全選択</button>
-            <button type="submit" class="btn btn-primary btn-sm">次へ</button>
-        </form>
-<!-- 
-        <form action="<?= base_url('main') ?>" method="post">
-            <h2>メンバー追加</h2>
             <table class="table table-bordered table-hover table-sm table-responsive-md">
                 <thead class="thead-light">
                     <tr>
@@ -90,4 +55,4 @@
                 <?php endfor ?>
             </table>
             <button type="submit" class="btn btn-primary btn-sm">追加</button>
-        </form> -->
+        </form>

@@ -72,7 +72,7 @@ class Main extends CI_Controller
         $selected_list = $this->input->post('selected_member');
         $member_list   = $this->member->get_all_member();
 
-        if ( ! $selected_list  OR count($selected_list) < 4) {
+        if ( ! $selected_list OR count($selected_list) < 4) {
             $this->load->view('header');
             $this->load->view('member_select', $this->_get_view_data());
             $this->load->view('footer');
@@ -97,6 +97,16 @@ class Main extends CI_Controller
             }
         }
 
+        $this->show_match($sanka_list, $selected_list);
+    }
+
+    /**
+     * 試合を表示する
+     *
+     * @return void
+     */
+    public function show_match(array $sanka_list = [], array $selected_list = [])
+    {
         $match = $this->get_match(NUMBER_OF_COURTS);
 
         if (is_array($match)) {
@@ -122,6 +132,12 @@ class Main extends CI_Controller
         $this->load->view('footer');
     }
 
+    /**
+     * 試合を取得する
+     *
+     * @param integer $num
+     * @return array
+     */
     public function get_match(int $num = 0) : array
     {
         $num_of_courts = $this->input->post('num') ?: $num;
@@ -137,6 +153,24 @@ class Main extends CI_Controller
         return $match;
     }
 
+    public function manage_member()
+    {
+        if ($this->input->post('add_member_name')) {
+            $this->_add_member();
+        }
+        $this->view_data = $this->_get_view_data();
+        $this->load->view('header');
+        $this->load->view('manage_member', $this->view_data);
+        $this->load->view('footer');
+    }
+
+    /**
+     * すべての試合を取得する
+     *
+     * @param array $member_list
+     * @param array $selected_list
+     * @return void
+     */
     private function _get_all_match(array $member_list, array $selected_list)
     {
         // 参加者（名前ーレベル形式）

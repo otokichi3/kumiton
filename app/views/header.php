@@ -16,14 +16,15 @@
 
 <body>
     <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
-        <a href="#" class="navbar-brand">くみとん</a>
+        <a href="<?= base_url('main') ?>" class="navbar-brand">くみとん</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navmenu1" aria-controls="navmenu1" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navmenu1">
             <div class="navbar-nav">
-                <a class="nav-item nav-link" href="/main">メンバー</a>
-                <a class="nav-item nav-link" href="#">試合</a>
+                <a class="nav-item nav-link" href="<?= base_url('main/manage_member') ?>">メンバー管理</a>
+                <a class="nav-item nav-link" href="<?= base_url('main') ?>">メンバー選択</a>
+                <a class="nav-item nav-link" href="<?= base_url('main/show_match') ?>">試合</a>
                 <a class="nav-item nav-link" href="#">履歴</a>
             </div>
         </div>
