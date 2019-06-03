@@ -19,24 +19,24 @@
                 </thead>
                 <?php for ($i = 0; $i < 5; $i++): ?>
                 <tr>
-                    <td>
+                    <td class="align-middle" style="width: 120px; font-size: small;">
                         <input type="text" name="add_member_name[<?= $i ?>]" class="form-control">
                     </td>
-                    <td>
-                        <div class="form-check form-check-inline">
+                    <td style="font-size: small;">
+                        <div class="form-check">
                             <input class="form-check-input" type="radio" name="add_member_sex[<?= $i ?>]" id="sex_man<?= $i ?>" value="1">
                             <label class="form-check-label" for="sex_man<?= $i ?>">男</label>
                         </div>
-                        <div class="form-check form-check-inline">
+                        <div class="form-check">
                             <input class="form-check-input" type="radio" name="add_member_sex[<?= $i ?>]" id="sex_woman<?= $i ?>" value="2">
                             <label class="form-check-label" for="sex_woman<?= $i ?>">女</label>
                         </div>
-                        <div class="form-check form-check-inline">
+                        <div class="form-check">
                             <input class="form-check-input" type="radio" name="add_member_sex[<?= $i ?>]" id="sex_other<?= $i ?>" value="3">
                             <label class="form-check-label" for="sex_other<?= $i ?>">その他</label>
                         </div>
                     </td>
-                    <td>
+                    <td class="align-middle">
                         <select name="add_member_level[<?= $i ?>]" class="form-control">
                             <option value="" selected>---</option>
                             <option value="1">1</option>
