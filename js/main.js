@@ -7,7 +7,17 @@ $(document).ready(function () {
 
 	$('#check_all2').on('click', function () {
 		$('#check_all').click();
-		$('.husanka').addClass('sanka').removeClass('husanka');
+		let text = $(this).text();
+		if (text === '全選択') {
+			$(this).removeClass('btn-primary').addClass('btn-info');
+			$(this).text('全解除');
+			$('.husanka').addClass('sanka').removeClass('husanka');
+		} else {
+			$(this).removeClass('btn-info').addClass('btn-primary');
+			$(this).text('全選択');
+			$('.sanka').addClass('husanka').removeClass('sanka');
+		}
+		
 	});
 
 	$('.sanka, .husanka').on('click', function () {

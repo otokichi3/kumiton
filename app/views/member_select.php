@@ -38,7 +38,7 @@
                     <?php endforeach ?>
                 </tbody>
             </table>
-            <button type="button" class="btn btn-primary btn-sm float-right" id="check_all2">全員選択</button>
+            <button type="button" class="btn btn-primary btn-sm float-right" id="check_all2">全選択</button>
             <button type="submit" class="btn btn-primary btn-sm">次へ</button>
         </form>
 			<br>
