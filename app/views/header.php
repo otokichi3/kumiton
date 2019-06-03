@@ -7,8 +7,9 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>くみとん</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <link rel="stylesheet" type="text/css" href="css/main.css">
-	<script src="https://kit.fontawesome.com/8fa3044e7c.js"></script>
+    <link rel="stylesheet" type="text/css" href="<?= base_url('css/main.css') ?>">
+	<script src="<?= base_url('fontawesome-free-5.8.2-web/js/all.min.js') ?>"></script>
+	
 </head>
 
 <body>

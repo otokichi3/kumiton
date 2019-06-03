@@ -31,13 +31,19 @@
 }
 
 .member_grid>div {
-    background: aliceblue;
     overflow: auto;
     min-width: 0;
-    /* padding: 1em; */
 	height: 50px;
 	border: 1px solid gray;
 	border-radius: 5px;
+}
+
+.sanka {
+	background-color: lightskyblue;
+}
+
+.husanka {
+	background-color: aliceblue;
 }
 
 @media screen and (max-width: 896px) {
