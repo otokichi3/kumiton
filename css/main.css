@@ -21,6 +21,25 @@
     height: 100%;
 }
 
+.member_grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+    grid-auto-rows: 1fr;
+    grid-gap: 0.8em;
+    padding: 0.8em;
+    margin: 0 0 2em;
+}
+
+.member_grid>div {
+    background: aliceblue;
+    overflow: auto;
+    min-width: 0;
+    /* padding: 1em; */
+	height: 50px;
+	border: 1px solid gray;
+	border-radius: 5px;
+}
+
 @media screen and (max-width: 896px) {
     #next_match {
         position: fixed;

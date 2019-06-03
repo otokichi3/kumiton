@@ -9,6 +9,13 @@
                 <h1 class="display-5">メンバー</h1>
                 <p class="lead">メンバーの選択、追加、削除を行えます。</p>
             </div>
+			<div class="member_grid text-center">
+				<?php foreach ($all_member as $name => $level): ?>
+				<div class="align-middle husanka" data-name="<?= $name ?>"><?= $name.'('.$level.')' ?>
+					<br><i class="fas fa-male"></i>
+				</div>
+				<?php endforeach ?>
+			</div>
             <table class="table table-bordered table-hover table-sm table-responsive-md">
                 <caption>メンバーリスト</caption>
                 <thead class="thead-light">
@@ -25,7 +32,7 @@
                         <td><?= $name ?></td>
                         <td><?= $level ?></td>
                         <td>
-                            <input type="checkbox" name="selected_member[]" value="<?= $name ?>" <?= $checked ?>>
+                            <input type="checkbox" name="selected_member[]" class="selected" value="<?= $name ?>" <?= $checked ?>>
                         </td>
                     </tr>
                     <?php endforeach ?>
