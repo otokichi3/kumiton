@@ -4,7 +4,7 @@
                 メンバーを追加しました。
             </div>
         <?php endif ?>
-        <form action="/kumiton/main/show_game" method="post">
+        <form action="/main/show_game" method="post">
             <div class="jumbotron">
                 <h1 class="display-5">メンバー</h1>
                 <p class="lead">メンバーの選択、追加、削除を行えます。</p>
@@ -34,7 +34,7 @@
             <button type="submit" class="btn btn-primary">次へ</button>
         </form>
 
-        <form action="/kumiton/main" method="post">
+        <form action="/main" method="post">
             <h2>メンバー追加</h2>
             <table class="table table-bordered table-hover table-sm table-responsive-md">
                 <thead class="thead-light">
