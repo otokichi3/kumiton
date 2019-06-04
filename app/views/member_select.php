@@ -11,7 +11,7 @@
             </div>
 			<div class="member_grid text-center">
 				<?php foreach ($all_member_info as $key => $val): ?>
-				<div class="align-middle husanka" data-name="<?= $val['name'] ?>"><?= $val['name'].'('.$val['level'].')' ?>
+				<div class="align-middle husanka" data-name="<?= $val['name'] ?>"><?= $val['name'].'('.intval($val['level']).')' ?>
 					<br><i class="fas <?= $val['sex'] === '1' ? 'fa-male my-blue' : 'fa-female my-pink' ?>"></i>
 				</div>
 				<?php endforeach ?>
