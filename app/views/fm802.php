@@ -8,12 +8,10 @@
 				</tr>
 			</thead>
 			<?php foreach ($artist_name_cnt as $key => $cnt): ?>
-				<?php if ($cnt > 3): ?>
-					<tr>
-						<td class="text-center"><?= $key ?></td>
-						<td class="text-center"><?= $cnt ?></td>
-					</tr>
-				<?php endif ?>
+                <tr>
+                    <td class="text-center"><?= $key ?></td>
+                    <td class="text-center"><?= $cnt ?></td>
+                </tr>
 			<?php endforeach ?>
 		</table>
 		<hr>

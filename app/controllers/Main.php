@@ -47,7 +47,10 @@ class Main extends CI_Controller
 
 	public function Fm802()
 	{
-		require_once("phpQuery-onefile.php");
+        require_once("phpQuery-onefile.php");
+
+        $this->load->model('fm802');
+
 		$url = 'https://funky802.com/service/OnairList/today';
 		$html = file_get_contents($url);
 		$html = mb_convert_encoding($html, "utf-8", "sjis");
@@ -63,9 +66,24 @@ class Main extends CI_Controller
 		$artist_name_list = explode("\n", $artist_name);
 
 		$song_name_cnt   = array_count_values($song_name_list);
-		$artist_name_cnt = array_count_values($artist_name_list);
+        $artist_name_cnt = array_count_values($artist_name_list);
+        foreach ($artist_name_cnt as $name =>$val) {
+            if ($val < 3) {
+                unset($artist_name_cnt[$name]);
+            }
+        }
 		arsort($song_name_cnt);
-		arsort($artist_name_cnt);
+        arsort($artist_name_cnt);
+
+        $now = date('Y-m-d');
+        foreach ($artist_name_cnt as $name => $cnt) {
+            $params = [
+                'artist' => $name,
+                'count'  => $cnt,
+                'date'   => $now,
+            ];
+            $this->db->insert('t_fm802', $params);
+        }
 
 		$this->view_data = [
 			// 'time_list'        => $time_list,
