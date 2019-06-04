@@ -62,8 +62,15 @@ class Main extends CI_Controller
 		$song_name_list   = explode("\n", $song_name);
 		$artist_name_list = explode("\n", $artist_name);
 
+		$song_name_cnt   = array_count_values($song_name_list);
+		$artist_name_cnt = array_count_values($artist_name_list);
+		arsort($song_name_cnt);
+		arsort($artist_name_cnt);
+
 		$this->view_data = [
 			// 'time_list'        => $time_list,
+			'song_name_cnt'    => ($song_name_cnt),
+			'artist_name_cnt'  => ($artist_name_cnt),
 			'song_name_list'   => $song_name_list,
 			'artist_name_list' => $artist_name_list,
 		];
