@@ -45,6 +45,33 @@ class Main extends CI_Controller
         return $data;
     }
 
+	public function Fm802()
+	{
+		require_once("phpQuery-onefile.php");
+		$url = 'https://funky802.com/service/OnairList/today';
+		$html = file_get_contents($url);
+		$html = mb_convert_encoding($html, "utf-8", "sjis");
+		$html = str_replace(array("\r\n", "\r", "\n"), "\n", $html);
+		$doc = phpQuery::newDocument($html);
+
+		// $time        = $doc->find(".time-A, time-B, time-C, time-D, time-E")->text();
+		$song_name   = $doc->find(".song-name")->text();
+		$artist_name = $doc->find(".artist-name")->text();
+
+		// $time_list        = explode("\n", $time);
+		$song_name_list   = explode("\n", $song_name);
+		$artist_name_list = explode("\n", $artist_name);
+
+		$this->view_data = [
+			// 'time_list'        => $time_list,
+			'song_name_list'   => $song_name_list,
+			'artist_name_list' => $artist_name_list,
+		];
+        $this->load->view('header');
+		$this->load->view('fm802', $this->view_data);
+        $this->load->view('footer');
+
+	}
     private function _add_member()
     {
         $add_member       = [];
@@ -118,6 +145,7 @@ class Main extends CI_Controller
     {
 		$this->title = '試合';
 		$this->title_lead = '試合を表示します。';
+
         $match = $this->get_match(NUMBER_OF_COURTS);
 
         if (is_array($match)) {
