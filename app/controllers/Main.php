@@ -3,7 +3,9 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 class Main extends CI_Controller
 {
-    public $view_data = [];
+	public $view_data = [];
+	private $title = '';
+	private $title_lead = '';
 
     function __construct()
     {
@@ -14,6 +16,9 @@ class Main extends CI_Controller
 
     public function index()
     {
+		$this->title = 'メンバー選択';
+		$this->title_lead = '参加するメンバーを選択してください。';
+
         if ($this->input->post('add_member_name')) {
             $this->_add_member();
         }
@@ -26,11 +31,15 @@ class Main extends CI_Controller
     private function _get_view_data()
     {
         $selected_member = $this->input->post('selected_member');
-        $all_member      = $this->member->get_all_member();
+		$all_member      = $this->member->get_all_member();
+		$all_member_info = $this->member->get_all_member_info();
 
         $data = [
+			'title'           => $this->title,
+			'title_lead'      => $this->title_lead,
             'all_member'      => $all_member,
-            'selected_member' => $selected_member,
+			'selected_member' => $selected_member,
+			'all_member_info' => $all_member_info,
         ];
 
         return $data;
@@ -107,6 +116,8 @@ class Main extends CI_Controller
      */
     public function show_match(array $sanka_list = [], array $selected_list = [])
     {
+		$this->title = '試合';
+		$this->title_lead = '試合を表示します。';
         $match = $this->get_match(NUMBER_OF_COURTS);
 
         if (is_array($match)) {
@@ -122,6 +133,8 @@ class Main extends CI_Controller
         }
 
         $this->view_data = [
+			'title'         => $this->title,
+			'title_lead'    => $this->title_lead,
             'sanka_list'    => $sanka_list,
             'selected_list' => $selected_list,
             'court_view'    => $this->load->view('court', ['match' => $match], TRUE),
@@ -155,6 +168,9 @@ class Main extends CI_Controller
 
     public function manage_member()
     {
+		$this->title = 'メンバー追加';
+		$this->title_lead = 'メンバーの追加を行えます。';
+
         if ($this->input->post('add_member_name')) {
             $this->_add_member();
         }

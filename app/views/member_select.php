@@ -6,17 +6,18 @@
         <?php endif ?>
         <form action="<?= base_url('main/show_game') ?>" method="post">
             <div class="jumbotron">
-                <h1 class="display-5">メンバー</h1>
-                <p class="lead">メンバーの選択、追加、削除を行えます。</p>
+                <h1 class="display-5"><?= $title ?></h1>
+                <p class="lead"><?= $title_lead ?></p>
             </div>
 			<div class="member_grid text-center">
-				<?php foreach ($all_member as $name => $level): ?>
-				<div class="align-middle husanka" data-name="<?= $name ?>"><?= $name.'('.$level.')' ?>
-					<br><i class="fas fa-male"></i>
+				<?php foreach ($all_member_info as $key => $val): ?>
+				<div class="align-middle husanka" data-name="<?= $val['name'] ?>"><?= $val['name'].'('.$val['level'].')' ?>
+					<br><i class="fas <?= $val['sex'] === '1' ? 'fa-male my-blue' : 'fa-female my-pink' ?>"></i>
 				</div>
 				<?php endforeach ?>
 			</div>
             <table class="table table-bordered table-hover table-sm table-responsive-md" style="display: none;">
+            <!-- <table class="table table-bordered table-hover table-sm table-responsive-md"> -->
                 <caption>メンバーリスト</caption>
                 <thead class="thead-light">
                     <tr>
@@ -26,13 +27,14 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <?php foreach ($all_member as $name => $level): ?>
-                    <?php $checked = (array_search($name, (array)$selected_member) !== FALSE) ? 'checked' : '' ?>
+                    <?php /*foreach ($all_member as $name => $level): */?>
+                    <?php foreach ($all_member_info as $key => $val): ?>
+                    <?php $checked = (array_search($val['name'], (array)$selected_member) !== FALSE) ? 'checked' : '' ?>
                     <tr>
-                        <td><?= $name ?></td>
-                        <td><?= $level ?></td>
+                        <td><?= $val['name'] ?></td>
+                        <td><?= intval($val['level']) ?></td>
                         <td>
-                            <input type="checkbox" name="selected_member[]" value="<?= $name ?>" <?= $checked ?>>
+                            <input type="checkbox" name="selected_member[]" value="<?= $val['name'] ?>" <?= $checked ?>>
                         </td>
                     </tr>
                     <?php endforeach ?>

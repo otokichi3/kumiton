@@ -1,4 +1,8 @@
     <div class="container">
+		<div class="jumbotron">
+			<h1 class="display-5"><?= $title ?></h1>
+			<p class="lead"><?= $title_lead ?></p>
+		</div>
         <form action="<?= base_url('main') ?>" method="post">
             <?php foreach ($selected_list as $member): ?>
                 <input type="hidden" name="selected_member[]" value="<?= $member ?>">

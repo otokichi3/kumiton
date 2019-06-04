@@ -21,5 +21,14 @@ class Member extends CI_Model
         }
         asort($ret);
         return $ret;
+	}
+
+    public function get_all_member_info()
+    {
+        $this->db->select('name, nickname, sex, join_cnt, level');
+        $this->db->where('deleted', 0);
+
+        $result_array = $this->db->get('t_member')->result_array();
+        return $result_array;
     }
 }
