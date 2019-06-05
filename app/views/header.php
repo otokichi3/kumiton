@@ -26,7 +26,7 @@
                 <a class="nav-item nav-link" href="<?= base_url('main') ?>">メンバー選択</a>
                 <a class="nav-item nav-link" href="<?= base_url('main/show_match') ?>">試合</a>
                 <a class="nav-item nav-link" href="#">履歴</a>
-                <a class="nav-item nav-link" href="<?= base_url('main/fm802') ?>">FM802</a>
+                <a class="nav-item nav-link" href="<?= base_url('fm802') ?>">FM802</a>
             </div>
         </div>
     </nav>

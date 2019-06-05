@@ -34,12 +34,12 @@ class Batch extends CI_Controller
 			}
 		}
 
-		$now = date('Y-m-d');
+		$today = date('Y-m-d');
 		foreach ($artist_name_cnt as $name => $cnt) {
 			$params = [
 				'artist' => $name,
 				'count'  => $cnt,
-				'date'   => $now,
+				'date'   => $today,
 			];
 			$this->db->insert('t_fm802', $params);
 		}
