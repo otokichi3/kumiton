@@ -97,6 +97,23 @@ class Main extends CI_Controller
         $this->load->view('footer');
 
 	}
+
+	/**
+	 * 日次バッチ
+	 *
+	 * @return void
+	 */
+	public function daily_batch()
+	{
+		$method = $this->input->method(TRUE);
+		if ($method === 'POST') {
+			return TRUE;
+		} else {
+			// show_404();
+			show_error('error', 404);
+		}
+	} 
+
     private function _add_member()
     {
         $add_member       = [];
