@@ -68,22 +68,22 @@ class Main extends CI_Controller
 		$song_name_cnt   = array_count_values($song_name_list);
         $artist_name_cnt = array_count_values($artist_name_list);
         foreach ($artist_name_cnt as $name =>$val) {
-            if ($val < 3) {
+            if ( ! trim($name)) {
                 unset($artist_name_cnt[$name]);
             }
         }
 		arsort($song_name_cnt);
         arsort($artist_name_cnt);
 
-        $now = date('Y-m-d');
-        foreach ($artist_name_cnt as $name => $cnt) {
-            $params = [
-                'artist' => $name,
-                'count'  => $cnt,
-                'date'   => $now,
-            ];
-            $this->db->insert('t_fm802', $params);
-        }
+        // $now = date('Y-m-d');
+        // foreach ($artist_name_cnt as $name => $cnt) {
+        //     $params = [
+        //         'artist' => $name,
+        //         'count'  => $cnt,
+        //         'date'   => $now,
+        //     ];
+        //     $this->db->insert('t_fm802', $params);
+        // }
 
 		$this->view_data = [
 			// 'time_list'        => $time_list,
