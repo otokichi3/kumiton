@@ -2,10 +2,14 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
+	<meta http-equiv="content-type" content="text/html" charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<meta http-equiv="content-language" content="ja">
 	<meta name="robots" content="noindex">
+	<meta name="robots" content="nofollow">
+	<meta name="description" content="コート競技の組み合わせを自動作成するサービスです。">
+	<meta name="author" content="Zackey">
     <title>くみとん</title>
     <link rel="shortcut icon" href="favicon.ico">
     <link rel="apple-touch-icon" href="shuttle.png">
@@ -22,7 +26,7 @@
         </button>
         <div class="collapse navbar-collapse" id="navmenu1">
             <div class="navbar-nav">
-                <a class="nav-item nav-link" href="<?= base_url('main/manage_member') ?>">メンバー追加</a>
+                <a class="nav-item nav-link" href="<?= base_url('main/manage_member') ?>">メンバー管理</a>
                 <a class="nav-item nav-link" href="<?= base_url('main') ?>">メンバー選択</a>
                 <a class="nav-item nav-link" href="<?= base_url('main/show_match') ?>">試合</a>
                 <a class="nav-item nav-link" href="#">履歴</a>

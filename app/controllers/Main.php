@@ -10,8 +10,8 @@ class Main extends CI_Controller
     function __construct()
     {
         parent::__construct();
-        $this->load->model('member');
-        $this->load->model('match');
+        $this->load->model('member_model');
+        $this->load->model('match_model');
     }
 
     public function index()
@@ -31,8 +31,8 @@ class Main extends CI_Controller
     private function _get_view_data()
     {
         $selected_member = $this->input->post('selected_member');
-		$all_member      = $this->member->get_all_member();
-		$all_member_info = $this->member->get_all_member_info();
+		$all_member      = $this->member_model->get_all_member();
+		$all_member_info = $this->member_model->get_all_member_info();
 
         $data = [
 			'title'           => $this->title,
@@ -72,14 +72,14 @@ class Main extends CI_Controller
                 'sex'   => $val['sex'],
                 'level' => $val['level'],
             ];
-            $this->db->insert('member', $params);
+            $this->db->insert('t_member', $params);
         }
     }
 
     public function show_game()
     {
         $selected_list = $this->input->post('selected_member');
-        $member_list   = $this->member->get_all_member();
+        $member_list   = $this->member_model->get_all_member();
 
         if ( ! $selected_list OR count($selected_list) < 4) {
             $this->load->view('header');
@@ -155,7 +155,7 @@ class Main extends CI_Controller
     public function get_match(int $num = 0) : array
     {
         $num_of_courts = $this->input->post('num') ?: $num;
-        $match = $this->match->get_match($num_of_courts);
+        $match = $this->match_model->get_match($num_of_courts);
 
         if ($this->input->is_ajax_request()) {
             $court_view = $this->load->view('court', ['match' => $match], TRUE);

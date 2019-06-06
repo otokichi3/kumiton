@@ -3,13 +3,14 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 class Fm802 extends CI_Controller
 {
-	public $view_data = [];
-	private $title = '';
+	public $view_data   = [];
+	private $title 	    = '';
 	private $title_lead = '';
 
     function __construct()
     {
-        parent::__construct();
+		parent::__construct();
+		$this->load->model('fm802_model');
     }
 
     public function index()
@@ -54,31 +55,42 @@ class Fm802 extends CI_Controller
         $this->load->view('footer');
     }
 
+	public function aggregation()
+	{
+		$artist_info = $this->fm802_model->get_artist_info();
+		dump($artist_info);
+		die;
+	}
+
 	private function _get_time_list($doc)
 	{
 		$ret = [];
 
-		$timeD =  $doc->find(".time-D")->text();
-		$timeD =  explode("\n", $timeD);
-		if (count($timeD)) {
-			$ret += $timeD;
-		}
+		// $timeD =  $doc->find(".time-D")->text();
+		// $timeD =  explode("\n", $timeD);
+		// if (count($timeD)) {
+		// 	$ret += $timeD;
+		// }
 
-		$timeC =  $doc->find(".time-C")->text();
-		$timeC =  explode("\n", $timeC);
-		if (count($timeC)) {
-			$ret += $timeC;
-		}
-		$timeB =  $doc->find(".time-B")->text();
-		$timeB =  explode("\n", $timeB);
-		if (count($timeB)) {
-			$ret += $timeB;
-		}
-		$timeA =  $doc->find(".time-A")->text();
-		$timeA =  explode("\n", $timeA);
-		if (count($timeA)) {
-			$ret += $timeA;
-		}
+		// $timeC =  $doc->find(".time-C")->text();
+		// $timeC =  explode("\n", $timeC);
+		// if (count($timeC)) {
+		// 	$ret += $timeC;
+		// }
+		// $timeB =  $doc->find(".time-B")->text();
+		// $timeB =  explode("\n", $timeB);
+		// if (count($timeB)) {
+		// 	$ret += $timeB;
+		// }
+		// $timeA =  $doc->find(".time-A")->text();
+		// $timeA =  explode("\n", $timeA);
+		// if (count($timeA)) {
+		// 	$ret += $timeA;
+		// }
+
+		$time = $doc->find(".time-*")->text();
+		$ret  = explode("\n", $time);
+
 		
 		return $ret;
 

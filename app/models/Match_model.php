@@ -2,7 +2,7 @@
     exit('No direct script access allowed');
 }
 
-class Match extends CI_Model
+class Match_model extends CI_Model
 {
     public function __construct()
     {

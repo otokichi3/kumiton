@@ -6,8 +6,8 @@
         <?php endif ?>
         <form action="<?= base_url('main/manage_member') ?>" method="POST">
             <div class="jumbotron">
-                <h1 class="display-5">メンバー追加</h1>
-                <p class="lead">メンバーの追加を行えます。</p>
+                <h1 class="display-5">メンバー管理</h1>
+                <p class="lead">メンバーの追加、編集、および削除を行えます。</p>
             </div>
             <table class="table table-bordered table-hover table-sm table-responsive-md">
                 <thead class="thead-light">

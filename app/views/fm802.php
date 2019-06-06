@@ -5,10 +5,11 @@
 		</div>
 		
 		<table class="table table-hover table-striped table-bordered table-sm table-responsive-md">
+			<caption>アーティストのカウント</caption>
 			<thead class="thead-dark">
 				<tr>
-					<th>アーティスト名（３回以上のみ）</th>
-					<th>カウント</th>
+					<th>アーティスト名</th>
+					<th>カウント（３回以上のみ）</th>
 				</tr>
 			</thead>
 			<?php foreach ($artist_name_cnt as $key => $cnt): ?>
