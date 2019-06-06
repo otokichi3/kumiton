@@ -52,11 +52,26 @@
 			},
 			options: {
 				scales: {
-					yAxes: [{
-						ticks: {
-							beginAtZero: true
+					xAxes: [
+						{
+							scaleLabel: {                  // 軸ラベル
+								display: true,                 // 表示の有無
+								labelString: 'アーティスト名',     // ラベル
+							},
 						}
-					}]
+					],
+					yAxes: [
+						{
+							scaleLabel: {                  // 軸ラベル
+								display: true,                 // 表示の有無
+								labelString: 'オンエア回数',     // ラベル
+							},
+							ticks: {
+								min: 0,
+								max: 10,
+							}
+						}
+					]
 				}
 			}
 		});
