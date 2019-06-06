@@ -42,9 +42,14 @@ class Fm802 extends CI_Controller
 		arsort($song_name_cnt);
 		arsort($artist_name_cnt);
 
+		$artist_info = $this->fm802_model->get_artist_info();
+		// dump($artist_info);
+		// die;
+
 		$this->view_data = [
 			'title'            => $this->title,
 			'title_lead'       => $this->title_lead,
+			'artist_info'      => $artist_info,
 			'song_name_cnt'    => $song_name_cnt,
 			'artist_name_cnt'  => $artist_name_cnt,
 			'song_name_list'   => $song_name_list,
@@ -54,13 +59,6 @@ class Fm802 extends CI_Controller
 		$this->load->view('fm802', $this->view_data);
         $this->load->view('footer');
     }
-
-	public function aggregation()
-	{
-		$artist_info = $this->fm802_model->get_artist_info();
-		dump($artist_info);
-		die;
-	}
 
 	private function _get_time_list($doc)
 	{

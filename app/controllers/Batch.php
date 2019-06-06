@@ -10,14 +10,12 @@ class Batch extends CI_Controller
 			// show_error('Error: Please check your HTTP method.', 404);
 			return FALSE;
 		}
-        $this->load->model('fm802');
+        $this->load->model('fm802_model');
     }
 
     public function Fm802()
     {
 		require_once("phpQuery-onefile.php");
-
-		$this->load->model('fm802');
 
 		$url = 'https://funky802.com/service/OnairList/today';
 		$html = file_get_contents($url);

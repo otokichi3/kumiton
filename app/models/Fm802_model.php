@@ -12,8 +12,15 @@ class Fm802_model extends CI_Model
     public function get_artist_info()
     {
 		$this->db->select('artist, count, date');
-		$this->db->where('count >', 2);
+		$this->db->where('count >', 1);
 
-        return $this->db->get('t_fm802')->result_array();
+		$res = $this->db->get('t_fm802')->result_array();
+		
+		$ret = [];
+		foreach ($res as $key => $val) {
+			$ret[$val['date']][$val['artist']] = $val['count'];
+		}
+
+		return $ret;
 	}
 }
