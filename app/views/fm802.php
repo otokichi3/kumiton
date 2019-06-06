@@ -37,7 +37,7 @@
 		// console.table(label_list); console.table(data_list);
 		let ctx = document.getElementById('myChart').getContext('2d');
 		let myChart = new Chart(ctx, {
-			type: 'line',
+			type: 'bar',
 			data: {
 				labels: label_list,
 				datasets: [{
@@ -51,6 +51,8 @@
 				}]
 			},
 			options: {
+                responsive: true,
+                maintainAspectRatio: true,
 				scales: {
 					xAxes: [
 						{
@@ -67,8 +69,8 @@
 								labelString: 'オンエア回数',     // ラベル
 							},
 							ticks: {
-								min: 0,
-								max: 10,
+								// min: 1,
+								// max: 10,
 							}
 						}
 					]
