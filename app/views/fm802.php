@@ -34,7 +34,8 @@
 				data_list.push(parseInt(list[item][artist]));
 			}
 		}
-		let max_cnt = Math.max(data_list);
+		let max_cnt = Math.max(...data_list);
+		console.log(max_cnt);
 		let ctx = document.getElementById('myChart').getContext('2d');
 		let myChart = new Chart(ctx, {
 			type: 'bar',
