@@ -35,7 +35,7 @@ class Fm802 extends CI_Controller
 		$song_name_cnt   = array_count_values($song_name_list);
         $artist_name_cnt = array_count_values($artist_name_list);
         foreach ($artist_name_cnt as $name =>$val) {
-            if ($val < 3) {
+            if ($val < 2) {
                 unset($artist_name_cnt[$name]);
             }
         }

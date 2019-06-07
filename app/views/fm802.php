@@ -13,14 +13,14 @@
 					<th>カウント（３回以上のみ）</th>
 				</tr>
 			</thead>
-			<?php /* ?>
+			<?php  ?>
 			<?php foreach ($artist_name_cnt as $key => $cnt): ?>
                 <tr>
                     <td class="text-center"><?= $key ?></td>
                     <td class="text-center"><?= $cnt ?></td>
                 </tr>
 			<?php endforeach ?>
-			<?php */ ?>
+			<?php  ?>
 		</table>
 		<hr>
 		<canvas id="myChart" width="400px" height="200px"></canvas>
@@ -35,7 +35,6 @@
 			}
 		}
 		let max_cnt = Math.max(...data_list);
-		console.log(max_cnt);
 		let ctx = document.getElementById('myChart').getContext('2d');
 		let myChart = new Chart(ctx, {
 			type: 'bar',
@@ -45,9 +44,9 @@
 					label: 'アーティスト登場回数',
 					data: data_list,
 					fill: false,
-					borderColor: [
-						'rgba(220, 20, 60, 1)',
-					],
+					// borderColor: [
+					// 	'rgba(220, 20, 60, 1)',
+					// ],
 					borderWidth: 1
 				}]
 			},
