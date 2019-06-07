@@ -34,7 +34,7 @@
 				data_list.push(parseInt(list[item][artist]));
 			}
 		}
-		// console.table(label_list); console.table(data_list);
+		let max_cnt = Math.max(data_list);
 		let ctx = document.getElementById('myChart').getContext('2d');
 		let myChart = new Chart(ctx, {
 			type: 'bar',
@@ -56,21 +56,21 @@
 				scales: {
 					xAxes: [
 						{
-							scaleLabel: {                  // 軸ラベル
-								display: true,                 // 表示の有無
-								labelString: 'アーティスト名',     // ラベル
+							scaleLabel: {
+								display: true,
+								labelString: 'アーティスト名',
 							},
 						}
 					],
 					yAxes: [
 						{
-							scaleLabel: {                  // 軸ラベル
-								display: true,                 // 表示の有無
-								labelString: 'オンエア回数',     // ラベル
+							scaleLabel: {
+								display: true,
+								labelString: 'オンエア回数',
 							},
 							ticks: {
-								// min: 1,
-								// max: 10,
+								min: 1,
+								max: max_cnt + 1,
 							}
 						}
 					]
