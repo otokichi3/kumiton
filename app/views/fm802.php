@@ -23,7 +23,7 @@
 			<?php  ?>
 		</table>
 		<hr>
-		<canvas id="myChart" width="400px" height="200px"></canvas>
+		<canvas id="myChart" style="position: relative; height:60vh; width:80vw"></canvas>
 		<script>
 		let list = <?= json_encode($artist_info) ?>;
 		let label_list = [];
@@ -41,12 +41,9 @@
 			data: {
 				labels: label_list,
 				datasets: [{
-					label: 'アーティスト登場回数',
+					label: 'オンエア回数',
 					data: data_list,
 					fill: false,
-					// borderColor: [
-					// 	'rgba(220, 20, 60, 1)',
-					// ],
 					borderWidth: 1
 				}]
 			},
@@ -65,7 +62,7 @@
 					yAxes: [
 						{
 							scaleLabel: {
-								display: true,
+								display: false,
 								labelString: 'オンエア回数',
 							},
 							ticks: {
