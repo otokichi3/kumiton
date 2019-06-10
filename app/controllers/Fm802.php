@@ -62,7 +62,7 @@ class Fm802 extends CI_Controller
 
 	public function get_artist_info(string $date = '')
 	{
-		$artist_info = $this->fm802_model->get_artist_info();
+		$artist_info = $this->fm802_model->get_artist_info($date);
 
 		header('Content-Type: application/json');
 		echo json_encode($artist_info);

@@ -12,6 +12,7 @@ class Fm802_model extends CI_Model
     public function get_artist_info(string $date = '')
     {
 
+		// なければ前日
 		$date = $date ?? date('Y-m-d', strtotime('-1 day', time()));
 
 		$this->db->select('artist, count, date');
