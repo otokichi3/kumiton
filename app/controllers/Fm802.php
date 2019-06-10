@@ -60,9 +60,10 @@ class Fm802 extends CI_Controller
         $this->load->view('footer');
     }
 
-	public function get_artist_info(string $date = '')
+	public function get_artist_info()
 	{
-		$artist_info = $this->fm802_model->get_artist_info($date);
+		$onair_date = $this->input->post('onair_date');
+		$artist_info = $this->fm802_model->get_artist_info($onair_date);
 
 		header('Content-Type: application/json');
 		echo json_encode($artist_info);

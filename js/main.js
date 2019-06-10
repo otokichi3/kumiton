@@ -106,7 +106,7 @@ function get_artist_info(onair_date) {
 		url: "fm802/get_artist_info",
 		dataType: "json",
 		type: 'POST',
-		data: { date: onair_date },
+		data: { onair_date: onair_date },
 	}).done(function (artist_info, textStatus, jqXHR) {
 		set_artist_chart(artist_info, onair_date);
 	}).fail(function (jqXHR, textStatus, errorThrown) {
