@@ -43,8 +43,6 @@ class Fm802 extends CI_Controller
 		arsort($artist_name_cnt);
 
 		$artist_info = $this->fm802_model->get_artist_info();
-		// dump($artist_info);
-		// die;
 
 		$this->view_data = [
 			'title'            => $this->title,

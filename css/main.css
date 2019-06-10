@@ -75,6 +75,11 @@
 
 }
 
+.artist_today {
+    max-height: 200px;
+    overflow-y: scroll;
+}
+
 /* Sticky footer styles
 -------------------------------------------------- */
 html {
