@@ -60,6 +60,14 @@ class Fm802 extends CI_Controller
         $this->load->view('footer');
     }
 
+	public function get_artist_info(string $date = '')
+	{
+		$artist_info = $this->fm802_model->get_artist_info();
+
+		header('Content-Type: application/json');
+		echo json_encode($artist_info);
+		die;
+	}
 	private function _get_time_list($doc)
 	{
 		$ret = [];

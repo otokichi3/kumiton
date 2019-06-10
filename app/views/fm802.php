@@ -23,58 +23,12 @@
 			<?php  ?>
 		</table>
 		<hr>
-		<canvas id="myChart" style="position: relative; height:60vh; width:80vw"></canvas>
-		<script>
-		let list = <?= json_encode($artist_info) ?>;
-		let label_list = [];
-		let data_list  = [];
-		for (let item in list) {
-			for (let artist in list[item]) {
-				label_list.push(artist);
-				data_list.push(parseInt(list[item][artist]));
-			}
-		}
-		let max_cnt = Math.max(...data_list);
-		let ctx = document.getElementById('myChart').getContext('2d');
-		let myChart = new Chart(ctx, {
-			type: 'bar',
-			data: {
-				labels: label_list,
-				datasets: [{
-					label: 'オンエア回数',
-					data: data_list,
-					fill: false,
-					borderWidth: 1
-				}]
-			},
-			options: {
-                responsive: true,
-                maintainAspectRatio: true,
-				scales: {
-					xAxes: [
-						{
-							scaleLabel: {
-								display: true,
-								labelString: 'アーティスト名',
-							},
-						}
-					],
-					yAxes: [
-						{
-							scaleLabel: {
-								display: false,
-								labelString: 'オンエア回数',
-							},
-							ticks: {
-								min: 1,
-								max: max_cnt + 1,
-							}
-						}
-					]
-				}
-			}
-		});
-		</script>
+		<div class="form-inline">
+			<a href="javascript:void(0);" id="prev_day"> << </a>
+			<span id="today"><?= date('Y-m-d') ?></span>
+			<a href="javascript:void(0);" id="next_day"> >> </a>
+		</div>
+        <canvas id="myChart" style="position: relative; height:60vh; width:80vw"></canvas>
 		<hr>
 
         <button type="button" class="btn btn-primary btn-sm" data-toggle="collapse" data-target="#onair_list">曲目の表示</button>

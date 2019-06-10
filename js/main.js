@@ -1,5 +1,7 @@
 $(document).ready(function () {
 
+	get_artist_info($('#today').text());
+
 	$('#check_all').on('click', function () {
 		let checked = $(this).is(':checked');
 		$('input[name="selected_member[]"]').prop('checked', Boolean(checked));
@@ -17,7 +19,7 @@ $(document).ready(function () {
 			$(this).text('全選択');
 			$('.sanka').addClass('husanka').removeClass('sanka');
 		}
-		
+
 	});
 
 	$('.sanka, .husanka').on('click', function () {
@@ -27,6 +29,40 @@ $(document).ready(function () {
 
 	$('#next_match').on('click', function () {
 		set_next_match();
+	})
+
+	$('#prev_day').click(function () {
+		let today = $('#today').text();
+		let today_ms = Date.parse(today);
+		let date_today = new Date(today_ms);
+
+		// -1 day
+		date_today.setDate(date_today.getDate() - 1);
+
+		var year = date_today.getFullYear() + '';
+		var month = date_today.getMonth() + 1 + '';
+		var date = date_today.getDate() + '';
+		let prev_date = year + '-' + month + '-' + date;
+		$('#today').text(prev_date);
+
+		console.log(prev_date);
+		get_artist_info(prev_date);
+	})
+
+	$('#next_day').click(function () {
+		let today = $('#today').text();
+		let today_ms = Date.parse(today);
+		let date_today = new Date(today_ms);
+		// +1 day
+		date_today.setDate(date_today.getDate() + 1);
+		var year = date_today.getFullYear() + '';
+		var month = date_today.getMonth() + 1 + '';
+		var date = date_today.getDate() + '';
+		let next_date = year + '-' + month + '-' + date;
+		$('#today').text(next_date);
+
+		console.log(next_date);
+		get_artist_info(next_date);
 	})
 });
 
@@ -62,4 +98,73 @@ function set_next_match() {
 	}).fail(function (jqXHR, textStatus, errorThrown) {
 		alert("fail");
 	});
+}
+
+function get_artist_info(onair_date) {
+
+	$.ajax({
+		url: "fm802/get_artist_info",
+		dataType: "json",
+		type: 'POST',
+		data: { date: onair_date },
+	}).done(function (artist_info, textStatus, jqXHR) {
+		set_artist_chart(artist_info, onair_date);
+	}).fail(function (jqXHR, textStatus, errorThrown) {
+		alert("fail");
+	});
+}
+
+function set_artist_chart(artist_info, onair_date) {
+	// console.log(date);
+	console.table(artist_info);
+	let list = artist_info;
+	let label_list = [];
+	let data_list  = [];
+	for (let item in list) {
+		for (let artist in list[item]) {
+			label_list.push(artist);
+			data_list.push(parseInt(list[item][artist]));
+		}
+	}
+	let max_cnt = Math.max(...data_list);
+	let ctx = document.getElementById('myChart').getContext('2d');
+	let myChart = new Chart(ctx, {
+		type: 'bar',
+		data: {
+			labels: label_list,
+			datasets: [{
+				label: 'オンエアチャート',
+				data: data_list,
+				fill: false,
+				borderWidth: 1
+			}]
+		},
+		options: {
+			responsive: true,
+			maintainAspectRatio: true,
+			scales: {
+				xAxes: [
+					{
+						scaleLabel: {
+							display: true,
+							labelString: '名前',
+						},
+					}
+				],
+				yAxes: [
+					{
+						scaleLabel: {
+							display: true,
+							labelString: 'オンエア回数',
+						},
+						ticks: {
+							min: 1,
+							max: max_cnt + 1,
+						}
+					}
+				]
+			}
+		}
+	});
+
 }

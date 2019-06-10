@@ -9,11 +9,14 @@ class Fm802_model extends CI_Model
         parent::__construct();
 	}
 
-    public function get_artist_info()
+    public function get_artist_info(string $date = '')
     {
+
+		$date = $date ?? date('Y-m-d', strtotime('-1 day', time()));
+
 		$this->db->select('artist, count, date');
 		$this->db->where('count >', 1);
-		$this->db->where('date', '2019-06-06');
+		$this->db->where('date', $date);
 		$this->db->order_by('count', 'DESC');
 		$this->db->limit(7);
 
