@@ -2,6 +2,11 @@ $(document).ready(function () {
 
     get_artist_info($('#today').text());
 
+    $('#line_notify').click(function () {
+        const info = $('input[name="table_for_line"]').val();
+        line_notify(info);
+    });
+
     $('#check_all').on('click', function () {
         let checked = $(this).is(':checked');
         $('input[name="selected_member[]"]').prop('checked', Boolean(checked));
@@ -149,4 +154,18 @@ function set_artist_chart(artist_info, onair_date) {
         }
     });
 
+}
+
+function line_notify(message) {
+
+    $.ajax({
+        url: "main/line_notify",
+        dataType: "json",
+        type: 'POST',
+        data: { message: message },
+    }).done(function (data, textStatus, jqXHR) {
+        alert("LINEに送ったよ！");
+    }).fail(function (jqXHR, textStatus, errorThrown) {
+        alert("fail");
+    });
 }

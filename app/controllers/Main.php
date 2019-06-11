@@ -3,11 +3,11 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 class Main extends CI_Controller
 {
-	public $view_data = [];
-	private $title = '';
-	private $title_lead = '';
+    public $view_data = [];
+    private $title = '';
+    private $title_lead = '';
 
-    function __construct()
+    public function __construct()
     {
         parent::__construct();
         $this->load->model('member_model');
@@ -16,8 +16,8 @@ class Main extends CI_Controller
 
     public function index()
     {
-		$this->title = 'メンバー選択';
-		$this->title_lead = '参加するメンバーを選択してください。';
+        $this->title = 'メンバー選択';
+        $this->title_lead = '参加するメンバーを選択してください。';
 
         if ($this->input->post('add_member_name')) {
             $this->_add_member();
@@ -31,15 +31,15 @@ class Main extends CI_Controller
     private function _get_view_data()
     {
         $selected_member = $this->input->post('selected_member');
-		$all_member      = $this->member_model->get_all_member();
-		$all_member_info = $this->member_model->get_all_member_info();
+        $all_member      = $this->member_model->get_all_member();
+        $all_member_info = $this->member_model->get_all_member_info();
 
         $data = [
-			'title'           => $this->title,
-			'title_lead'      => $this->title_lead,
+            'title'           => $this->title,
+            'title_lead'      => $this->title_lead,
             'all_member'      => $all_member,
-			'selected_member' => $selected_member,
-			'all_member_info' => $all_member_info,
+            'selected_member' => $selected_member,
+            'all_member_info' => $all_member_info,
         ];
 
         return $data;
@@ -54,7 +54,7 @@ class Main extends CI_Controller
 
         // 空を削除しつつ移し替え
         foreach ($add_member_name as $key => $value) {
-            if ( ! $add_member_name[$key] OR ! $add_member_sex[$key] OR ! $add_member_level[$key]) {
+            if (! $add_member_name[$key] or ! $add_member_sex[$key] or ! $add_member_level[$key]) {
                 unset($add_member_name[$key]);
                 unset($add_member_sex[$key]);
                 unset($add_member_level[$key]);
@@ -76,12 +76,41 @@ class Main extends CI_Controller
         }
     }
 
+    public function line_notify()
+    {
+        $message = $this->input->post('message');
+        // リクエストヘッダの作成
+        $query = http_build_query(['message' => $message]);
+        $token = 'sJv0RyOTrXI3FPG7KDYoKRM8YbvHdROIoljC98jwq22';
+        $header = [
+            'Content-Type: application/x-www-form-urlencoded',
+            'Authorization: Bearer ' . $token,
+            'Content-Length: ' . strlen($query)
+        ];
+
+        $ch = curl_init('https://notify-api.line.me/api/notify');
+        $options = [
+            CURLOPT_RETURNTRANSFER  => TRUE,
+            CURLOPT_POST            => TRUE,
+            CURLOPT_HTTPHEADER      => $header,
+            CURLOPT_POSTFIELDS      => $query
+        ];
+
+        curl_setopt_array($ch, $options);
+        curl_exec($ch);
+        curl_close($ch);
+
+        header('Content-Type: application/json');
+        echo json_encode('succeed');
+        die;
+    }
+
     public function show_game()
     {
         $selected_list = $this->input->post('selected_member');
         $member_list   = $this->member_model->get_all_member();
 
-        if ( ! $selected_list OR count($selected_list) < 4) {
+        if (! $selected_list or count($selected_list) < 4) {
             $this->load->view('header');
             $this->load->view('member_select', $this->_get_view_data());
             $this->load->view('footer');
@@ -116,8 +145,8 @@ class Main extends CI_Controller
      */
     public function show_match(array $sanka_list = [], array $selected_list = [])
     {
-		$this->title = '試合';
-		$this->title_lead = '試合を表示します。';
+        $this->title = '試合';
+        $this->title_lead = '試合を表示します。';
 
         $match = $this->get_match(NUMBER_OF_COURTS);
 
@@ -134,11 +163,11 @@ class Main extends CI_Controller
         }
 
         $this->view_data = [
-			'title'         => $this->title,
-			'title_lead'    => $this->title_lead,
+            'title'         => $this->title,
+            'title_lead'    => $this->title_lead,
             'sanka_list'    => $sanka_list,
             'selected_list' => $selected_list,
-            'court_view'    => $this->load->view('court', ['match' => $match], TRUE),
+            'court_view'    => $this->load->view('court', ['match' => $match], true),
         ];
 
         $this->load->view('header');
@@ -158,7 +187,7 @@ class Main extends CI_Controller
         $match = $this->match_model->get_match($num_of_courts);
 
         if ($this->input->is_ajax_request()) {
-            $court_view = $this->load->view('court', ['match' => $match], TRUE);
+            $court_view = $this->load->view('court', ['match' => $match], true);
             header('Content-Type: application/json');
             echo json_encode($court_view);
             die;
@@ -169,8 +198,8 @@ class Main extends CI_Controller
 
     public function manage_member()
     {
-		$this->title = 'メンバー追加';
-		$this->title_lead = 'メンバーの追加を行えます。';
+        $this->title = 'メンバー追加';
+        $this->title_lead = 'メンバーの追加を行えます。';
 
         if ($this->input->post('add_member_name')) {
             $this->_add_member();
@@ -191,7 +220,7 @@ class Main extends CI_Controller
     private function _get_all_match(array $member_list, array $selected_list)
     {
         // 参加者（名前ーレベル形式）
-        $sanka_list = $this->get_member($selected_list, $member_list, TRUE);
+        $sanka_list = $this->get_member($selected_list, $member_list, true);
         $sanka_list = $this->_summarize_level($sanka_list, 2);
 
         // 全ペア算出

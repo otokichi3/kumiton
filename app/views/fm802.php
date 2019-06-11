@@ -14,22 +14,22 @@
                         <th>オンエア回数（２～）</th>
                     </tr>
                 </thead>
-                <?php  ?>
                 <?php foreach ($artist_name_cnt as $key => $cnt): ?>
                     <tr>
                         <td class="text-center"><?= $key ?></td>
                         <td class="text-center"><?= $cnt ?></td>
                     </tr>
                 <?php endforeach ?>
-                <?php  ?>
+                <?= form_hidden('table_for_line', var_export($artist_name_cnt, true)) ?>
             </table>
         </div>
 		<hr>
 		<div class="form-inline text-center">
 			<a href="javascript:void(0);" class="chg_date" data-type="prev"> << </a>
 			<span id="today"><?= date('Y-m-d', strtotime('-1 day')) ?></span>
-			<a href="javascript:void(0);" class="chg_date" data-type="next"> >> </a>
+            <a href="javascript:void(0);" class="chg_date" data-type="next"> >> </a>
 		</div>
+        <button type="button" class="btn btn-info float-right" id="line_notify">LINEに送る</button>
         <canvas id="myChart" style="position: relative; height:60vh; width:80vw"></canvas>
 		<hr>
 
