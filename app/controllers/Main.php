@@ -80,25 +80,7 @@ class Main extends CI_Controller
     {
         $message = $this->input->post('message');
         // リクエストヘッダの作成
-        $query = http_build_query(['message' => $message]);
-        $token = 'sJv0RyOTrXI3FPG7KDYoKRM8YbvHdROIoljC98jwq22';
-        $header = [
-            'Content-Type: application/x-www-form-urlencoded',
-            'Authorization: Bearer ' . $token,
-            'Content-Length: ' . strlen($query)
-        ];
-
-        $ch = curl_init('https://notify-api.line.me/api/notify');
-        $options = [
-            CURLOPT_RETURNTRANSFER  => TRUE,
-            CURLOPT_POST            => TRUE,
-            CURLOPT_HTTPHEADER      => $header,
-            CURLOPT_POSTFIELDS      => $query
-        ];
-
-        curl_setopt_array($ch, $options);
-        curl_exec($ch);
-        curl_close($ch);
+		send_line(LINE_TOKEN1, $message);
 
         header('Content-Type: application/json');
         echo json_encode('succeed');

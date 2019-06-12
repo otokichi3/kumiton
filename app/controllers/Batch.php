@@ -5,7 +5,8 @@ class Batch extends CI_Controller
 {
     public function __construct()
     {
-        parent::__construct();
+		parent::__construct();
+
         if ($this->input->method(TRUE) !== 'POST') {
 			// show_error('Error: Please check your HTTP method.', 404);
 			return FALSE;
@@ -17,11 +18,11 @@ class Batch extends CI_Controller
     {
 		require_once("phpQuery-onefile.php");
 
-		$url = 'https://funky802.com/service/OnairList/today';
+		$url  = 'https://funky802.com/service/OnairList/today';
 		$html = file_get_contents($url);
 		$html = mb_convert_encoding($html, "utf-8", "sjis");
-		$html = str_replace(array("\r\n", "\r", "\n"), "\n", $html);
-		$doc = phpQuery::newDocument($html);
+		$html = str_replace(array("\r\n",  "\r",    "\n"), "\n", $html);
+		$doc  = phpQuery::newDocument($html);
 
 		$artist_name      = $doc->find(".artist-name")->text();
 		$artist_name_list = explode("\n", $artist_name);
@@ -43,5 +44,18 @@ class Batch extends CI_Controller
 		}
 
 		return TRUE;
+	}
+
+    public function send_rank()
+    {
+		$yesterday = date('Y-m-d', strtotime('-1 day', time()));
+		$message = $this->input->post('message');
+		$artist_info = $this->fm802_model->get_artist_info($yesterday, 5);
+		$msg = '';
+		foreach ($artist_info[$yesterday] as $key => $val) {
+			$msg .= sprintf('%s%s: %s', PHP_EOL, $key, $val);
+		}
+		send_line(LINE_TOKEN1, $msg);
+
     }
 }

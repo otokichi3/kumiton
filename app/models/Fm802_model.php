@@ -9,7 +9,7 @@ class Fm802_model extends CI_Model
         parent::__construct();
 	}
 
-    public function get_artist_info(string $date = '')
+    public function get_artist_info(string $date = '', int $limit = 7)
     {
 
 		// なければ前日
@@ -19,7 +19,7 @@ class Fm802_model extends CI_Model
 		$this->db->where('count >', 1);
 		$this->db->where('date', $date);
 		$this->db->order_by('count', 'DESC');
-		$this->db->limit(7);
+		$this->db->limit($limit);
 
 		$res = $this->db->get('t_fm802')->result_array();
 		

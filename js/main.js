@@ -88,7 +88,6 @@ function set_next_match() {
 }
 
 function get_artist_info(onair_date) {
-
     $.ajax({
         url: "fm802/get_artist_info",
         dataType: "json",
@@ -102,8 +101,6 @@ function get_artist_info(onair_date) {
 }
 
 function set_artist_chart(artist_info, onair_date) {
-    // console.log(date);
-    console.table(artist_info);
     let list = artist_info;
     let label_list = [];
     let data_list = [];

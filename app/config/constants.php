@@ -92,3 +92,6 @@ defined('EXIT__AUTO_MAX')      OR define('EXIT__AUTO_MAX', 125); // highest auto
 defined('FLG_OFF') OR define('FLG_OFF', 1);
 defined('FLG_ON')  OR define('FLG_ON', 2);
 defined('NUMBER_OF_COURTS')  OR define('NUMBER_OF_COURTS', 4);
+
+defined('LINE_TOKEN1')  OR define('LINE_TOKEN1', 'sJv0RyOTrXI3FPG7KDYoKRM8YbvHdROIoljC98jwq22');
+defined('LINE_NOTIFY_URL')  OR define('LINE_NOTIFY_URL', 'https://notify-api.line.me/api/notify');
