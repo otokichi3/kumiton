@@ -14,13 +14,13 @@
                         <th>オンエア回数（２～）</th>
                     </tr>
                 </thead>
-                <?php foreach ($artist_name_cnt as $key => $cnt): ?>
+                <?php foreach ($artist_cnt as $key => $cnt): ?>
                     <tr>
                         <td class="text-center"><?= $key ?></td>
                         <td class="text-center"><?= $cnt ?></td>
                     </tr>
                 <?php endforeach ?>
-                <?= form_hidden('table_for_line', var_export($artist_name_cnt, true)) ?>
+                <?= form_hidden('table_for_line', var_export($artist_cnt, true)) ?>
             </table>
         </div>
 		<hr>
@@ -42,10 +42,10 @@
 						<th>曲名</th>
 					</tr>
 				</thead>
-				<?php foreach ($song_name_list as $key => $song_name): ?>
+				<?php foreach ($song_list as $key => $song_name): ?>
 					<tr>
-						<td><?= $artist_name_list[$key] ?></td>
-						<td><?= $song_name_list[$key] ?></td>
+						<td><?= $artist_list[$key] ?></td>
+						<td><?= $song_list[$key] ?></td>
 					</tr>
 				<?php endforeach ?>
 			</table>
