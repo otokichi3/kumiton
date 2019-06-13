@@ -13,21 +13,15 @@ class Fm802 extends CI_Controller
 		$this->load->model('fm802_model');
     }
 
-    public function index()
-    {
-		require_once("phpQuery-onefile.php");
-
-		$this->title = 'FM802';
-		$this->title_lead = 'FM802で再生された曲のアーティスト別回数を表示します。';
-
-		$url  = 'https://funky802.com/service/OnairList/today';
+	private function _get_radio_onair_info(string $url = NULL, $song_class = NULL, $artist_class = NULL)
+	{
 		$html = file_get_contents($url);
 		$html = mb_convert_encoding($html, "utf-8", "sjis");
 		$html = str_replace(array("\r\n", "\r", "\n"), "\n", $html);
 		$doc  = phpQuery::newDocument($html);
 
-		$song_name   = $doc->find(".song-name")->text();
-		$artist_name = $doc->find(".artist-name")->text();
+		$song_name   = $doc->find($song_class)->text();
+		$artist_name = $doc->find($artist_class)->text();
 
 		$song_name_list   = explode("\n", $song_name);
 		$artist_name_list = explode("\n", $artist_name);
@@ -41,6 +35,19 @@ class Fm802 extends CI_Controller
         }
 		arsort($song_name_cnt);
 		arsort($artist_name_cnt);
+
+		return [$song_name_list, $artist_name_list, $song_name_cnt, $artist_name_cnt];
+
+	}
+    public function index()
+    {
+		require_once("phpQuery-onefile.php");
+
+		$this->title = 'FM802';
+		$this->title_lead = 'FM802で再生された曲のアーティスト別回数を表示します。';
+
+		$url = 'https://funky802.com/service/OnairList/today';
+		list($song_name_list, $artist_name_list, $song_name_cnt, $artist_name_cnt) = $this->_get_radio_onair_info($url, '.song-name', '.artist-name');
 
 		$artist_info = $this->fm802_model->get_artist_info();
 

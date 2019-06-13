@@ -33,7 +33,7 @@ class Batch extends CI_Controller
 			}
 		}
 
-		$today = date('Y-m-d');
+		$today = date('Y-m-d H:i:s');
 		foreach ($artist_name_cnt as $name => $cnt) {
 			$params = [
 				'artist' => $name,
