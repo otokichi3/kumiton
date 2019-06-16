@@ -1,6 +1,7 @@
 <?php
 
-if ( ! defined('BASEPATH')) {
+if ( ! defined('BASEPATH'))
+{
     exit('No direct script access allowed');
 }
 
@@ -54,14 +55,14 @@ class Fm802_model extends CI_Model {
         }
     }
 
-    public function get_artist_info(string $date = '', int $limit = 7)
+    public function get_artist_info(string $date = '', int $limit = 7): array
     {
         // なければ前日
         $date = $date ?? date('Y-m-d', strtotime('-1 day', time()));
 
         $this->db->select('artist, count, date');
         $this->db->where('count >', 1);
-        $this->db->where('date', $date);
+        $this->db->where('DATE(date)', $date);
         $this->db->order_by('count', 'DESC');
         $this->db->limit($limit);
 

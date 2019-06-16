@@ -48,9 +48,9 @@ class Batch extends CI_Controller
 
     public function send_rank()
     {
-		$yesterday = date('Y-m-d', strtotime('-1 day', time()));
-		$message = $this->input->post('message');
-		$artist_info = $this->fm802_model->get_artist_info($yesterday, 5);
+		$yesterday   = date('Y-m-d', strtotime('-1 day', time()));
+        $artist_info = $this->fm802_model->get_artist_info($yesterday, 5);
+
 		$msg = '';
 		foreach ($artist_info[$yesterday] as $key => $val) {
 			$msg .= sprintf('%s%s: %s', PHP_EOL, $key, $val);

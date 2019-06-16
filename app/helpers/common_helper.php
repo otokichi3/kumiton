@@ -23,9 +23,10 @@ if ( ! function_exists('dump'))
 if ( ! function_exists('send_line'))
 {
     /**
-     * var_export を pre タグで囲んで出力するラッパー
+     * LINE にメッセージを送る
      *
-     * @param [type] $arg
+     * @param [type] $token
+     * @param [type] $msg
      * @return void
      */
     function send_line($token, $msg)
