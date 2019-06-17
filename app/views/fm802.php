@@ -50,3 +50,6 @@
 				<?php endforeach ?>
 			</table>
         </div>
+		<script>
+			get_artist_info($('#today').text());
+		</script>

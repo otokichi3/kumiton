@@ -14,6 +14,17 @@ class Main extends CI_Controller
         $this->load->model('match_model');
     }
 
+    public function gym()
+    {
+        $this->title = 'メンバー選択';
+        $this->title_lead = '参加するメンバーを選択してください。';
+
+        $this->view_data = $this->_get_view_data();
+        $this->load->view('header');
+        $this->load->view('gym_info', $this->view_data);
+        $this->load->view('footer');
+    }
+
     public function index()
     {
         $this->title = 'メンバー選択';

@@ -48,10 +48,10 @@ class Fm802 extends CI_Controller
 			'artist_list'  => $artist_list,
 			'song_cnt'     => $song_cnt,
 			'artist_cnt'   => $artist_cnt,
-			'song_list2'   => $song_list2,
-			'artist_list2' => $artist_list2,
-			'song_cnt2'    => $song_cnt2,
-			'artist_cntw\2'  => $artist_cnt2,
+			// 'song_list2'   => $song_list2,
+			// 'artist_list2' => $artist_list2,
+			// 'song_cnt2'    => $song_cnt2,
+			// 'artist_cnt2'  => $artist_cnt2,
         ];
 
         $this->load->view('header');

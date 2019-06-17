@@ -1,7 +1,5 @@
 $(document).ready(function () {
 
-    get_artist_info($('#today').text());
-
     $('#line_notify').click(function () {
         const info = $('input[name="table_for_line"]').val();
         line_notify(info);
@@ -83,7 +81,7 @@ function set_next_match() {
     }).done(function (data, textStatus, jqXHR) {
         $('#court_list').html(data);
     }).fail(function (jqXHR, textStatus, errorThrown) {
-        alert("fail");
+		console.info('次の試合の取得に失敗しました。');
     });
 }
 
