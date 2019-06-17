@@ -7,9 +7,9 @@ class Batch extends CI_Controller
     {
 		parent::__construct();
 
-        // if ($this->input->method(TRUE) !== 'POST') {
-		// 	return FALSE;
-		// }
+        if ($this->input->method(TRUE) !== 'POST') {
+			return FALSE;
+		}
         $this->load->model('fm802_model');
     }
 
