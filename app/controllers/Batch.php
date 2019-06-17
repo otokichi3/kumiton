@@ -7,9 +7,9 @@ class Batch extends CI_Controller
     {
 		parent::__construct();
 
-        // if ($this->input->method(TRUE) !== 'POST') {
-		// 	return FALSE;
-		// }
+        if ($this->input->method(TRUE) !== 'POST') {
+			return FALSE;
+		}
         $this->load->model('fm802_model');
     }
 
@@ -50,7 +50,7 @@ class Batch extends CI_Controller
 		$yesterday   = date('Y-m-d', strtotime('-1 day', time()));
         $artist_info = $this->fm802_model->get_artist_info($yesterday, 5);
 
-		$msg = sprintf('%s のトップ５%s', $yesterday, PHP_EOL);
+		$msg = sprintf('%s%s のトップ５%s', PHP_EOL, $yesterday, PHP_EOL);
 		foreach ($artist_info[$yesterday] as $key => $val) {
 			$msg .= sprintf('%s%s: %s', PHP_EOL, $key, $val);
 		}
