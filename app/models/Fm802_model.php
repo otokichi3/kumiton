@@ -60,7 +60,7 @@ class Fm802_model extends CI_Model {
         // なければ前日
         $date = $date ?? date('Y-m-d', strtotime('-1 day', time()));
 
-        $this->db->select('artist, count, DATE(date)');
+        $this->db->select('artist, count, DATE(date) as date');
         $this->db->where('count >', 1);
         $this->db->where('DATE(date)', $date);
         $this->db->order_by('count', 'DESC');
