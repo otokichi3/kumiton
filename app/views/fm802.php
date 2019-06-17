@@ -6,6 +6,7 @@
 		</div>
         
         <div class="artist_today">
+			<?= form_hidden('is_fm802', TRUE) ?>
             <table class="table table-hover table-striped table-bordered table-sm table-responsive-md">
                 <caption>アーティストのカウント</caption>
                 <thead class="thead-dark">
@@ -50,6 +51,3 @@
 				<?php endforeach ?>
 			</table>
         </div>
-		<script>
-			get_artist_info($('#today').text());
-		</script>

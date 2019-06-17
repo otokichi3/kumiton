@@ -1,5 +1,10 @@
 $(document).ready(function () {
 
+	if ($.find('input[name="is_fm802"]').length) {
+		let today = $('#today').text();
+		get_artist_info(today);
+	}
+
     $('#line_notify').click(function () {
         const info = $('input[name="table_for_line"]').val();
         line_notify(info);
