@@ -11,48 +11,28 @@ class Fm802_model extends CI_Model {
         parent::__construct();
     }
 
-    /**
-     * 一覧取得.
-     *
-     * @param array  $params
-     * @param string $select
-     * @param string $table
-     * @param array  $limit
-     * @return array $result
-     */
-    public function get_list(array $params = [], string $select = NULL, string $table = 't_fm802', array $limit = NULL)
+    public function get_rank(int $type = 1): array
     {
-        try {
-			if (strlen($select))
-			{
-                $this->db->select($select);
-			}
+        $type_list = [
+            1 => '-1 week',
+            2 => '-2 week',
+            3 => '-1 month',
+            4 => '-2 month',
+        ];
 
-			foreach ($params as $key => $value)
-			{
-				if (is_array($value) && ! empty($value))
-				{
-					$this->db->where_in($key, $value);
-				}
-				elseif ( ! is_array($value) && strlen($value) > 0)
-				{
-					$this->db->where($key, $value);
-				}
-				break;
-            }
+        $start_date = date("Y-m-d", strtotime($type_list[$type]));
 
-			// LIMIT
-            if (isset($limit['limit']) && strlen($limit['limit'])) {
-                if (isset($limit['offset']) && strlen($limit['offset'])) {
-                    $this->db->limit($limit['limit'], $limit['offset']);
-                } else {
-                    $this->db->limit($limit['limit']);
-                }
-            }
-            return $this->db->get($table)->result();
-        } catch (Exception $e) {
-            throw new Exception($e->getMessage());
-        }
+        $this->db->select('artist, SUM(count) as count');
+
+        $this->db->where('date >=', $start_date);
+        $this->db->group_by('artist');
+        $this->db->having('SUM(count) >= ', 10);
+
+        $this->db->order_by('count', 'DESC');
+        $this->db->limit(10);
+
+        $res = $this->db->get('t_fm802')->result_array();
+        return $res;
     }
 
     public function get_artist_info(string $date = '', int $limit = 7): array

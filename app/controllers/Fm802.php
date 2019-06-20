@@ -39,7 +39,10 @@ class Fm802 extends CI_Controller
         // list($song_list2, $artist_list2, $song_cnt2, $artist_cnt2)
         //     = $this->_get_radio_onair_info($kissfm['url'], $kissfm['song'], $kissfm['artist'], FALSE);
 
-		$artist_info     = $this->fm802_model->get_artist_info();
+        $artist_info     = $this->fm802_model->get_artist_info();
+
+        $ranking = $this->fm802_model->get_rank(1); // -1 week
+
 		$this->view_data = [
 			'title'        => $this->title,
 			'title_lead'   => $this->title_lead,
@@ -48,10 +51,7 @@ class Fm802 extends CI_Controller
 			'artist_list'  => $artist_list,
 			'song_cnt'     => $song_cnt,
 			'artist_cnt'   => $artist_cnt,
-			// 'song_list2'   => $song_list2,
-			// 'artist_list2' => $artist_list2,
-			// 'song_cnt2'    => $song_cnt2,
-			// 'artist_cnt2'  => $artist_cnt2,
+			'ranking'      => $ranking,
         ];
 
         $this->load->view('header');

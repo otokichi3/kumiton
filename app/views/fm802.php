@@ -33,6 +33,8 @@
         <button type="button" class="btn btn-info float-right" id="line_notify">LINEに送る</button>
         <canvas id="myChart" style="position: relative; height:60vh; width:80vw"></canvas>
 		<hr>
+        <canvas id="weekly_ranking" style="position: relative; height:60vh; width:80vw"></canvas>
+		<hr>
 
         <button type="button" class="btn btn-primary btn-sm" data-toggle="collapse" data-target="#onair_list">曲目の表示</button>
         <div id="onair_list" class="collapse">
