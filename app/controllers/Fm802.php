@@ -67,7 +67,17 @@ class Fm802 extends CI_Controller
 		header('Content-Type: application/json');
 		echo json_encode($artist_info);
 		die;
-	}
+    }
+    
+    public function get_rank(): void
+    {
+		$type = $this->input->post('type') ?? 1;
+		$rank = $this->fm802_model->get_rank($type);
+
+		header('Content-Type: application/json');
+		echo json_encode($rank);
+		die;
+    }
 
 	private function _get_radio_onair_info(string $url = NULL, $song_class = NULL, $artist_class = NULL, bool $enc = TRUE)
 	{

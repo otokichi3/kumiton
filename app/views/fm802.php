@@ -30,10 +30,11 @@
 			<span id="today"><?= date('Y-m-d', strtotime('-1 day')) ?></span>
             <a href="javascript:void(0);" class="chg_date" data-type="next"> >> </a>
 		</div>
-        <button type="button" class="btn btn-info float-right" id="line_notify">LINEに送る</button>
+        <!-- <button type="button" class="btn btn-info float-right" id="line_notify">LINEに送る</button> -->
         <canvas id="myChart" style="position: relative; height:60vh; width:80vw"></canvas>
 		<hr>
         <canvas id="weekly_ranking" style="position: relative; height:60vh; width:80vw"></canvas>
+        <?= form_hidden('ranking', var_export($ranking, true)) ?>
 		<hr>
 
         <button type="button" class="btn btn-primary btn-sm" data-toggle="collapse" data-target="#onair_list">曲目の表示</button>
