@@ -1,13 +1,15 @@
 <?php
-defined('BASEPATH') or exit('No direct script access allowed');
 
-class Batch extends CI_Controller
-{
+defined('BASEPATH') OR exit('No direct script access allowed');
+
+class Batch extends CI_Controller {
+
     public function __construct()
     {
 		parent::__construct();
 
-        if ($this->input->method(TRUE) !== 'POST') {
+        if ($this->input->method(TRUE) !== 'POST')
+        {
 			return FALSE;
 		}
         $this->load->model('fm802_model');
@@ -47,6 +49,7 @@ class Batch extends CI_Controller
 
     public function send_rank()
     {
+        die;
 		$yesterday   = date('Y-m-d', strtotime('-1 day', time()));
         $artist_info = $this->fm802_model->get_artist_info($yesterday, 5);
 
