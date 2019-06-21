@@ -1,9 +1,45 @@
 $(document).ready(function () {
 
-	if ($.find('input[name="is_fm802"]').length) {
-		let today = $('#today').text();
-		get_artist_info(today);
-	}
+    if ($.find('input[name="is_fm802"]').length) {
+        let today = $('#today').text();
+        get_artist_info(today);
+        get_rank();
+    }
+
+    $('#edit_member').click(function () {
+        const id = $(this).data('id');
+        const $form = $('#edit_member_form');
+        $form.find('input[name="id"]').val(id);
+        $.ajax({
+            url: "get_member_data/" + id,
+            dataType: "json",
+            type: 'GET',
+        }).done(function (data, textStatus, jqXHR) {
+            $form.find('input[name="name"]').val(data.name);
+            $form.find('input[name="nickname"]').val(data.nickname);
+            $form.find('input[name="level"]').val(data.level);
+            $form.find('input[name="sex"]').val(data.sex);
+        }).fail(function (jqXHR, textStatus, errorThrown) {
+            console.info('メンバー情報取得に失敗');
+        });
+    });
+
+    $('#edit_member_form').submit(function () {
+        $.ajax({
+            url: "save_member_data/",
+            dataType: "json",
+            type: 'POST',
+            data: $(this).serialize(),
+        }).done(function (data, textStatus, jqXHR) {
+            close('#edit');
+            // console.table(data);
+        }).fail(function (jqXHR, textStatus, errorThrown) {
+            console.info('メンバー情報取得に失敗');
+        }).always(function () {
+            return false;
+        });
+        return false;
+    });
 
     $('#line_notify').click(function () {
         const info = $('input[name="table_for_line"]').val();
@@ -86,7 +122,7 @@ function set_next_match() {
     }).done(function (data, textStatus, jqXHR) {
         $('#court_list').html(data);
     }).fail(function (jqXHR, textStatus, errorThrown) {
-		console.info('次の試合の取得に失敗しました。');
+        console.info('次の試合の取得に失敗しました。');
     });
 }
 
@@ -99,12 +135,127 @@ function get_artist_info(onair_date) {
     }).done(function (artist_info, textStatus, jqXHR) {
         set_artist_chart(artist_info, onair_date);
     }).fail(function (jqXHR, textStatus, errorThrown) {
-        alert("fail");
+        alert("failed to get artist info");
+    });
+}
+
+function get_rank() {
+    $.ajax({
+        url: "fm802/get_rank",
+        dataType: "json",
+        type: 'POST',
+        data: { type: 1 },
+    }).done(function (rank, textStatus, jqXHR) {
+        set_rank_chart(rank);
+    }).fail(function (jqXHR, textStatus, errorThrown) {
+        alert("failed to get rank");
+    });
+}
+
+function set_rank_chart(rank) {
+    let label_list = [];
+    let data_list = [];
+    for (list in rank) {
+        label_list.push(rank[list]['artist']);
+        data_list.push(rank[list]['count']);
+    }
+    let max_cnt = Math.max(...data_list);
+    let ctx = document.getElementById('weekly_ranking').getContext('2d');
+    let weekly_ranking = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: label_list,
+            datasets: [{
+                label: '週間オンエア回数',
+                data: data_list,
+                fill: false,
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: true,
+            scales: {
+                xAxes: [
+                    {
+                        scaleLabel: {
+                            display: true,
+                            labelString: '名前',
+                        },
+                    }
+                ],
+                yAxes: [
+                    {
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'オンエア回数',
+                        },
+                        ticks: {
+                            min: 1,
+                            max: max_cnt + 1,
+                        }
+                    }
+                ]
+            }
+        }
     });
 }
 
 function set_artist_chart(artist_info, onair_date) {
     let list = artist_info;
+    let label_list = [];
+    let data_list = [];
+    for (let item in list) {
+        for (let artist in list[item]) {
+            label_list.push(artist);
+            data_list.push(parseInt(list[item][artist]));
+        }
+    }
+    let max_cnt = Math.max(...data_list);
+    let ctx = document.getElementById('myChart').getContext('2d');
+    let myChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: label_list,
+            datasets: [{
+                label: '本日のオンエア回数',
+                data: data_list,
+                fill: false,
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: true,
+            scales: {
+                xAxes: [
+                    {
+                        scaleLabel: {
+                            display: true,
+                            labelString: '名前',
+                        },
+                    }
+                ],
+                yAxes: [
+                    {
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'オンエア回数',
+                        },
+                        ticks: {
+                            min: 1,
+                            max: max_cnt + 1,
+                        }
+                    }
+                ]
+            }
+        }
+    });
+}
+
+function set_rank() {
+    let list = artist_info;
+    return;
     let label_list = [];
     let data_list = [];
     for (let item in list) {
@@ -153,11 +304,9 @@ function set_artist_chart(artist_info, onair_date) {
             }
         }
     });
-
 }
 
 function line_notify(message) {
-
     $.ajax({
         url: "main/line_notify",
         dataType: "json",
@@ -168,4 +317,10 @@ function line_notify(message) {
     }).fail(function (jqXHR, textStatus, errorThrown) {
         alert("fail");
     });
+}
+
+function close(modal_id = '') {
+    $('body').removeClass('modal-open'); // 1
+    $('.modal-backdrop').remove();       // 2
+    $(modal_id).modal('hide');        // 3
 }

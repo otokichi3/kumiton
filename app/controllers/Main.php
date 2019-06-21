@@ -14,6 +14,22 @@ class Main extends CI_Controller
         $this->load->model('match_model');
     }
 
+    public function get_member_data($id)
+    {
+        $member_data = $this->member_model->get_data($id);
+        header('Content-Type: application/json');
+        echo json_encode($member_data);
+        die;
+    }
+
+    public function save_member_data()
+    {
+        $post = $this->input->post();
+        header('Content-Type: application/json');
+        echo json_encode($post);
+        die;
+    }
+
     public function gym()
     {
         $this->title = 'メンバー選択';
