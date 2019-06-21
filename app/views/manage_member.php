@@ -108,8 +108,8 @@
                                 <label class="control-label col-xs-2">性別</label>
                                 <div class="col-xs-5">
                                     <select name="sex" class="form-control" required>
-                                        <option value="1">男</option>
-                                        <option value="2">女</option>
+                                        <option value="1">男性</option>
+                                        <option value="2">女性</option>
                                     </select>
                                 </div>
                             </div>

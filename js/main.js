@@ -22,7 +22,7 @@ $(document).ready(function () {
             $form.find('input[name="name"]').val(data.name);
             $form.find('input[name="nickname"]').val(data.nickname);
             $form.find('input[name="level"]').val(data.level);
-            $form.find('input[name="sex"]').val(data.sex);
+            $form.find('select[name="sex"]').val(data.sex);
         }).fail(function (jqXHR, textStatus, errorThrown) {
             console.info('メンバー情報取得に失敗');
         });
