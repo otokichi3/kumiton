@@ -27,7 +27,7 @@
                         <td class="sex"><?= $member['sex'] == 1 ? '男性' : '女性'; ?></td>
                         <td class="level"><?= $member['level']; ?></td>
                         <td class="text-center">
-                            <button type="button" id="edit_member" class="btn btn-primary btn-sm" data-id="<?= $member['id']; ?>" data-toggle="modal" data-target="#edit">変更</button>
+                            <button type="button" class="btn btn-primary btn-sm edit_member" data-id="<?= $member['id']; ?>" data-toggle="modal" data-target="#edit">変更</button>
                         </td>
                     </tr>
                     <?php endforeach; ?>

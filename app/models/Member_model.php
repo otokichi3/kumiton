@@ -13,7 +13,6 @@ class Member_model extends CI_Model
 
     public function update_by_id($params): void
     {
-
         $upd_data = [
             'name'     => $params['name'],
             'nickname' => $params['nickname'],

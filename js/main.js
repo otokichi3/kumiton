@@ -8,12 +8,12 @@ $(document).ready(function () {
         get_rank();
     }
 
-    $('#edit_member').click(function () {
-        const id = $(this).data('id');
-        const $form = $('#edit_member_form');
+    $('.edit_member').on('click', function () {
+        var id = $(this).data('id');
+        var $form = $('#edit_member_form');
         $tr = $(this).parent().parent();
-
         $form.find('input[name="id"]').val(id);
+
         $.ajax({
             url: "get_member_data/" + id,
             dataType: "json",
