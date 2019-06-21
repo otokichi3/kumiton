@@ -21,7 +21,7 @@ class Member_model extends CI_Model
             'level'    => $params['level'],
         ];
         $this->db->where('id', $params['id']);
-        $this->db->update('mytable', $upd_data);
+        $this->db->update('t_member', $upd_data);
     }
 
     public function get_data($id)

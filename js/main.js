@@ -1,5 +1,7 @@
 $(document).ready(function () {
 
+    var $tr;
+
     if ($.find('input[name="is_fm802"]').length) {
         let today = $('#today').text();
         get_artist_info(today);
@@ -9,6 +11,8 @@ $(document).ready(function () {
     $('#edit_member').click(function () {
         const id = $(this).data('id');
         const $form = $('#edit_member_form');
+        $tr = $(this).parent().parent();
+
         $form.find('input[name="id"]').val(id);
         $.ajax({
             url: "get_member_data/" + id,
@@ -25,14 +29,20 @@ $(document).ready(function () {
     });
 
     $('#edit_member_form').submit(function () {
+        const id = $(this).find('input[name="hidden"]:hidden').val();
         $.ajax({
             url: "save_member_data/",
             dataType: "json",
             type: 'POST',
             data: $(this).serialize(),
         }).done(function (data, textStatus, jqXHR) {
-            close('#edit');
+            const sex = data.sex == 1 ? '男性' : '女性';
+            $tr.find('.name').text(data.name);
+            $tr.find('.nickname').text(data.nickname);
+            $tr.find('.sex').text(sex);
+            $tr.find('.level').text(data.level);
             // console.table(data);
+            close('#edit');
         }).fail(function (jqXHR, textStatus, errorThrown) {
             console.info('メンバー情報取得に失敗');
         }).always(function () {

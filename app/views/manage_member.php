@@ -9,7 +9,7 @@
                 <h1 class="display-5">メンバー管理</h1>
                 <p class="lead">メンバーの追加、編集、および削除を行えます。</p>
             </div>
-            <table class="table table-bordered table-hover table-sm table-responsive-md">
+            <table id="member_list" class="table table-bordered table-striped table-hover table-sm table-responsive-md">
                 <thead class="thead-light">
                     <tr>
                         <th>名前</th>
@@ -22,14 +22,10 @@
                 <tbody>
                     <?php foreach ($all_member_info as $member): ?>
                     <tr>
-                        <td><?= $member['name']; ?>
-                        </td>
-                        <td><?= $member['nickname']; ?>
-                        </td>
-                        <td><?= $member['sex'] == 1 ? '男性' : '女性'; ?>
-                        </td>
-                        <td><?= $member['level']; ?>
-                        </td>
+                        <td class="name"><?= $member['name']; ?></td>
+                        <td class="nickname"><?= $member['nickname']; ?></td>
+                        <td class="sex"><?= $member['sex'] == 1 ? '男性' : '女性'; ?></td>
+                        <td class="level"><?= $member['level']; ?></td>
                         <td class="text-center">
                             <button type="button" id="edit_member" class="btn btn-primary btn-sm" data-id="<?= $member['id']; ?>" data-toggle="modal" data-target="#edit">変更</button>
                         </td>
@@ -99,7 +95,7 @@
                             <div class="form-group">
                                 <label class="control-label col-xs-2">名前</label>
                                 <div class="col-xs-5">
-                                    <input type="text" name="name" class="form-control">
+                                    <input type="text" name="name" class="form-control" required>
                                 </div>
                             </div>
                             <div class="form-group">
@@ -111,7 +107,7 @@
                             <div class="form-group">
                                 <label class="control-label col-xs-2">性別</label>
                                 <div class="col-xs-5">
-                                    <select name="sex" class="form-control">
+                                    <select name="sex" class="form-control" required>
                                         <option value="1">男</option>
                                         <option value="2">女</option>
                                     </select>
@@ -120,7 +116,7 @@
                             <div class="form-group">
                                 <label class="control-label col-xs-2">レベル</label>
                                 <div class="col-xs-5">
-                                    <input type="text" name="level" class="form-control">
+                                    <input type="number" name="level" class="form-control" step="0.5" required>
                                 </div>
                             </div>
                             <div class="form-group">

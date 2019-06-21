@@ -25,6 +25,7 @@ class Main extends CI_Controller
     public function save_member_data()
     {
         $post = $this->input->post();
+        $this->member_model->update_by_id($post);
         header('Content-Type: application/json');
         echo json_encode($post);
         die;
