@@ -1,12 +1,41 @@
 $(document).ready(function () {
 
+    // メンバーの更新・削除用
     var $tr;
 
+    // fm802 のページでだけ動作
     if ($.find('input[name="is_fm802"]').length) {
         let today = $('#today').text();
         get_artist_info(today);
         get_rank();
     }
+
+    $('input[name^="add_member_level"').on('change', function () {
+        let idx = $(this).data('idx');
+        $(`.slider${idx}`).text($(this).val());
+    });
+
+    $('.delete_btn').on('click', function () {
+        $tr = $(this).parent().parent();
+        var id = $(this).data('id');
+        $('#del_member_form').find('input[name="id"]').val(id);
+    });
+
+    // delete member
+    $('.delete_member').on('click', function () {
+        var id = $('#del_member_form').find('input[name="id"]').val();
+        $.ajax({
+            url: "delete_member/" + id,
+            dataType: "json",
+            type: 'GET',
+        }).done(function (data, textStatus, jqXHR) {
+            console.info('メンバー削除に成功');
+            $tr.remove();
+            close('#delete');
+        }).fail(function (jqXHR, textStatus, errorThrown) {
+            console.info('メンバー削除に失敗');
+        });
+    });
 
     $('.edit_member').on('click', function () {
         var id = $(this).data('id');

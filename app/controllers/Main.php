@@ -7,11 +7,24 @@ class Main extends CI_Controller
     private $title = '';
     private $title_lead = '';
 
+    protected $name = NULL;
+
     public function __construct()
     {
         parent::__construct();
+
+        $this->name = strtolower(get_class());
+
         $this->load->model('member_model');
         $this->load->model('match_model');
+    }
+
+    public function delete_member($id)
+    {
+        $this->db->delete('t_member', ['id' => $id]);
+        header('Content-Type: application/json');
+        echo json_encode([]);
+        die;
     }
 
     public function get_member_data($id)
@@ -38,7 +51,7 @@ class Main extends CI_Controller
 
         $this->view_data = $this->_get_view_data();
         $this->load->view('header');
-        $this->load->view('gym_info', $this->view_data);
+        $this->load->view($this->name.'/gym', $this->view_data);
         $this->load->view('footer');
     }
 
@@ -52,7 +65,7 @@ class Main extends CI_Controller
         }
         $this->view_data = $this->_get_view_data();
         $this->load->view('header');
-        $this->load->view('member_select', $this->view_data);
+        $this->load->view($this->name.'/select', $this->view_data);
         $this->load->view('footer');
     }
 
@@ -122,7 +135,7 @@ class Main extends CI_Controller
 
         if (! $selected_list or count($selected_list) < 4) {
             $this->load->view('header');
-            $this->load->view('member_select', $this->_get_view_data());
+            $this->load->view($this->name.'/select', $this->_get_view_data());
             $this->load->view('footer');
             return;
         }
@@ -177,11 +190,11 @@ class Main extends CI_Controller
             'title_lead'    => $this->title_lead,
             'sanka_list'    => $sanka_list,
             'selected_list' => $selected_list,
-            'court_view'    => $this->load->view('court', ['match' => $match], true),
+            'court_view'    => $this->load->view($this->name.'/court', ['match' => $match], true),
         ];
 
         $this->load->view('header');
-        $this->load->view('main', $this->view_data);
+        $this->load->view($this->name.'/index', $this->view_data);
         $this->load->view('footer');
     }
 
@@ -197,7 +210,7 @@ class Main extends CI_Controller
         $match = $this->match_model->get_match($num_of_courts);
 
         if ($this->input->is_ajax_request()) {
-            $court_view = $this->load->view('court', ['match' => $match], true);
+            $court_view = $this->load->view($this->name.'/court', ['match' => $match], true);
             header('Content-Type: application/json');
             echo json_encode($court_view);
             die;
@@ -216,7 +229,7 @@ class Main extends CI_Controller
         }
         $this->view_data = $this->_get_view_data();
         $this->load->view('header');
-        $this->load->view('manage_member', $this->view_data);
+        $this->load->view($this->name.'/manage', $this->view_data);
         $this->load->view('footer');
     }
 
@@ -276,7 +289,7 @@ class Main extends CI_Controller
     public function todo()
     {
         $this->load->view('header');
-        $this->load->view('todo');
+        $this->load->view($this->name.'/todo');
         $this->load->view('footer');
     }
 

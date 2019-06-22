@@ -36,6 +36,7 @@ class Member_model extends CI_Model
     {
         $this->db->select('name, level');
         $this->db->where('deleted', 0);
+        $this->db->order_by('level', 'ASC');
 
         $result_array = $this->db->get('t_member')->result_array();
         $ret          = [];
@@ -52,6 +53,7 @@ class Member_model extends CI_Model
     {
         $this->db->select('id, name, nickname, sex, join_cnt, level');
         $this->db->where('deleted', 0);
+        $this->db->order_by('level', 'ASC');
 
         $result_array = $this->db->get('t_member')->result_array();
 

@@ -24,10 +24,13 @@
                     <tr>
                         <td class="name"><?= $member['name']; ?></td>
                         <td class="nickname"><?= $member['nickname']; ?></td>
-                        <td class="sex"><?= $member['sex'] == 1 ? '男性' : '女性'; ?></td>
+                        <td class="sex text-center">
+                            <i class="fas <?= $member['sex'] === '1' ? 'fa-male my-blue' : 'fa-female my-pink' ?>">
+                        </td>
                         <td class="level"><?= $member['level']; ?></td>
                         <td class="text-center">
                             <button type="button" class="btn btn-primary btn-sm edit_member" data-id="<?= $member['id']; ?>" data-toggle="modal" data-target="#edit">変更</button>
+                            <button type="button" class="btn btn-danger btn-sm delete_btn" data-id="<?= $member['id']; ?>" data-toggle="modal" data-target="#delete">削除</button>
                         </td>
                     </tr>
                     <?php endforeach; ?>
@@ -61,7 +64,11 @@
                         </div>
                     </td>
                     <td class="align-middle">
-                        <select name="add_member_level[<?= $i; ?>]" class="form-control">
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <input type="range" value="5" name="add_member_level[<?= $i; ?>]" class="form-control-range" min="0.5" max="10" step="0.5" data-idx=<?= $i ?>>
+                            <div class="text-center"><output class="slider<?= $i ?> pr-3">5.0</output></div>
+                        </div>
+                        <!-- <select name="add_member_level[<?= $i; ?>]" class="form-control">
                             <option value="" selected>---</option>
                             <option value="1">1</option>
                             <option value="2">2</option>
@@ -73,13 +80,14 @@
                             <option value="8">8</option>
                             <option value="9">9</option>
                             <option value="10">10</option>
-                        </select>
+                        </select> -->
                     </td>
                 </tr>
                 <?php endfor; ?>
             </table>
             <button type="submit" class="btn btn-primary btn-sm">追加</button>
         </form>
+        <!-- modal edit -->
         <div class="modal fade" id="edit" tabindex="-1" role="dialog" aria-labelledby="label1" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
@@ -133,3 +141,29 @@
                 </div>
             </div>
         </div>
+        <!-- modal edit -->
+
+        <!-- modal delete -->
+        <div class="modal fade" id="delete" tabindex="-1" role="dialog" aria-labelledby="label1" aria-hidden="true">
+            <div class="modal-dialog modal-sm" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="label1">メンバー削除</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form class="form-horizontal" id="del_member_form">
+                            <?= form_hidden('id', '') ?>
+                            <div>選択したメンバーを削除します。</div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary delete_member">OK</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- modal delete -->
