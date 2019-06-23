@@ -26,9 +26,9 @@
         </button>
         <div class="collapse navbar-collapse" id="navmenu1">
             <div class="navbar-nav">
-                <a class="nav-item nav-link" href="<?= base_url('main/manage_member') ?>">メンバー管理</a>
-                <a class="nav-item nav-link" href="<?= base_url('main') ?>">メンバー選択</a>
-                <a class="nav-item nav-link" href="<?= base_url('main/show_match') ?>">試合</a>
+                <a class="nav-item nav-link" href="<?= base_url('main/manage') ?>">メンバー管理</a>
+                <a class="nav-item nav-link" href="<?= base_url('main/select') ?>">メンバー選択</a>
+                <a class="nav-item nav-link" href="<?= base_url('main/match') ?>">試合</a>
                 <a class="nav-item nav-link" href="#">履歴</a>
                 <a class="nav-item nav-link" href="<?= base_url('fm802') ?>">FM802</a>
             </div>

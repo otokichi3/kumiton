@@ -64,11 +64,7 @@
                         </div>
                     </td>
                     <td class="align-middle">
-                        <div class="form-group" style="margin-bottom: 0;">
-                            <input type="range" value="5" name="add_member_level[<?= $i; ?>]" class="form-control-range" min="0.5" max="10" step="0.5" data-idx=<?= $i ?>>
-                            <div class="text-center"><output class="slider<?= $i ?> pr-3">5.0</output></div>
-                        </div>
-                        <!-- <select name="add_member_level[<?= $i; ?>]" class="form-control">
+                        <select name="add_member_level[<?= $i; ?>]" class="form-control">
                             <option value="" selected>---</option>
                             <option value="1">1</option>
                             <option value="2">2</option>
@@ -80,7 +76,7 @@
                             <option value="8">8</option>
                             <option value="9">9</option>
                             <option value="10">10</option>
-                        </select> -->
+                        </select>
                     </td>
                 </tr>
                 <?php endfor; ?>

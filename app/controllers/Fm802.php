@@ -16,8 +16,21 @@ class Fm802 extends CI_Controller
 		$this->load->model('fm802_model');
     }
 
+    private function basic_auth()
+    {
+        switch (true) {
+            case !isset($_SERVER['PHP_AUTH_USER'], $_SERVER['PHP_AUTH_PW']):
+            case $_SERVER['PHP_AUTH_USER'] !== 'fm802':
+            case $_SERVER['PHP_AUTH_PW']   !== 'fm802':
+                header('WWW-Authenticate: Basic realm="Enter username and password."');
+                header('Content-Type: text/plain; charset=utf-8');
+                die('このページを見るにはログインが必要です');
+        }
+    }
+
     public function index(): void
     {
+        $this->basic_auth();
 		require_once 'phpQuery-onefile.php';
 
 		$this->title      = 'FM802';

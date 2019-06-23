@@ -10,10 +10,10 @@ $(document).ready(function () {
         get_rank();
     }
 
-    $('input[name^="add_member_level"').on('change', function () {
-        let idx = $(this).data('idx');
-        $(`.slider${idx}`).text($(this).val());
-    });
+    // $('input[name^="add_member_level"').on('change', function () {
+    //     let idx = $(this).data('idx');
+    //     $(`.slider${idx}`).text($(this).val());
+    // });
 
     $('.delete_btn').on('click', function () {
         $tr = $(this).parent().parent();

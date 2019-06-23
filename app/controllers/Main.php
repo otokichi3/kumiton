@@ -57,6 +57,11 @@ class Main extends CI_Controller
 
     public function index()
     {
+        $this->manage();
+    }
+
+    public function select()
+    {
         $this->title = 'メンバー選択';
         $this->title_lead = '参加するメンバーを選択してください。';
 
@@ -158,7 +163,7 @@ class Main extends CI_Controller
             }
         }
 
-        $this->show_match($sanka_list, $selected_list);
+        $this->match($sanka_list, $selected_list);
     }
 
     /**
@@ -166,7 +171,7 @@ class Main extends CI_Controller
      *
      * @return void
      */
-    public function show_match(array $sanka_list = [], array $selected_list = [])
+    public function match(array $sanka_list = [], array $selected_list = [])
     {
         $this->title = '試合';
         $this->title_lead = '試合を表示します。';
@@ -219,7 +224,7 @@ class Main extends CI_Controller
         return $match;
     }
 
-    public function manage_member()
+    public function manage()
     {
         $this->title = 'メンバー追加';
         $this->title_lead = 'メンバーの追加を行えます。';
