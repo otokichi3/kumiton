@@ -71,7 +71,8 @@ class Main extends CI_Controller
         $this->title = 'メンバー選択';
         $this->title_lead = '参加するメンバーを選択してください。';
 
-        if ($this->input->post('add_member_name')) {
+        if ($this->input->post('add_member_name'))
+        {
             $this->_add_member();
         }
         $this->view_data = $this->_get_view_data();
@@ -105,12 +106,16 @@ class Main extends CI_Controller
         $add_member_level = $this->input->post('add_member_level');
 
         // 空を削除しつつ移し替え
-        foreach ($add_member_name as $key => $value) {
-            if (! $add_member_name[$key] or ! $add_member_sex[$key] or ! $add_member_level[$key]) {
+        foreach ($add_member_name as $key => $value)
+        {
+            if ( ! $add_member_name[$key] OR ! $add_member_sex[$key] OR ! $add_member_level[$key])
+            {
                 unset($add_member_name[$key]);
                 unset($add_member_sex[$key]);
                 unset($add_member_level[$key]);
-            } else {
+            }
+            else
+            {
                 $add_member[$key]['name']  = $add_member_name[$key];
                 $add_member[$key]['sex']   = $add_member_sex[$key];
                 $add_member[$key]['level'] = $add_member_level[$key];
@@ -118,7 +123,8 @@ class Main extends CI_Controller
         }
 
         // DB に格納
-        foreach ($add_member as $val) {
+        foreach ($add_member as $val)
+        {
             $params = [
                 'name'  => $val['name'],
                 'sex'   => $val['sex'],
@@ -144,7 +150,8 @@ class Main extends CI_Controller
         $selected_list = $this->input->post('selected_member');
         $member_list   = $this->member_model->get_all_member();
 
-        if (! $selected_list or count($selected_list) < 4) {
+        if ( ! $selected_list or count($selected_list) < 4)
+        {
             $this->load->view('header');
             $this->load->view($this->name.'/select', $this->_get_view_data());
             $this->load->view('footer');
@@ -156,8 +163,10 @@ class Main extends CI_Controller
         $this->db->truncate('t_match');
 
         // t_match
-        foreach ($match_list as $match) {
-            foreach ($match as $pair) {
+        foreach ($match_list as $match)
+        {
+            foreach ($match as $pair)
+            {
                 $params = [
                     'server1'   => $pair[0][0],
                     'server2'   => $pair[0][1],
@@ -184,8 +193,10 @@ class Main extends CI_Controller
 
         $match = $this->get_match(NUMBER_OF_COURTS);
 
-        if (is_array($match)) {
-            foreach ($match as $pair) {
+        if (is_array($match))
+        {
+            foreach ($match as $pair)
+            {
                 $params = [
                     'server1'   => $pair['server1'],
                     'server2'   => $pair['server2'],
@@ -220,7 +231,8 @@ class Main extends CI_Controller
         $num_of_courts = $this->input->post('num') ?: $num;
         $match = $this->match_model->get_match($num_of_courts);
 
-        if ($this->input->is_ajax_request()) {
+        if ($this->input->is_ajax_request())
+        {
             $court_view = $this->load->view($this->name.'/court', ['match' => $match], true);
             header('Content-Type: application/json');
             echo json_encode($court_view);
@@ -235,7 +247,8 @@ class Main extends CI_Controller
         $this->title = 'メンバー追加';
         $this->title_lead = 'メンバーの追加を行えます。';
 
-        if ($this->input->post('add_member_name')) {
+        if ($this->input->post('add_member_name'))
+        {
             $this->_add_member();
         }
         $this->view_data = $this->_get_view_data();
@@ -267,13 +280,19 @@ class Main extends CI_Controller
         $pairs_by_level = $this->get_pairs_by_level($all_pairs, $sum_list, $sum_numbers);
         
         $match_list = [];
-        foreach ($pairs_by_level as $level => $pairs) {
+        foreach ($pairs_by_level as $level => $pairs)
+        {
             $kumis = $this->get_kumis_by_level($pairs);
-            if (count($kumis) === 0) {
+            if (count($kumis) === 0)
+            {
                 continue;
-            } else {
-                foreach ($kumis as $key => $val) {
-                    foreach ($val as $key2 => $val2) {
+            }
+            else
+            {
+                foreach ($kumis as $key => $val)
+                {
+                    foreach ($val as $key2 => $val2)
+                    {
                         $match_list[$level][] = $val2;
                     }
                 }
@@ -291,7 +310,8 @@ class Main extends CI_Controller
      */
     private function _summarize_level(array $list, int $num_of_level)
     {
-        foreach ($list as $key => $val) {
+        foreach ($list as $key => $val)
+        {
             $list[$key] = ceil($val / $num_of_level);
         }
         return $list;
@@ -316,11 +336,16 @@ class Main extends CI_Controller
     {
         $list = [];
 
-        foreach ($sanka as $val) {
-            if (isset($all_member[$val])) {
-                if ($is_sanka) {
+        foreach ($sanka as $val)
+        {
+            if (isset($all_member[$val]))
+            {
+                if ($is_sanka)
+                {
                     $list[$val] = $all_member[$val];
-                } else {
+                }
+                else
+                {
                     unset($all_member[$val]);
                 }
             }
@@ -340,21 +365,29 @@ class Main extends CI_Controller
         $cnt   = count($pairs_by_level);
         $j     = 0;
 
-        try {
-            foreach ($pairs_by_level as $key => $pairs) {
+        try
+        {
+            foreach ($pairs_by_level as $key => $pairs)
+            {
                 ++$j;
-                for ($i = $j; $i < $cnt; $i++) {
+                for ($i = $j; $i < $cnt; $i++)
+                {
                     $arr = array_slice($pairs_by_level, $i, 1);
-                    if ($this->is_duplicate($pairs, $arr[0])) {
+                    if ($this->is_duplicate($pairs, $arr[0]))
+                    {
                         continue;
                     }
                     $kumis[$key][$i][0] = $pairs;
                     $kumis[$key][$i][1] = $arr[0];
                 }
             }
-        } catch (Exception $e) {
+        }
+        catch (Exception $e)
+        {
             return $e->getMessage();
-        } finally {
+        }
+        finally
+        {
             return $kumis;
         }
     }
@@ -386,9 +419,12 @@ class Main extends CI_Controller
     {
         $ret = [];
 
-        foreach ($sum_numbers as $sum_number) {
-            foreach ($sum_list as $key2 => $val2) {
-                if ($val2 === $sum_number) {
+        foreach ($sum_numbers as $sum_number)
+        {
+            foreach ($sum_list as $key2 => $val2)
+            {
+                if ($val2 === $sum_number)
+                {
                     $ret[$sum_number][] = array_keys($all_pairs[$key2]);
                 }
             }
@@ -406,7 +442,8 @@ class Main extends CI_Controller
     {
         $sum_list = [];
 
-        foreach ($all_pairs as $key => $pair) {
+        foreach ($all_pairs as $key => $pair)
+        {
             $sum_list[] = array_sum($pair);
         }
 
@@ -425,17 +462,24 @@ class Main extends CI_Controller
         $cnt  = count($members);
         $j    = 0;
 
-        try {
-            foreach ($members as $key => $member) {
+        try
+        {
+            foreach ($members as $key => $member)
+            {
                 ++$j;
-                for ($i = $j; $i < $cnt; $i++) {
+                for ($i = $j; $i < $cnt; $i++)
+                {
                     $arr = array_slice($members, $i, 1);
                     $pair[] = [$key => $member] + [key($arr) => current($arr)];
                 }
             }
-        } catch (Exception $e) {
+        }
+        catch (Exception $e)
+        {
             return $e->getMessage();
-        } finally {
+        }
+        finally
+        {
             return $pair;
         }
     }
