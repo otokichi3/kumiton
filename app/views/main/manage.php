@@ -25,7 +25,8 @@
                         <td class="name"><?= $member['name']; ?></td>
                         <td class="nickname"><?= $member['nickname']; ?></td>
                         <td class="sex text-center">
-                            <i class="fas <?= $member['sex'] === '1' ? 'fa-male my-blue' : 'fa-female my-pink' ?>"></i>
+							<?= $member['sex'] === '1' ? '男性' : '女性' ?>
+                            <!-- <i class="fas <?= $member['sex'] === '1' ? 'fa-male my-blue' : 'fa-female my-pink' ?>"></i> -->
                         </td>
                         <td class="level"><?= $member['level']; ?></td>
                         <td class="text-center">

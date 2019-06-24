@@ -60,13 +60,10 @@ $(document).ready(function () {
             type: 'POST',
             data: $(this).serialize(),
         }).done(function (data, textStatus, jqXHR) {
-			if (data.sex == 1) {
-				$tr.find('.sex').attr('class', 'fa-male my-blue');
-			} else {
-				$tr.find('.sex').attr('class', 'fa-female my-pink');
-			}
+			const sex = data.sex == 1 ? '男性' : '女性';
             $tr.find('.name').text(data.name);
 			$tr.find('.nickname').text(data.nickname);
+			$tr.find('.sex').text(sex);
             $tr.find('.level').text(data.level);
 			close('#edit');
 
