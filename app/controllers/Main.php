@@ -46,8 +46,8 @@ class Main extends CI_Controller
 
     public function gym()
     {
-        $this->title = 'メンバー選択';
-        $this->title_lead = '参加するメンバーを選択してください。';
+        $this->title = 'スポーツセンター情報';
+        $this->title_lead = 'スポーツセンターを管理します。';
 
         $this->view_data = $this->_get_view_data();
         $this->load->view('header');
@@ -57,7 +57,13 @@ class Main extends CI_Controller
 
     public function index()
     {
-        $this->manage();
+        $this->title = 'くみとん';
+        $this->title_lead = 'バドミントンの試合の組み合わせを自動で構成するサービスです。';
+
+        $this->view_data = $this->_get_view_data();
+        $this->load->view('header');
+        $this->load->view($this->name.'/top', $this->view_data);
+        $this->load->view('footer');
     }
 
     public function select()
