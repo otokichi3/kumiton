@@ -10,11 +10,6 @@ $(document).ready(function () {
         get_rank();
     }
 
-    // $('input[name^="add_member_level"').on('change', function () {
-    //     let idx = $(this).data('idx');
-    //     $(`.slider${idx}`).text($(this).val());
-    // });
-
     $('.delete_btn').on('click', function () {
         $tr = $(this).parent().parent();
         var id = $(this).data('id');
@@ -58,20 +53,28 @@ $(document).ready(function () {
     });
 
     $('#edit_member_form').submit(function () {
-        const id = $(this).find('input[name="hidden"]:hidden').val();
+        var $form = $('#edit_member_form');
         $.ajax({
             url: "save_member_data/",
             dataType: "json",
             type: 'POST',
             data: $(this).serialize(),
         }).done(function (data, textStatus, jqXHR) {
-            const sex = data.sex == 1 ? '男性' : '女性';
+			if (data.sex == 1) {
+				$tr.find('.sex').attr('class', 'fa-male my-blue');
+			} else {
+				$tr.find('.sex').attr('class', 'fa-female my-pink');
+			}
             $tr.find('.name').text(data.name);
-            $tr.find('.nickname').text(data.nickname);
-            $tr.find('.sex').text(sex);
+			$tr.find('.nickname').text(data.nickname);
             $tr.find('.level').text(data.level);
-            // console.table(data);
-            close('#edit');
+			close('#edit');
+
+			// clear form
+			$form.find('input[name="name"]').val('');
+            $form.find('input[name="nickname"]').val('');
+            $form.find('input[name="level"]').val('');
+            $form.find('select[name="sex"]').val('');
         }).fail(function (jqXHR, textStatus, errorThrown) {
             console.info('メンバー情報取得に失敗');
         }).always(function () {

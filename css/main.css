@@ -71,13 +71,18 @@
 
     .court {
         font-size: small;
-    }
-
+	}
 }
 
 .artist_today {
     max-height: 200px;
     overflow-y: scroll;
+}
+
+@media screen and (max-width: 480px) {
+	.edit_member {
+		margin-bottom: 5px;
+	}
 }
 
 /* Sticky footer styles
