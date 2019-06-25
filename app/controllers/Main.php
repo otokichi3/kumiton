@@ -3,8 +3,8 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 class Main extends CI_Controller
 {
-    public $view_data = [];
-    private $title = '';
+    public  $view_data  = [];
+    private $title      = '';
     private $title_lead = '';
 
     protected $name = NULL;
@@ -19,42 +19,6 @@ class Main extends CI_Controller
         $this->load->model('match_model');
     }
 
-    public function delete_member($id)
-    {
-        $this->db->delete('t_member', ['id' => $id]);
-        header('Content-Type: application/json');
-        echo json_encode([]);
-        die;
-    }
-
-    public function get_member_data($id)
-    {
-        $member_data = $this->member_model->get_data($id);
-        header('Content-Type: application/json');
-        echo json_encode($member_data);
-        die;
-    }
-
-    public function save_member_data()
-    {
-        $post = $this->input->post();
-        $this->member_model->update_by_id($post);
-        header('Content-Type: application/json');
-        echo json_encode($post);
-        die;
-    }
-
-    public function gym()
-    {
-        $this->title = 'スポーツセンター情報';
-        $this->title_lead = 'スポーツセンターを管理します。';
-
-        $this->view_data = $this->_get_view_data();
-        $this->load->view('header');
-        $this->load->view($this->name.'/gym', $this->view_data);
-        $this->load->view('footer');
-    }
-
     public function index()
     {
         $this->title = 'くみとん';
@@ -63,6 +27,21 @@ class Main extends CI_Controller
         $this->view_data = $this->_get_view_data();
         $this->load->view('header');
         $this->load->view($this->name.'/top', $this->view_data);
+        $this->load->view('footer');
+    }
+
+    public function manage()
+    {
+        $this->title      = 'メンバー追加';
+        $this->title_lead = 'メンバーの追加を行えます。';
+
+        if ($this->input->post('add_member_name'))
+        {
+            $this->_add_member();
+        }
+        $this->view_data = $this->_get_view_data();
+        $this->load->view('header');
+        $this->load->view($this->name.'/manage', $this->view_data);
         $this->load->view('footer');
     }
 
@@ -84,13 +63,13 @@ class Main extends CI_Controller
     private function _get_view_data()
     {
         $selected_member = $this->input->post('selected_member');
-        $all_member      = $this->member_model->get_all_member();
+        // $all_member      = $this->member_model->get_all_member();
         $all_member_info = $this->member_model->get_all_member_info();
 
         $data = [
             'title'           => $this->title,
             'title_lead'      => $this->title_lead,
-            'all_member'      => $all_member,
+            // 'all_member'      => $all_member,
             'selected_member' => $selected_member,
             'all_member_info' => $all_member_info,
         ];
@@ -134,15 +113,51 @@ class Main extends CI_Controller
         }
     }
 
+    public function delete_member($id)
+    {
+        $this->db->delete('t_member', ['id' => $id]);
+        $this->output
+            ->set_content_type('application/json')
+            ->set_output(json_encode([]));
+    }
+
+    public function get_member_data($id)
+    {
+        $member_data = $this->member_model->get_data($id);
+        $this->output
+            ->set_content_type('application/json')
+            ->set_output(json_encode($member_data));
+    }
+
+    public function save_member_data()
+    {
+        $post = $this->input->post();
+        $this->member_model->update_by_id($post);
+        $this->output
+            ->set_content_type('application/json')
+            ->set_output(json_encode($post));
+    }
+
+    public function gym()
+    {
+        $this->title = 'スポーツセンター情報';
+        $this->title_lead = 'スポーツセンターを管理します。';
+
+        $this->view_data = $this->_get_view_data();
+        $this->load->view('header');
+        $this->load->view($this->name.'/gym', $this->view_data);
+        $this->load->view('footer');
+    }
+
     public function line_notify()
     {
         $message = $this->input->post('message');
         // リクエストヘッダの作成
 		send_line(LINE_TOKEN1, $message);
 
-        header('Content-Type: application/json');
-        echo json_encode('succeed');
-        die;
+        $this->output
+            ->set_content_type('application/json')
+            ->set_output(json_encode('succeed'));
     }
 
     public function show_game()
@@ -233,28 +248,13 @@ class Main extends CI_Controller
 
         if ($this->input->is_ajax_request())
         {
-            $court_view = $this->load->view($this->name.'/court', ['match' => $match], true);
-            header('Content-Type: application/json');
-            echo json_encode($court_view);
-            die;
+            $court_view = $this->load->view($this->name.'/court', ['match' => $match], TRUE);
+            $this->output
+                ->set_content_type('application/json')
+                ->set_output(json_encode($court_view));
         }
 
         return $match;
-    }
-
-    public function manage()
-    {
-        $this->title = 'メンバー追加';
-        $this->title_lead = 'メンバーの追加を行えます。';
-
-        if ($this->input->post('add_member_name'))
-        {
-            $this->_add_member();
-        }
-        $this->view_data = $this->_get_view_data();
-        $this->load->view('header');
-        $this->load->view($this->name.'/manage', $this->view_data);
-        $this->load->view('footer');
     }
 
     /**
@@ -308,8 +308,9 @@ class Main extends CI_Controller
      * @param array $list
      * @return array
      */
-    private function _summarize_level(array $list, int $num_of_level)
+    private function _summarize_level(array $list, int $num_of_level = 2)
     {
+        $num_of_level = $this->input->post('summarize') ?: 2;
         foreach ($list as $key => $val)
         {
             $list[$key] = ceil($val / $num_of_level);

@@ -11,11 +11,11 @@
 	<meta name="description" content="コート競技の組み合わせを自動作成するサービスです。">
 	<meta name="author" content="Zackey">
     <title>くみとん</title>
-    <link rel="shortcut icon" href="favicon.ico">
+    <link rel="shortcut icon" href="<?= base_url('favicon.ico') ?>">
     <link rel="apple-touch-icon" href="shuttle.png">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="<?= base_url('css/main.css') ?>">
-	<script src="<?= base_url('fontawesome-free-5.8.2-web/js/all.min.js') ?>"></script>
+	<script src="<?= base_url('vendor/fontawesome-free-5.8.2-web/js/all.min.js') ?>"></script>
 </head>
 
 <body>

@@ -18,7 +18,8 @@ class Fm802 extends CI_Controller
 
     private function basic_auth()
     {
-        switch (true) {
+        switch (TRUE)
+        {
             case !isset($_SERVER['PHP_AUTH_USER'], $_SERVER['PHP_AUTH_PW']):
             case $_SERVER['PHP_AUTH_USER'] !== 'fm802':
             case $_SERVER['PHP_AUTH_PW']   !== 'fm802':
@@ -31,7 +32,8 @@ class Fm802 extends CI_Controller
     public function index(): void
     {
         $this->basic_auth();
-		require_once 'phpQuery-onefile.php';
+
+		require_once("vendor/phpQuery-onefile.php");
 
 		$this->title      = 'FM802';
 		$this->title_lead = 'FM802で再生された曲のアーティスト別回数を表示します。';
@@ -43,14 +45,6 @@ class Fm802 extends CI_Controller
         ];
         list($song_list, $artist_list, $song_cnt, $artist_cnt)
             = $this->_get_radio_onair_info($fm802['url'], $fm802['song'], $fm802['artist']);
-
-        // $kissfm = [
-        //     'url'    => 'http://noa-www-lb-148752130.ap-northeast-1.elb.amazonaws.com/search/view/iv/',
-        //     'song'   => '.entryTxt > a',
-        //     'artist' => '.entryArtist',
-        // ];
-        // list($song_list2, $artist_list2, $song_cnt2, $artist_cnt2)
-        //     = $this->_get_radio_onair_info($kissfm['url'], $kissfm['song'], $kissfm['artist'], FALSE);
 
         $artist_info     = $this->fm802_model->get_artist_info();
 
@@ -101,7 +95,6 @@ class Fm802 extends CI_Controller
             $html = mb_convert_encoding($html, 'utf-8', 'sjis');
         }
 
-
 		$html = str_replace(["\r\n", "\r", "\n"], "\n", $html);
 		$doc  = phpQuery::newDocument($html);
 
@@ -114,31 +107,6 @@ class Fm802 extends CI_Controller
 
 		$song_list   = explode("\n", $song_name);
         $artist_list = explode("\n", $artist_name);
-
-        // foreach ($song_list as $key => $val) {
-        //     if (strlen($val) === 0)
-        //     {
-        //         unset($song_list[$key]);
-        //     }
-        //     else
-        //     {
-        //         $song_list[$key] = mb_convert_kana($val, 'a');
-        //     }
-        // }
-        // foreach ($artist_list as $key => $val) {
-        //     if (strlen($val) === 0) {
-        //         unset($artist_list[$key]);
-        //     }
-        //     else
-        //     {
-        //         $artist_list[$key] = mb_convert_kana($val, 'a');
-        //     }
-        // }
-        // $song_list   = array_values($song_list);
-        // $artist_list = array_values($artist_list);
-        // dump($song_list);
-        // dump($artist_list);
-        // die;
 
 		$song_cnt   = array_count_values($song_list);
         $artist_cnt = array_count_values($artist_list);
@@ -154,38 +122,6 @@ class Fm802 extends CI_Controller
 		arsort($artist_cnt);
 
 		return [$song_list, $artist_list, $song_cnt, $artist_cnt];
-	}
-
-	private function _get_time_list($doc)
-	{
-		$ret = [];
-
-		// $timeD =  $doc->find(".time-D")->text();
-		// $timeD =  explode("\n", $timeD);
-		// if (count($timeD)) {
-		// 	$ret += $timeD;
-		// }
-
-		// $timeC =  $doc->find(".time-C")->text();
-		// $timeC =  explode("\n", $timeC);
-		// if (count($timeC)) {
-		// 	$ret += $timeC;
-		// }
-		// $timeB =  $doc->find(".time-B")->text();
-		// $timeB =  explode("\n", $timeB);
-		// if (count($timeB)) {
-		// 	$ret += $timeB;
-		// }
-		// $timeA =  $doc->find(".time-A")->text();
-		// $timeA =  explode("\n", $timeA);
-		// if (count($timeA)) {
-		// 	$ret += $timeA;
-		// }
-
-		$time = $doc->find('.time-*')->text();
-		$ret  = explode("\n", $time);
-
-		return $ret;
 	}
 }
 
