@@ -33,7 +33,7 @@ class Fm802 extends CI_Controller
     {
         $this->basic_auth();
 
-		require_once("vendor/phpQuery-onefile.php");
+		require_once("phpQuery-onefile.php");
 
 		$this->title      = 'FM802';
 		$this->title_lead = 'FM802で再生された曲のアーティスト別回数を表示します。';

@@ -17,7 +17,7 @@ class Batch extends CI_Controller {
 
     public function Fm802()
     {
-		require_once("vendor/phpQuery-onefile.php");
+		require_once("phpQuery-onefile.php");
 
 		$url  = 'https://funky802.com/service/OnairList/today';
 		$html = file_get_contents($url);
