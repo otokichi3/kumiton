@@ -19,41 +19,6 @@ class Main extends CI_Controller
         $this->load->model('match_model');
     }
 
-	public function opas_login()
-	{
-		$url       = 'https://reserve.opas.jp/osakashi/menu/Login.cgi';
-		$id        = '27041850';
-		$pass      = 'OPASyskt1829';
-		$id_name   = 'txtRiyoshaCode';
-		$pass_name = 'txtPassWord';
-		$ua = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100';
-		$data = [
-			'action'    => 'Enter',
-			'txtProcId' => '/menu/Login',
-			$id_name    => $id,
-			$pass_name  => $pass,
-		];
-		$data = http_build_query($data, '', '&');
-
-		$header = [
-			'Content-Type: application/x-www-form-urlencoded',
-			'Content-Length: ' . strlen($data),
-			'User-Agent: ' . $ua,
-		];
-
-		$context = [
-			'http' => [
-				'method'  => 'POST',
-				'header'  => implode("\r\n", $header),
-				'content' => $data,
-			],
-		];
-		
-		$html = file_get_contents($url, false, stream_context_create($context));
-		$html = mb_convert_encoding($html, 'utf-8', 'sjis');
-		echo $html;
-	}
-
     public function index()
     {
         $this->title = 'くみとん';

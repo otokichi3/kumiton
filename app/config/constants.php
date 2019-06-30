@@ -95,3 +95,7 @@ defined('NUMBER_OF_COURTS')  OR define('NUMBER_OF_COURTS', 4);
 
 defined('LINE_TOKEN1')  OR define('LINE_TOKEN1', 'QKXlejuzkshwYRTxGysCAdqTZp2cMW7WqcRoYOOKm7X');
 defined('LINE_NOTIFY_URL')  OR define('LINE_NOTIFY_URL', 'https://notify-api.line.me/api/notify');
+
+defined('OPAS_ID') OR define('OPAS_ID', '27041850');
+defined('OPAS_PW') OR define('OPAS_PW', 'OPASyskt1829');
+defined('OPAS_LOGIN_URL') OR define('OPAS_LOGIN_URL', 'https://reserve.opas.jp/osakashi/menu/Login.cgi');
