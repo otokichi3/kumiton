@@ -8,6 +8,7 @@ class Opas extends CI_Controller
     public function __construct()
     {
         parent::__construct();
+		$this->load->helper('file');
     }
 
     public function index()
@@ -24,7 +25,7 @@ class Opas extends CI_Controller
 	private function _login(): string
 	{
         // Cookie情報を保存する一時ファイルディレクトリにファイルを作成します
-        $tmp_path =  tempnam(sys_get_temp_dir(), 'CKI');
+        $tmp_path =  tempnam(sys_get_temp_dir(), 'cookie_');
 
 		$url       = OPAS_LOGIN_URL;
 		$id_name   = 'txtRiyoshaCode';
@@ -55,14 +56,21 @@ class Opas extends CI_Controller
         curl_setopt($ch, CURLOPT_COOKIEJAR, $tmp_path);
         
         $html = curl_exec($ch);
-        curl_close($ch);
-        // dump($html);
+		curl_close($ch);
 
+		
 		$post_data = [
-			'action'          => 'Enter',
-			'txtProcId'       => '/menu/Menu',
-			'txtFunctionCode' => 'Yoyaku',
-        ];
+			'action'          => 'Setup',
+			'txtProcId'       => '/yoyaku/RiyoshaYoyakuList',
+			'hiddenCollectDisplayNum' => 50,
+			// 'txtFunctionCode' => 'YoyakuQuery',
+			'selectedYoyakuUniqKey' => '',
+			'hiddenCorrectRiyoShinseiYM' => '',
+			'pageIndex' => 0,
+			'printedFlg' => '',
+
+		];
+		
         $post_data = http_build_query($post_data);
         
 		$headers = [
@@ -71,6 +79,7 @@ class Opas extends CI_Controller
 			'User-Agent: ' . $ua,
 		];
         
+		$url = OPAS_RES_URL;
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url); 
         curl_setopt($ch, CURLOPT_POST, TRUE);
@@ -78,14 +87,15 @@ class Opas extends CI_Controller
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
         curl_setopt($ch, CURLOPT_COOKIEFILE, $tmp_path);
-        curl_setopt($ch, CURLOPT_COOKIEJAR, $tmp_path);
+        // curl_setopt($ch, CURLOPT_COOKIEJAR, $tmp_path);
         
         $html = curl_exec($ch);
 		$html = mb_convert_encoding($html, 'utf-8', 'sjis');
         curl_close($ch);
-        dump($html);
+		dump($html);
+		die;
 
-        return $tmp_path;
+        // return $tmp_path;
     }
 
     /**
