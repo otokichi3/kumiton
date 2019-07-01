@@ -100,3 +100,6 @@ defined('OPAS_ID') OR define('OPAS_ID', '27041850');
 defined('OPAS_PW') OR define('OPAS_PW', 'OPASyskt1829');
 defined('OPAS_LOGIN_URL') OR define('OPAS_LOGIN_URL', 'https://reserve.opas.jp/osakashi/menu/Login.cgi');
 defined('OPAS_RES_URL') OR define('OPAS_RES_URL', 'https://reserve.opas.jp/osakashi/yoyaku/RiyoshaYoyakuList.cgi');
+defined('OPAS_MENU_URL') OR define('OPAS_MENU_URL', 'https://reserve.opas.jp/osakashi/menu/Menu.cgi');
+
+defined('USER_AGENT') OR define('USER_AGENT', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100');
