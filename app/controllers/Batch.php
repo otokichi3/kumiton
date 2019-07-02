@@ -49,7 +49,6 @@ class Batch extends CI_Controller {
 
     public function send_rank()
     {
-        die;
 		$yesterday   = date('Y-m-d', strtotime('-1 day', time()));
         $artist_info = $this->fm802_model->get_artist_info($yesterday, 5);
 
@@ -59,5 +58,23 @@ class Batch extends CI_Controller {
 		}
 		send_line(LINE_TOKEN1, $msg);
 
+	}
+
+	/**
+	 * 退職と結婚式までの残日数を LINE に通知する
+	 *
+	 * @return void
+	 */
+    public function notify_remain_day()
+    {
+		$today   = new DateTime(date('Y-m-d'));
+		$resign  = new DateTime('2019-07-31');
+		$wedding = new DateTime('2019-08-11');
+
+		$to_resign  = $resign->diff($today);
+		$to_wedding = $wedding->diff($today);
+
+		$msg = sprintf('退職まであと%s日%s結婚式まであと%s日', $to_resign, PHP_EOL, $to_wedding);
+		send_line(LINE_TOKEN1, $msg);
     }
 }
