@@ -124,11 +124,19 @@ class Opas extends CI_Controller
         $html = mb_convert_encoding($html, 'utf-8', 'sjis');
 
         // ライブラリ
-        require_once 'simple_html_dom.php';
-        $dom = file_get_html($html);
+        // require_once 'simple_html_dom.php';
+        // $dom = file_get_html($html);
 
         curl_close($ch);
-        dump($dom);
+		if ( ! write_file('opas_reservation.txt', $html))
+		{
+				echo 'ファイルに書き込めません';
+		}
+		else
+		{
+				echo 'ファイルが書き込まれました！';
+		}
+        dump($html);
         die;
     }
     

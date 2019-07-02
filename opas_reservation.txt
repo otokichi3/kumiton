@@ -1,0 +1,782 @@
+<?xml version="1.0" encoding="shift_jis" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ja" xml:lang="ja">
+<head>
+
+
+
+
+<meta http-equiv="Content-Type" content="text/html; charset=shift_jis" />
+<meta http-equiv="Content-Script-Type" content="text/javascript" />
+<meta http-equiv="Content-Style-Type" content="text/css" />
+
+<meta http-equiv="Expire" content="0" />
+<meta http-equiv="Pragma" content="no-cache" />
+
+<meta name="description" content="公共施設予約システム" />
+<meta name="keywords" content="公共,施設予約" />
+
+<title>公共施設予約システム（予約一覧照会）</title>
+
+
+
+<link rel="stylesheet" type="text/css" href="/osakashi/css/osakashi/common.css" />
+<link rel="SHORTCUT ICON" href='/osakashi/img/osakashi/icon/favicon.ico' />
+
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-M4MCVLW');</script>
+<!-- End Google Tag Manager -->
+
+<script type="text/javascript" src="/osakashi/js/CommonFunctions.js"></script>
+<script type="text/javascript" src="/osakashi/js/jquery.js"></script>
+<script type="text/javascript" src="/osakashi/js/jquery-ui.js"></script>
+<script type="text/javascript" src="/osakashi/js/meca.js"></script>
+
+
+<script>
+$(function() {
+// roll over
+$('.btn').meca('hover');
+// pngfix
+$('.pngfix').meca('pngfix');
+});
+</script>
+
+<!--[if IE 6]>
+	<script type="text/javascript" src="/osakashi/js/DD_belatedPNG-min.js"></script>
+	<script type="text/javascript">
+		DD_belatedPNG.fix('.pngbg');
+	</script>
+<![endif]-->
+
+
+
+
+<link rel="stylesheet" type="text/css" href='/osakashi/css/osakashi/alerts.css' />
+<script type="text/javascript" src="/osakashi/js/jquery.alerts.js"></script>
+
+<script type="text/javascript">
+	
+	function changeRiyoYMCmb(cmbToText) {
+		//IE6のみ変更する
+		if (isIe6()) {
+			if (cmbToText) {
+			//コンボボックス⇒テキストボックスへの変更
+				document.getElementById("riyoShinseiYM").style.display = 'none';
+				document.getElementById("txtRiyoShinseiYM").style.display = '';
+				
+			} else {
+			//テキストボックス⇒コンボボックスへの変更
+				document.getElementById("txtRiyoShinseiYM").style.display = 'none';
+				document.getElementById("riyoShinseiYM").style.display = '';
+				
+			}
+		}
+	}
+	
+	function init() {
+	
+		if (document.getElementById("printedFlg").value == "0") {
+			//レシート印刷
+			
+				
+			
+			
+			//ページ印刷
+			
+				
+			
+		}
+	}
+</script>
+</head>
+
+<body onLoad="init();" onunload="ignoreTrue();">
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-M4MCVLW"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+<div id="header">
+	
+	
+
+
+
+
+
+
+
+
+<form name="menu.Menu.Form" method="post" action="/osakashi/menu/Menu.cgi" onsubmit="return false;" id="formMenuMain">
+	<input type="hidden" name="txtProcId" value="/menu/Menu" />
+	<input type="hidden" name="txtFunctionCode" value="" id="txtFunctionCode" />
+	<input type="hidden" name="action" value="Enter" />
+
+<div id="sidecolumn">
+	<h1 class="logo"><img src='/osakashi/img/osakashi/side/logo.png' alt="公共施設予約システム" title="公共施設予約システム" class="pngfix"/></h1>
+	<div class="loginMessage"></div>
+	<div id="gnavi">
+		<ul>
+			
+			
+				<li  >
+					<a href="#" onclick="isNextFuncCodeSet('Yoyaku')"  >
+						空き照会・予約
+					</a>
+				</li>
+			
+			
+			
+				<li class="vis" >
+					<a href="#" onclick="isNextFuncCodeSet('YoyakuQuery')" class="bgpng" >
+						予約照会・取消
+					</a>
+				</li>
+			
+			
+			
+				<li  >
+					<a href="#" onclick="isNextFuncCodeSet('JissekiQuery')"  >
+						利用実績照会
+					</a>
+				</li>			
+			
+			
+			
+				<li  >
+					<a href="#" onclick="isNextFuncCodeSet('ChusenEntry')"  >
+						抽選申込
+					</a>
+				</li>		
+			
+			
+			
+				<li  >
+					<a href="#" onclick="isNextFuncCodeSet('ChusenQuery')"  >
+						抽選照会確定
+					</a>
+				</li>				
+			
+			
+			
+				<li  >
+					<a href="#" onclick="isNextFuncCodeSet('UserConfig')"  >
+						利用者設定変更
+					</a>
+				</li>				
+			
+			
+			
+			
+				
+			
+			
+				<li  >
+					<a href="#" onclick="isNextFuncCodeSet('Oshirase')"  >
+						本日のお知らせ
+					</a>
+				</li>			
+			
+			
+			
+				<li  >
+					<a href="#" onclick="isNextFuncCodeSet('OpeLogRireki')"  >
+						操作履歴照会
+					</a>
+				</li>
+			
+			
+			
+				<li  >
+					<a href="#" onclick="isNextFuncCodeSet('KouzaYotei')"  >
+						口座引落予定額照会
+					</a>
+				</li>
+			
+													
+			
+			
+			<li class="return">
+				<a href="#" onclick="isNextFuncCodeSet('BackToMenu')">処理選択に戻る</a>
+			</li>
+			<li>
+			
+				<a href="/osakashi/menu/Logout.cgi">ログアウト</a>
+			</li>
+		</ul>
+	</div>
+	
+</div>
+</form>
+
+
+	<form name="yoyaku.RiyoshaYoyakuList.Form" method="post" action="/osakashi/yoyaku/RiyoshaYoyakuList.cgi" onsubmit="return false;" id="formMain">
+	
+	<input type="hidden" name="action" value="" id="action" />
+	<input type="hidden" name="txtProcId" value="/yoyaku/RiyoshaYoyakuList" id="txtProcId" />
+	<input type="hidden" name="selectedYoyakuUniqKey" value="" id="selectedYoyakuUniqKey" />
+	<input type="hidden" name="hiddenCorrectRiyoShinseiYM" value="" id="hiddenCorrectRiyoShinseiYM" />
+	<input type="hidden" name="hiddenCollectDisplayNum" value="50" id="hiddenCollectDisplayNum" />
+	
+	<input type="hidden" name="pageIndex" value="0" />
+	
+	
+	<input type="hidden" name="printedFlg" value="" id="printedFlg" />
+	
+	<div id="errcolumn">
+		<noscript><p class="jserr">JavaScriptが無効になっているため使用できません。<br />ブラウザ設定でJavaScriptを有効にしてください。</p></noscript>
+		
+	</div>
+
+	<div id="hmaincolumn">
+		<div id="reservation_flow" class="pngbg">
+			<ul>
+				<li class="flowon"><p><strong><span>一覧照会</span></strong></p></li>
+				<li>詳細確認</li>
+				<li>取消完了</li>
+			</ul>
+		</div>
+		<div class="page_title_div clearfix">
+			<div class="title">予約一覧照会</div>
+			<div class="top_pagerbox">
+				
+				
+				
+				
+				
+				
+				
+				
+				<a href="javascript:void(0)" onclick="javascript:isSubmitDataSet('BackToMenu');return false;"><img src='/osakashi/img/osakashi/common/btn_back_to_menu.png' width="163" height="37" 
+						alt="処理選択に戻るボタン" 
+						title="処理選択に戻るボタン" 
+						class="pngfix btn" /></a>
+			</div>
+		</div>
+	</div>
+	
+	<div id="mmaincolumn">				
+		<div class="tablebox">
+	
+			<p>
+				利用申込を確認する年月を選択してください。
+				
+				<br />なお、表示件数を変更することもできます。
+				
+				<br />一覧表示後、詳細を確認する予約・利用申込を一つ選択してください。
+			</p>
+			
+			<div class="display_setting_area">
+				<table class="none_style" summary="検索条件を設定するための表" style="width: 10%;">
+					<tr>
+						<th>利用年月</th>
+							<td colspan="3">
+								<select name="riyoShinseiYM"><option value="201906">2019年06月</option>
+<option value="201907">2019年07月</option>
+<option value="201908" selected="selected">2019年08月</option></select>
+								<input type="text" name="txtRiyoShinseiYM" size="12" value="2019年08月" readonly="readonly" style="display:none;" class="input_box" id="txtRiyoShinseiYM" />
+							</td>
+						
+						<th style="padding-left:10px;">表示件数</th>
+						<td>
+							<select name="reqDisplayInfoNum"><option value="5">5</option>
+<option value="10">10</option>
+<option value="30">30</option>
+<option value="50" selected="selected">50</option></select>
+							<input type="text" name="txtReqDisplayInfoNum" size="3" value="" readonly="readonly" style="display:none;" class="input_box" id="txtReqDisplayInfoNum" />
+							件	
+						</td>
+						
+						<td>
+							<a href="javascript:void(0)" onclick="javascript:isSubmitDataSet('Setup');return false;"><img src='/osakashi/img/osakashi/common/btn_display.png' 
+								alt="表示ボタン" 
+								title="表示ボタン" 
+								class="pngfix btn" style="margin-left:20px;" /></a>
+						</td>
+					</tr>
+				</table>
+			</div>
+			
+			
+			
+			<h3>2019年8月分の利用申込のご案内</h3>
+			<table border="0" cellpadding="0" cellspacing="0" class="none_style" style="margin-left:10px; width:720px; margin-bottom:15px;">
+				<tr>
+					<th colspan="8">あなたの利用申込は、次の通りです。</th>
+				</tr>
+				<tr>
+					<th style="font-weight:bold; width:130px; text-align:right;" >利用件数：</th><td style="text-align:left;">13件</td>
+					<th style="font-weight:bold; width:130px; text-align:right;padding-left:30px;" >取消件数：</th><td style="text-align:left;">0件</td>
+					<th style="font-weight:bold; width:130px; text-align:right;padding-left:30px;" >利用合計：</th><td style="text-align:left;">33,600円</td>
+					
+						<th style="font-weight:bold; width:180px; text-align:right;padding-left:30px;" ><font color="#ff0000">未打合せ件数：</font></th><td style="text-align:left;"><font color="#ff0000">0件</font></td>
+					
+					
+				</tr>
+			</table>
+				
+			<table border="0" cellspacing="1" cellpadding="0" summary="予約一覧検索結果">	
+				
+				<tr class="tr2">
+					<td colspan="2" style="white-space:nowrap;">
+						<span style="margin-left:10px;">
+							13件中 1〜13件を表示
+						</span>
+					</td>					
+					<td colspan="2" style="text-align:right;white-space:nowrap;">
+						<div class="paging_btn_area">
+							<ol>
+								<li>
+									
+									&nbsp;
+								
+								</li>
+								<li>
+									
+									&nbsp;
+								
+								</li>
+							</ol>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<th style="width:25%;">利用日</th>
+					<th style="width:30%;">施設名</th>
+					<th style="width:10%;">区分<br />(時間帯)</th>
+					<th style="width:25%;">ジャンル</th>
+					<th style="width:10%;">利用料金<br />申込状態</th>
+				</tr>
+				
+				
+				 <tr  class="" onmouseover="reportOver(this);" onmouseout="reportOut(this,'');"  onclick="oneClickSubmit('selectedYoyakuUniqKey','Enter','271004_001_26_0_2019_061847_00');" >
+					<td style="white-space: nowrap;">
+						<a href="#" onclick="return false;"><img src='/osakashi/img/osakashi/common/btn_arrow.png' width="42" height="42" /></a>					
+						2019年8月2日(金)
+					</td>
+					<td style="white-space: nowrap;">
+						
+						ゼット東成スポーツセンター <br />
+						第１体育場
+					</td>
+					<td style="white-space: nowrap;">
+						18:00〜<br />
+						21:00
+					</td>						
+					<td style="white-space: nowrap;">
+						バドミントン                                                
+					</td>
+					<td style="white-space: nowrap;">
+						
+						2,500円<br />
+						
+							
+							全額未納
+						
+							
+					</td>
+				</tr>
+				
+				
+				
+				 <tr  class="" onmouseover="reportOver(this);" onmouseout="reportOut(this,'');"  onclick="oneClickSubmit('selectedYoyakuUniqKey','Enter','271004_001_36_0_2019_062380_00');" >
+					<td style="white-space: nowrap;">
+						<a href="#" onclick="return false;"><img src='/osakashi/img/osakashi/common/btn_arrow.png' width="42" height="42" /></a>					
+						2019年8月6日(火)
+					</td>
+					<td style="white-space: nowrap;">
+						
+						ＨＳＴ西成スポーツセンター <br />
+						第２体育場
+					</td>
+					<td style="white-space: nowrap;">
+						18:00〜<br />
+						21:00
+					</td>						
+					<td style="white-space: nowrap;">
+						バドミントン                                                
+					</td>
+					<td style="white-space: nowrap;">
+						
+						2,400円<br />
+						
+							
+							全額未納
+						
+							
+					</td>
+				</tr>
+				
+				
+				
+				 <tr  class="" onmouseover="reportOver(this);" onmouseout="reportOut(this,'');"  onclick="oneClickSubmit('selectedYoyakuUniqKey','Enter','271004_001_26_0_2019_061995_00');" >
+					<td style="white-space: nowrap;">
+						<a href="#" onclick="return false;"><img src='/osakashi/img/osakashi/common/btn_arrow.png' width="42" height="42" /></a>					
+						2019年8月8日(木)
+					</td>
+					<td style="white-space: nowrap;">
+						
+						ゼット東成スポーツセンター <br />
+						第２体育場
+					</td>
+					<td style="white-space: nowrap;">
+						18:00〜<br />
+						21:00
+					</td>						
+					<td style="white-space: nowrap;">
+						バドミントン                                                
+					</td>
+					<td style="white-space: nowrap;">
+						
+						2,400円<br />
+						
+							
+							全額未納
+						
+							
+					</td>
+				</tr>
+				
+				
+				
+				 <tr  class="" onmouseover="reportOver(this);" onmouseout="reportOut(this,'');"  onclick="oneClickSubmit('selectedYoyakuUniqKey','Enter','271004_001_26_0_2019_061418_00');" >
+					<td style="white-space: nowrap;">
+						<a href="#" onclick="return false;"><img src='/osakashi/img/osakashi/common/btn_arrow.png' width="42" height="42" /></a>					
+						2019年8月10日(土)
+					</td>
+					<td style="white-space: nowrap;">
+						
+						ゼット東成スポーツセンター <br />
+						第１体育場
+					</td>
+					<td style="white-space: nowrap;">
+						18:00〜<br />
+						21:00
+					</td>						
+					<td style="white-space: nowrap;">
+						バドミントン                                                
+					</td>
+					<td style="white-space: nowrap;">
+						
+						3,000円<br />
+						
+							
+							全額未納
+						
+							
+					</td>
+				</tr>
+				
+				
+				
+				 <tr  class="" onmouseover="reportOver(this);" onmouseout="reportOut(this,'');"  onclick="oneClickSubmit('selectedYoyakuUniqKey','Enter','271004_001_22_0_2019_050501_00');" >
+					<td style="white-space: nowrap;">
+						<a href="#" onclick="return false;"><img src='/osakashi/img/osakashi/common/btn_arrow.png' width="42" height="42" /></a>					
+						2019年8月11日(日)
+					</td>
+					<td style="white-space: nowrap;">
+						
+						明治スポーツプラザ浪速スポーツセンター <br />
+						第１体育場
+					</td>
+					<td style="white-space: nowrap;">
+						18:00〜<br />
+						21:00
+					</td>						
+					<td style="white-space: nowrap;">
+						バドミントン                                                
+					</td>
+					<td style="white-space: nowrap;">
+						
+						3,000円<br />
+						
+							
+							全額未納
+						
+							
+					</td>
+				</tr>
+				
+				
+				
+				 <tr  class="" onmouseover="reportOver(this);" onmouseout="reportOut(this,'');"  onclick="oneClickSubmit('selectedYoyakuUniqKey','Enter','271004_001_19_0_2019_061832_00');" >
+					<td style="white-space: nowrap;">
+						<a href="#" onclick="return false;"><img src='/osakashi/img/osakashi/common/btn_arrow.png' width="42" height="42" /></a>					
+						2019年8月14日(水)
+					</td>
+					<td style="white-space: nowrap;">
+						
+						港スポーツセンター <br />
+						第１体育場
+					</td>
+					<td style="white-space: nowrap;">
+						18:00〜<br />
+						21:00
+					</td>						
+					<td style="white-space: nowrap;">
+						バドミントン                                                
+					</td>
+					<td style="white-space: nowrap;">
+						
+						2,500円<br />
+						
+							
+							全額未納
+						
+							
+					</td>
+				</tr>
+				
+				
+				
+				 <tr  class="" onmouseover="reportOver(this);" onmouseout="reportOut(this,'');"  onclick="oneClickSubmit('selectedYoyakuUniqKey','Enter','271004_001_20_0_2019_062607_00');" >
+					<td style="white-space: nowrap;">
+						<a href="#" onclick="return false;"><img src='/osakashi/img/osakashi/common/btn_arrow.png' width="42" height="42" /></a>					
+						2019年8月15日(木)
+					</td>
+					<td style="white-space: nowrap;">
+						
+						大正スポーツセンター <br />
+						第１体育場
+					</td>
+					<td style="white-space: nowrap;">
+						18:00〜<br />
+						21:00
+					</td>						
+					<td style="white-space: nowrap;">
+						バドミントン                                                
+					</td>
+					<td style="white-space: nowrap;">
+						
+						2,500円<br />
+						
+							
+							全額未納
+						
+							
+					</td>
+				</tr>
+				
+				
+				
+				 <tr  class="" onmouseover="reportOver(this);" onmouseout="reportOut(this,'');"  onclick="oneClickSubmit('selectedYoyakuUniqKey','Enter','271004_001_19_0_2019_062001_00');" >
+					<td style="white-space: nowrap;">
+						<a href="#" onclick="return false;"><img src='/osakashi/img/osakashi/common/btn_arrow.png' width="42" height="42" /></a>					
+						2019年8月16日(金)
+					</td>
+					<td style="white-space: nowrap;">
+						
+						港スポーツセンター <br />
+						第１体育場
+					</td>
+					<td style="white-space: nowrap;">
+						18:00〜<br />
+						21:00
+					</td>						
+					<td style="white-space: nowrap;">
+						バドミントン                                                
+					</td>
+					<td style="white-space: nowrap;">
+						
+						2,500円<br />
+						
+							
+							全額未納
+						
+							
+					</td>
+				</tr>
+				
+				
+				
+				 <tr  class="" onmouseover="reportOver(this);" onmouseout="reportOut(this,'');"  onclick="oneClickSubmit('selectedYoyakuUniqKey','Enter','271004_001_20_0_2019_062628_00');" >
+					<td style="white-space: nowrap;">
+						<a href="#" onclick="return false;"><img src='/osakashi/img/osakashi/common/btn_arrow.png' width="42" height="42" /></a>					
+						2019年8月20日(火)
+					</td>
+					<td style="white-space: nowrap;">
+						
+						大正スポーツセンター <br />
+						第１体育場
+					</td>
+					<td style="white-space: nowrap;">
+						18:00〜<br />
+						21:00
+					</td>						
+					<td style="white-space: nowrap;">
+						バドミントン                                                
+					</td>
+					<td style="white-space: nowrap;">
+						
+						2,500円<br />
+						
+							
+							全額未納
+						
+							
+					</td>
+				</tr>
+				
+				
+				
+				 <tr  class="" onmouseover="reportOver(this);" onmouseout="reportOut(this,'');"  onclick="oneClickSubmit('selectedYoyakuUniqKey','Enter','271004_001_26_0_2019_061571_00');" >
+					<td style="white-space: nowrap;">
+						<a href="#" onclick="return false;"><img src='/osakashi/img/osakashi/common/btn_arrow.png' width="42" height="42" /></a>					
+						2019年8月25日(日)
+					</td>
+					<td style="white-space: nowrap;">
+						
+						ゼット東成スポーツセンター <br />
+						第１体育場
+					</td>
+					<td style="white-space: nowrap;">
+						18:00〜<br />
+						21:00
+					</td>						
+					<td style="white-space: nowrap;">
+						バドミントン                                                
+					</td>
+					<td style="white-space: nowrap;">
+						
+						3,000円<br />
+						
+							
+							全額未納
+						
+							
+					</td>
+				</tr>
+				
+				
+				
+				 <tr  class="" onmouseover="reportOver(this);" onmouseout="reportOut(this,'');"  onclick="oneClickSubmit('selectedYoyakuUniqKey','Enter','271004_001_20_0_2019_062657_00');" >
+					<td style="white-space: nowrap;">
+						<a href="#" onclick="return false;"><img src='/osakashi/img/osakashi/common/btn_arrow.png' width="42" height="42" /></a>					
+						2019年8月27日(火)
+					</td>
+					<td style="white-space: nowrap;">
+						
+						大正スポーツセンター <br />
+						第１体育場
+					</td>
+					<td style="white-space: nowrap;">
+						18:00〜<br />
+						21:00
+					</td>						
+					<td style="white-space: nowrap;">
+						バドミントン                                                
+					</td>
+					<td style="white-space: nowrap;">
+						
+						2,500円<br />
+						
+							
+							全額未納
+						
+							
+					</td>
+				</tr>
+				
+				
+				
+				 <tr  class="" onmouseover="reportOver(this);" onmouseout="reportOut(this,'');"  onclick="oneClickSubmit('selectedYoyakuUniqKey','Enter','271004_001_36_0_2019_062440_00');" >
+					<td style="white-space: nowrap;">
+						<a href="#" onclick="return false;"><img src='/osakashi/img/osakashi/common/btn_arrow.png' width="42" height="42" /></a>					
+						2019年8月28日(水)
+					</td>
+					<td style="white-space: nowrap;">
+						
+						ＨＳＴ西成スポーツセンター <br />
+						第２体育場
+					</td>
+					<td style="white-space: nowrap;">
+						18:00〜<br />
+						21:00
+					</td>						
+					<td style="white-space: nowrap;">
+						バドミントン                                                
+					</td>
+					<td style="white-space: nowrap;">
+						
+						2,400円<br />
+						
+							
+							全額未納
+						
+							
+					</td>
+				</tr>
+				
+				
+				
+				 <tr  class="" onmouseover="reportOver(this);" onmouseout="reportOut(this,'');"  onclick="oneClickSubmit('selectedYoyakuUniqKey','Enter','271004_001_36_0_2019_062494_00');" >
+					<td style="white-space: nowrap;">
+						<a href="#" onclick="return false;"><img src='/osakashi/img/osakashi/common/btn_arrow.png' width="42" height="42" /></a>					
+						2019年8月30日(金)
+					</td>
+					<td style="white-space: nowrap;">
+						
+						ＨＳＴ西成スポーツセンター <br />
+						第２体育場
+					</td>
+					<td style="white-space: nowrap;">
+						18:00〜<br />
+						21:00
+					</td>						
+					<td style="white-space: nowrap;">
+						バドミントン                                                
+					</td>
+					<td style="white-space: nowrap;">
+						
+						2,400円<br />
+						
+							
+							全額未納
+						
+							
+					</td>
+				</tr>
+				
+								
+				<tr class="tr2">
+					<td colspan="4" style="text-align:right;">
+						<a href="#header">
+							<img src='/osakashi/img/osakashi/common/btn_pagetop.png' 
+								alt="ページの先頭へボタン"
+								title="ページの先頭へボタン"
+								class="pngfix btn" />
+						</a>
+					</td>
+				</tr>					
+			</table>
+			
+			
+			
+		</div>
+	</div>
+		
+	<div id="fmaincolumn">	
+		<div id="pagerbox">
+			<a href="javascript:void(0)" onclick="javascript:isSubmitDataSet('BackToMenu');return false;"><img src='/osakashi/img/osakashi/common/btn_back_to_menu.png' width="163" height="37" 
+					alt="処理選択に戻るボタン" 
+					title="処理選択に戻るボタン" 
+					class="pngfix btn" /></a>
+		</div>
+		<div id="footer" class="pngbg"><address class="pngbg">&nbsp;</address></div>
+	</div>
+	
+	</form>
+</div>
+
+
+</body>
+</html>

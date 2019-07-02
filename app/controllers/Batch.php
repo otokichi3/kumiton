@@ -74,7 +74,7 @@ class Batch extends CI_Controller {
 		$to_resign  = $resign->diff($today);
 		$to_wedding = $wedding->diff($today);
 
-		$msg = sprintf('退職まであと%s日%s結婚式まであと%s日', $to_resign, PHP_EOL, $to_wedding);
+		$msg = sprintf('%s退職まであと%s日%s結婚式まであと%s日', PHP_EOL, $to_resign->days, PHP_EOL, $to_wedding->days);
 		send_line(LINE_TOKEN1, $msg);
     }
 }
