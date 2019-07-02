@@ -13,9 +13,48 @@ class Opas extends CI_Controller
 
     public function index()
     {
-        $this->_login(date('Ym'));
+		// $this->_login(date('Ym'));
+        $this->_get_list();
     }
 
+	private function _get_list()
+	{
+		$html = read_file('opas_reservation.txt');
+		// dump($html);
+		// $this->_delete_two_rows('opas_reservation.txt');
+
+		$domDocument = new DOMDocument();
+		$domDocument->loadHTML($html);
+		$xmlString = $domDocument->saveXML();
+		$xmlObject = simplexml_load_string($xmlString);
+		$array = json_decode(json_encode($xmlObject), TRUE);
+		dump($array);
+	}
+
+
+	/**
+	 * ファイルの先頭二行を削除する
+	 *
+	 * @param string $filename
+	 * @return void
+	 */
+	private function _delete_two_rows(string $filename)
+	{
+
+		// 配列として取得
+		$arr = file($filename);
+
+		if (count($arr) == 0) {
+			return;
+		}
+
+		// 配列の先頭二行を削除
+		array_shift($arr);
+		array_shift($arr);
+
+		// 上書き書き込み
+		write_file($filename, implode($arr));
+	}
     /**
      * OPAS にログインする
      *
@@ -121,7 +160,7 @@ class Opas extends CI_Controller
         curl_setopt($ch, CURLOPT_COOKIEFILE, $tmp_path);
         
         $html = curl_exec($ch);
-        $html = mb_convert_encoding($html, 'utf-8', 'sjis');
+        // $html = mb_convert_encoding($html, 'utf-8', 'sjis');
 
         // ライブラリ
         // require_once 'simple_html_dom.php';
