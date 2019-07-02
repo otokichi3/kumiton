@@ -28,7 +28,19 @@ class Opas extends CI_Controller
 		$xmlString = $domDocument->saveXML();
 		$xmlObject = simplexml_load_string($xmlString);
 		$array = json_decode(json_encode($xmlObject), TRUE);
-		dump($array);
+        // dump($array['body']['div']['form'][1]['div'][2]['div']['table'][1]['tr'][1]['th']);
+        // unset($array['body']['div']['form'][1]['div'][2]['div']['table'][1]['tr'][0]);
+        // unset($array['body']['div']['form'][1]['div'][2]['div']['table'][1]['tr'][1]);
+        // $tr = $array['body']['div']['form'][1]['div'][2]['div']['table'][1]['tr'];
+        // $array = mb_convert_encoding($array,'UTF-8','sjis');
+        // $tr = $array['body']['div']['form'][1]['div'][2]['div'];
+
+        // dump($tr);
+        // foreach ($tr as $key => $val)
+        // {
+        //     dump(preg_replace('/(\t|\r\n|\r|\n)/s', '', $val['td'][1]));
+        //     dump(preg_replace('/(\t|\r\n|\r|\n)/s', '', $val['td'][2]));
+        // }
 	}
 
 
