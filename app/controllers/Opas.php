@@ -19,39 +19,77 @@ class Opas extends CI_Controller
 
 	private function _get_list()
 	{
-		require_once("phpQuery-onefile.php");
-		$html = read_file('opas_reservation.txt');
-		// dump($html);
-		// $this->_delete_two_rows('opas_reservation.txt');
+        require_once("phpQuery-onefile.php");
 
+		$html = read_file('opas_reservation.txt');
 		$doc  = phpQuery::newDocument($html);
 
-		// $test = $doc->find('#mmaincolumn')->text();
-		// $test = $doc->find('#mmaincolumn')->html();
-		$test = $doc->find('#mmaincolumn')->find("table:eq(2)")->html();
-		// $test = $test->find('table');
-        $test = mb_convert_encoding($test,'UTF-8','sjis');
-		echo($test);
-		die;
-		$domDocument = new DOMDocument();
-		$domDocument->loadHTML($html);
-		$xmlString = $domDocument->saveXML();
-		$xmlObject = simplexml_load_string($xmlString);
-		$array = json_decode(json_encode($xmlObject), TRUE);
-        // dump($array['body']['div']['form'][1]['div'][2]['div']['table'][1]['tr'][1]['th']);
-        // unset($array['body']['div']['form'][1]['div'][2]['div']['table'][1]['tr'][0]);
-        // unset($array['body']['div']['form'][1]['div'][2]['div']['table'][1]['tr'][1]);
-        // $tr = $array['body']['div']['form'][1]['div'][2]['div']['table'][1]['tr'];
-        // $array = mb_convert_encoding($array,'UTF-8','sjis');
-        // $tr = $array['body']['div']['form'][1]['div'][2]['div'];
+        $table = $doc->find('#mmaincolumn')->find("table:eq(2)")->find("[onmouseover='reportOver(this);']");
+        $tds = $table->find('td')->text();
+        $tds = preg_replace('/(\t)|(\r\n)|( )/s', '', $tds);
+        $tds = explode("\n", $tds);
 
-        // dump($tr);
-        // foreach ($tr as $key => $val)
-        // {
-        //     dump(preg_replace('/(\t|\r\n|\r|\n)/s', '', $val['td'][1]));
-        //     dump(preg_replace('/(\t|\r\n|\r|\n)/s', '', $val['td'][2]));
-        // }
-	}
+        // remove trash
+        foreach ($tds as $key => $val)
+        {
+            if (strlen(trim($val)) === 0)
+            {
+                unset($tds[$key]);
+            }
+        }
+
+        $goal = array_chunk($tds, 5, FALSE);
+
+        echo '<table border="1" style="text-align: center;">';
+        echo '<tr style="background: lightgray;">';
+        echo '<th>日にち</th>';
+        echo '<th>場所</th>';
+        echo '<th>体育場</th>';
+        echo '<th>開始時間</th>';
+        echo '<th>終了時間</th>';
+        echo '</tr>';
+        foreach ($goal as $key => $val)
+        {
+            echo '<tr>';
+            foreach ($val as $key2 => $val2)
+            {
+                if ($key2 < 3)
+                {
+                    if ($key2 == 0)
+                    {
+                        echo "<td>" . $this->normalizeDate($val2) . "</td>";
+                    }
+                    elseif ($key2 == 1)
+                    {
+                        $place = explode('第', $val2);
+                        echo "<td>{$place[0]}</td>";
+                        echo "<td>第{$place[1]}</td>";
+                    }
+                    else
+                    {
+                        $time = explode('〜', $val2);
+                        echo "<td>{$time[0]}</td>";
+                        echo "<td>{$time[1]}</td>";
+                    }
+                }
+            }
+            echo '</tr>';
+        }
+        echo '</table>';
+    }
+
+    public function normalizeDate( $inStr ) {
+        // 年月日の各パーツを分割する
+        preg_match( "/([0-9]*)年([0-9]*)月([0-9]*)日/", $inStr, $data );
+        if ( Count( $data ) != 4 ) {
+            return $inStr;
+        }
+
+        // 先頭0埋めでYYYY-MM-DD形式の日付文字列に変換する
+        $outStr = sprintf( "%04.4d-%02.2d-%02.2d", $data[1], $data[2], $data[3] );
+
+        return $outStr;
+    }
 
 
 	/**
