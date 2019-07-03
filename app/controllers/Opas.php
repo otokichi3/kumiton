@@ -19,10 +19,20 @@ class Opas extends CI_Controller
 
 	private function _get_list()
 	{
+		require_once("phpQuery-onefile.php");
 		$html = read_file('opas_reservation.txt');
 		// dump($html);
 		// $this->_delete_two_rows('opas_reservation.txt');
 
+		$doc  = phpQuery::newDocument($html);
+
+		// $test = $doc->find('#mmaincolumn')->text();
+		// $test = $doc->find('#mmaincolumn')->html();
+		$test = $doc->find('#mmaincolumn')->find("table:eq(2)")->html();
+		// $test = $test->find('table');
+        $test = mb_convert_encoding($test,'UTF-8','sjis');
+		echo($test);
+		die;
 		$domDocument = new DOMDocument();
 		$domDocument->loadHTML($html);
 		$xmlString = $domDocument->saveXML();
@@ -67,6 +77,7 @@ class Opas extends CI_Controller
 		// 上書き書き込み
 		write_file($filename, implode($arr));
 	}
+
     /**
      * OPAS にログインする
      *

@@ -33,8 +33,6 @@ class Fm802 extends CI_Controller
     {
         $this->basic_auth();
 
-		require_once("phpQuery-onefile.php");
-
 		$this->title      = 'FM802';
 		$this->title_lead = 'FM802で再生された曲のアーティスト別回数を表示します。';
 
@@ -88,6 +86,8 @@ class Fm802 extends CI_Controller
 
 	private function _get_radio_onair_info(string $url = NULL, $song_class = NULL, $artist_class = NULL, bool $enc = TRUE)
 	{
+		require_once("phpQuery-onefile.php");
+
         $html = file_get_contents($url);
 
         if ($enc === TRUE)
