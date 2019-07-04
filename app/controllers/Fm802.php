@@ -29,7 +29,7 @@ class Fm802 extends CI_Controller
         }
     }
 
-    public function index(): void
+    public function index()
     {
         $this->basic_auth();
 

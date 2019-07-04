@@ -2,23 +2,43 @@
 defined('BASEPATH') or exit('No direct script access allowed');
 
 class Opas extends CI_Controller
-
 {
+	public $view_data   = [];
 
     public function __construct()
     {
         parent::__construct();
 		$this->load->helper('file');
-		$this->load->model('Gym_model');
+        $this->load->model('Gym_model');
+        $this->_basic_auth();
     }
 
     public function index()
     {
-		// $this->_login(date('Ym'));
-        $this->_get_list();
+		$this->title      = 'OPASログイン';
+        $this->title_lead = '利用者番号とパスワードでOPASにログインし予約情報を取得します';
+
+		$this->view_data = [
+			'title'        => $this->title,
+			'title_lead'   => $this->title_lead,
+        ];
+
+        $this->load->view('header');
+		$this->load->view('opas/index', $this->view_data);
+        $this->load->view('footer');
     }
 
-	private function _get_list()
+    public function login()
+    {
+        $id       = $this->input->post('id');
+        $password = $this->input->post('password');
+        $month    = $this->input->post('month');
+
+		$this->_opas_login($id, $password, $month);
+        $this->_get_list($id);
+    }
+
+	private function _get_list(string $id)
 	{
 		require_once("phpQuery-onefile.php");
 
@@ -47,25 +67,29 @@ class Opas extends CI_Controller
 		{
 			array_splice($gyms, 3);
 			$names = explode('第', $gyms[1]);
-			$times = explode('〜', $gyms[2]);
+            $times = explode('〜', $gyms[2]);
+            $canceled = (bool)(strpos($names[0], '【取消済み】') !== FALSE);
 
 			$gym_list[$key]['date']      = $this->normalizeDate($gyms[0]);
-			$gym_list[$key]['name']      = $names[0];
+			$gym_list[$key]['name']      = str_replace('【取消済み】', '', $names[0]);
 			$gym_list[$key]['place']     = sprintf('第%s', $names[1]);
 			$gym_list[$key]['time_from'] = $times[0];
 			$gym_list[$key]['time_to']   = $times[1];
+			$gym_list[$key]['canceled']  = $canceled;
 		}
 
 		foreach ($gym_list as $key => $gym)
 		{
 			// todo:同じものがあれば更新しない
 			$params = [
+				'opas_id'   => $id,
 				'date'      => $gym['date'],
 				'name'      => $gym['name'],
 				'place'     => $gym['place'],
 				'time_from' => $gym['time_from'],
 				'time_to'   => $gym['time_to'],
-			];
+				'canceled'  => $gym['canceled'],
+            ];
 			$this->db->insert('t_gym_reservation', $params);
 		}
 
@@ -76,19 +100,49 @@ class Opas extends CI_Controller
         echo '<th>体育場</th>';
         echo '<th>開始時間</th>';
         echo '<th>終了時間</th>';
+        echo '<th>取り消し</th>';
         echo '</tr>';
         foreach ($gym_list as $idx => $gym)
         {
             echo '<tr>';
             foreach ($gym as $key => $val)
             {
-				echo '<td>' . $val . '</td>';
+                if ($key === 'canceled')
+                {
+                    echo sprintf('<td>%s</td>', $val ? 'yes' : 'no');
+                }
+                else
+                {
+                    echo '<td>' . $val . '</td>';
+                }
             }
             echo '</tr>';
         }
         echo '</table>';
     }
 
+    public function reservation_txt()
+    {
+        $week = array( "日", "月", "火", "水", "木", "金", "土" );
+
+        $sql = 'SELECT * FROM t_gym_reservation WHERE canceled = FALSE;';
+        $query = $this->db->query($sql);
+        foreach ($query->result() as $key => $val)
+        {
+            $time      = strtotime($val->date);
+            $time_from = date('H:i', strtotime($val->time_from));
+            $time_to   = date('H:i', strtotime($val->time_to));
+            $capacity  = strpos($val->place, '１') !== FALSE ? 24 : 18;
+            $court     = strpos($val->place, '１') !== FALSE ? 4 : 3;
+            echo sprintf('日時：%s(%s) %s～%s<br>', date('n月j日', $time), $week[date('w', $time)], $time_from, $time_to);
+            echo sprintf('場所：%s（%s）<br>', $val->name, $val->place);
+            echo sprintf('コート数：%s面<br>', $court);
+            echo sprintf('定員：%s名<br>', $capacity);
+            echo sprintf('参加費：700～800円(人数で変動)<br>');
+            echo sprintf('最寄り駅：<br><br>');
+        }
+        die;
+    }
     /**
      * ファイルの先頭二行を削除する
      *
@@ -97,7 +151,6 @@ class Opas extends CI_Controller
      */
     private function _delete_two_rows(string $filename)
     {
-
         // 配列として取得
         $arr = file($filename);
 
@@ -133,7 +186,7 @@ class Opas extends CI_Controller
      *
      * @return string
      */
-	private function _login(string $month = NULL)
+	private function _opas_login($id, $password, string $month = NULL)
 	{
         // 月は未選択なら当月
         $month = $month ?? date('Ym');
@@ -149,8 +202,10 @@ class Opas extends CI_Controller
 		$post_data = [
 			'action'    => 'Enter',
 			'txtProcId' => '/menu/Login',
-			$id_name    => OPAS_ID,
-			$pass_name  => OPAS_PW,
+			// $id_name    => OPAS_ID,
+			// $pass_name  => OPAS_PW,
+			$id_name    => $id,
+			$pass_name  => $password,
         ];
         $post_data = http_build_query($post_data);
 
@@ -171,8 +226,6 @@ class Opas extends CI_Controller
 
         $html = curl_exec($ch);
         curl_close($ch);
-
-        // return $tmp_path;
 
         // 予約画面を開く
         $post_data = [
@@ -233,7 +286,6 @@ class Opas extends CI_Controller
         curl_setopt($ch, CURLOPT_COOKIEFILE, $tmp_path);
         
         $html = curl_exec($ch);
-        // $html = mb_convert_encoding($html, 'utf-8', 'sjis');
 
         curl_close($ch);
 		if ( ! write_file(GYM_TXT, $html))
@@ -243,4 +295,17 @@ class Opas extends CI_Controller
 		}
 		$this->_delete_two_rows(GYM_TXT);
     }
+
+    private function _basic_auth()
+    {
+        switch (TRUE)
+        {
+            case ! isset($_SERVER['PHP_AUTH_USER']):
+            case $_SERVER['PHP_AUTH_USER'] !== 'opas':
+                header('WWW-Authenticate: Basic realm="Enter username."');
+                header('Content-Type: text/plain; charset=utf-8');
+                die('このページを見るにはログインが必要です');
+        }
+    }
+
 }

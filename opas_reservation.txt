@@ -312,9 +312,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 					<th colspan="8">あなたの利用申込は、次の通りです。</th>
 				</tr>
 				<tr>
-					<th style="font-weight:bold; width:130px; text-align:right;" >利用件数：</th><td style="text-align:left;">13件</td>
-					<th style="font-weight:bold; width:130px; text-align:right;padding-left:30px;" >取消件数：</th><td style="text-align:left;">0件</td>
-					<th style="font-weight:bold; width:130px; text-align:right;padding-left:30px;" >利用合計：</th><td style="text-align:left;">33,600円</td>
+					<th style="font-weight:bold; width:130px; text-align:right;" >利用件数：</th><td style="text-align:left;">9件</td>
+					<th style="font-weight:bold; width:130px; text-align:right;padding-left:30px;" >取消件数：</th><td style="text-align:left;">4件</td>
+					<th style="font-weight:bold; width:130px; text-align:right;padding-left:30px;" >利用合計：</th><td style="text-align:left;">23,200円</td>
 					
 						<th style="font-weight:bold; width:180px; text-align:right;padding-left:30px;" ><font color="#ff0000">未打合せ件数：</font></th><td style="text-align:left;"><font color="#ff0000">0件</font></td>
 					
@@ -356,13 +356,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 				</tr>
 				
 				
-				 <tr  class="" onmouseover="reportOver(this);" onmouseout="reportOut(this,'');"  onclick="oneClickSubmit('selectedYoyakuUniqKey','Enter','271004_001_26_0_2019_061847_00');" >
+				 <tr  class="" onmouseover="reportOver(this);" onmouseout="reportOut(this,'');"  onclick="oneClickSubmit('selectedYoyakuUniqKey','Enter','271004_001_26_0_2019_061847_01');" >
 					<td style="white-space: nowrap;">
 						<a href="#" onclick="return false;"><img src='/osakashi/img/osakashi/common/btn_arrow.png' width="42" height="42" /></a>					
 						2019年8月2日(金)
 					</td>
 					<td style="white-space: nowrap;">
-						
+						<font color="#ff0000"><b>【取消済み】</b></font><br />
 						ゼット東成スポーツセンター <br />
 						第１体育場
 					</td>
@@ -374,11 +374,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 						バドミントン                                                
 					</td>
 					<td style="white-space: nowrap;">
-						
-						2,500円<br />
+						(取消料)<br />
+						0円<br />
 						
 							
-							全額未納
+							完納
 						
 							
 					</td>
@@ -416,13 +416,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 				
 				
 				
-				 <tr  class="" onmouseover="reportOver(this);" onmouseout="reportOut(this,'');"  onclick="oneClickSubmit('selectedYoyakuUniqKey','Enter','271004_001_26_0_2019_061995_00');" >
+				 <tr  class="" onmouseover="reportOver(this);" onmouseout="reportOut(this,'');"  onclick="oneClickSubmit('selectedYoyakuUniqKey','Enter','271004_001_26_0_2019_061995_01');" >
 					<td style="white-space: nowrap;">
 						<a href="#" onclick="return false;"><img src='/osakashi/img/osakashi/common/btn_arrow.png' width="42" height="42" /></a>					
 						2019年8月8日(木)
 					</td>
 					<td style="white-space: nowrap;">
-						
+						<font color="#ff0000"><b>【取消済み】</b></font><br />
 						ゼット東成スポーツセンター <br />
 						第２体育場
 					</td>
@@ -434,11 +434,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 						バドミントン                                                
 					</td>
 					<td style="white-space: nowrap;">
-						
-						2,400円<br />
+						(取消料)<br />
+						0円<br />
 						
 							
-							全額未納
+							完納
 						
 							
 					</td>
@@ -446,13 +446,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 				
 				
 				
-				 <tr  class="" onmouseover="reportOver(this);" onmouseout="reportOut(this,'');"  onclick="oneClickSubmit('selectedYoyakuUniqKey','Enter','271004_001_26_0_2019_061418_00');" >
+				 <tr  class="" onmouseover="reportOver(this);" onmouseout="reportOut(this,'');"  onclick="oneClickSubmit('selectedYoyakuUniqKey','Enter','271004_001_26_0_2019_061418_01');" >
 					<td style="white-space: nowrap;">
 						<a href="#" onclick="return false;"><img src='/osakashi/img/osakashi/common/btn_arrow.png' width="42" height="42" /></a>					
 						2019年8月10日(土)
 					</td>
 					<td style="white-space: nowrap;">
-						
+						<font color="#ff0000"><b>【取消済み】</b></font><br />
 						ゼット東成スポーツセンター <br />
 						第１体育場
 					</td>
@@ -464,11 +464,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 						バドミントン                                                
 					</td>
 					<td style="white-space: nowrap;">
-						
-						3,000円<br />
+						(取消料)<br />
+						0円<br />
 						
 							
-							全額未納
+							完納
 						
 							
 					</td>
@@ -536,13 +536,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 				
 				
 				
-				 <tr  class="" onmouseover="reportOver(this);" onmouseout="reportOut(this,'');"  onclick="oneClickSubmit('selectedYoyakuUniqKey','Enter','271004_001_20_0_2019_062607_00');" >
+				 <tr  class="" onmouseover="reportOver(this);" onmouseout="reportOut(this,'');"  onclick="oneClickSubmit('selectedYoyakuUniqKey','Enter','271004_001_20_0_2019_062607_01');" >
 					<td style="white-space: nowrap;">
 						<a href="#" onclick="return false;"><img src='/osakashi/img/osakashi/common/btn_arrow.png' width="42" height="42" /></a>					
 						2019年8月15日(木)
 					</td>
 					<td style="white-space: nowrap;">
-						
+						<font color="#ff0000"><b>【取消済み】</b></font><br />
 						大正スポーツセンター <br />
 						第１体育場
 					</td>
@@ -554,11 +554,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 						バドミントン                                                
 					</td>
 					<td style="white-space: nowrap;">
-						
-						2,500円<br />
+						(取消料)<br />
+						0円<br />
 						
 							
-							全額未納
+							完納
 						
 							
 					</td>

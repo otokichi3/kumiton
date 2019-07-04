@@ -30,6 +30,8 @@
                 <a class="nav-item nav-link" href="<?= base_url('main/select') ?>">メンバー選択</a>
                 <a class="nav-item nav-link" href="<?= base_url('main/match') ?>">試合</a>
                 <a class="nav-item nav-link" href="#">履歴</a>
+                <a class="nav-item nav-link" href="<?= base_url('opas') ?>">OPAS</a>
+                <a class="nav-item nav-link" href="<?= base_url('opas/reservation_txt') ?>">体育館情報</a>
                 <a class="nav-item nav-link" href="<?= base_url('fm802') ?>">FM802</a>
             </div>
         </div>
