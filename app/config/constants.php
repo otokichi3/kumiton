@@ -103,3 +103,5 @@ defined('OPAS_RES_URL')   OR define('OPAS_RES_URL',   'https://reserve.opas.jp/o
 defined('OPAS_MENU_URL')  OR define('OPAS_MENU_URL',  'https://reserve.opas.jp/osakashi/menu/Menu.cgi');
 
 defined('USER_AGENT') OR define('USER_AGENT', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100');
+
+defined('GYM_TXT') OR define('GYM_TXT', 'opas_reservation.txt');
