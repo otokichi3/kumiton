@@ -20,7 +20,7 @@ class Fm802 extends CI_Controller
     {
         switch (TRUE)
         {
-            case !isset($_SERVER['PHP_AUTH_USER'], $_SERVER['PHP_AUTH_PW']):
+            case ! isset($_SERVER['PHP_AUTH_USER'], $_SERVER['PHP_AUTH_PW']):
             case $_SERVER['PHP_AUTH_USER'] !== 'fm802':
             case $_SERVER['PHP_AUTH_PW']   !== 'fm802':
                 header('WWW-Authenticate: Basic realm="Enter username and password."');

@@ -9,6 +9,7 @@ class Opas extends CI_Controller
     {
         parent::__construct();
 		$this->load->helper('file');
+		$this->load->model('Gym_model');
     }
 
     public function index()
@@ -19,9 +20,9 @@ class Opas extends CI_Controller
 
 	private function _get_list()
 	{
-        require_once("phpQuery-onefile.php");
+		require_once("phpQuery-onefile.php");
 
-		$html = read_file('opas_reservation.txt');
+		$html = read_file(GYM_TXT);
 		$doc  = phpQuery::newDocument($html);
 
         $table = $doc->find('#mmaincolumn')->find("table:eq(2)")->find("[onmouseover='reportOver(this);']");
@@ -38,7 +39,35 @@ class Opas extends CI_Controller
             }
         }
 
-        $goal = array_chunk($tds, 5, FALSE);
+        $list = array_chunk($tds, 5, FALSE);
+
+		$gym_list = [];
+		// 配列を加工する
+		foreach ($list as $key => &$gyms)
+		{
+			array_splice($gyms, 3);
+			$names = explode('第', $gyms[1]);
+			$times = explode('〜', $gyms[2]);
+
+			$gym_list[$key]['date']      = $this->normalizeDate($gyms[0]);
+			$gym_list[$key]['name']      = $names[0];
+			$gym_list[$key]['place']     = sprintf('第%s', $names[1]);
+			$gym_list[$key]['time_from'] = $times[0];
+			$gym_list[$key]['time_to']   = $times[1];
+		}
+
+		foreach ($gym_list as $key => $gym)
+		{
+			// todo:同じものがあれば更新しない
+			$params = [
+				'date'      => $gym['date'],
+				'name'      => $gym['name'],
+				'place'     => $gym['place'],
+				'time_from' => $gym['time_from'],
+				'time_to'   => $gym['time_to'],
+			];
+			$this->db->insert('t_gym_reservation', $params);
+		}
 
         echo '<table border="1" style="text-align: center;">';
         echo '<tr style="background: lightgray;">';
@@ -48,37 +77,44 @@ class Opas extends CI_Controller
         echo '<th>開始時間</th>';
         echo '<th>終了時間</th>';
         echo '</tr>';
-        foreach ($goal as $key => $val)
+        foreach ($gym_list as $idx => $gym)
         {
             echo '<tr>';
-            foreach ($val as $key2 => $val2)
+            foreach ($gym as $key => $val)
             {
-                if ($key2 < 3)
-                {
-                    if ($key2 == 0)
-                    {
-                        echo "<td>" . $this->normalizeDate($val2) . "</td>";
-                    }
-                    elseif ($key2 == 1)
-                    {
-                        $place = explode('第', $val2);
-                        echo "<td>{$place[0]}</td>";
-                        echo "<td>第{$place[1]}</td>";
-                    }
-                    else
-                    {
-                        $time = explode('〜', $val2);
-                        echo "<td>{$time[0]}</td>";
-                        echo "<td>{$time[1]}</td>";
-                    }
-                }
+				echo '<td>' . $val . '</td>';
             }
             echo '</tr>';
         }
         echo '</table>';
     }
 
-    public function normalizeDate( $inStr ) {
+    /**
+     * ファイルの先頭二行を削除する
+     *
+     * @param string $filename
+     * @return void
+     */
+    private function _delete_two_rows(string $filename)
+    {
+
+        // 配列として取得
+        $arr = file($filename);
+
+        if (count($arr) == 0) {
+            return;
+        }
+
+        // 配列の先頭二行を削除
+        array_shift($arr);
+        array_shift($arr);
+
+        // 上書き書き込み
+        write_file($filename, implode($arr));
+    }
+
+	public function normalizeDate($inStr)
+	{
         // 年月日の各パーツを分割する
         preg_match( "/([0-9]*)年([0-9]*)月([0-9]*)日/", $inStr, $data );
         if ( Count( $data ) != 4 ) {
@@ -86,35 +122,11 @@ class Opas extends CI_Controller
         }
 
         // 先頭0埋めでYYYY-MM-DD形式の日付文字列に変換する
-        $outStr = sprintf( "%04.4d-%02.2d-%02.2d", $data[1], $data[2], $data[3] );
+        $outStr = sprintf("%04.4d-%02.2d-%02.2d", $data[1], $data[2], $data[3]);
 
         return $outStr;
     }
 
-
-	/**
-	 * ファイルの先頭二行を削除する
-	 *
-	 * @param string $filename
-	 * @return void
-	 */
-	private function _delete_two_rows(string $filename)
-	{
-
-		// 配列として取得
-		$arr = file($filename);
-
-		if (count($arr) == 0) {
-			return;
-		}
-
-		// 配列の先頭二行を削除
-		array_shift($arr);
-		array_shift($arr);
-
-		// 上書き書き込み
-		write_file($filename, implode($arr));
-	}
 
     /**
      * OPAS にログインする
@@ -223,100 +235,12 @@ class Opas extends CI_Controller
         $html = curl_exec($ch);
         // $html = mb_convert_encoding($html, 'utf-8', 'sjis');
 
-        // ライブラリ
-        // require_once 'simple_html_dom.php';
-        // $dom = file_get_html($html);
-
         curl_close($ch);
-		if ( ! write_file('opas_reservation.txt', $html))
+		if ( ! write_file(GYM_TXT, $html))
 		{
 				echo 'ファイルに書き込めません';
+				die;
 		}
-		else
-		{
-				echo 'ファイルが書き込まれました！';
-		}
-        dump($html);
-        die;
+		$this->_delete_two_rows(GYM_TXT);
     }
-    
-    /**
-     * 該当月の予約一覧を返す
-     *
-     * @param string $month
-     * @return string
-     */
-    private function _get_yoyaku_list(string $month = NULL, string $path = NULL): string
-    {
-        // 月は未選択なら当月
-        $month = $month ?? date('Ym');
-
-        // 予約画面を開く
-        $post_data = [
-            'action'          => 'Enter',
-            'txtProcId'       => '/menu/Menu',
-            'txtFunctionCode' => 'YoyakuQuery',
-        ];
-		
-        $post_data = http_build_query($post_data);
-        
-		$headers = [
-			'Content-Type: application/x-www-form-urlencoded',
-			'Content-Length: ' . strlen($post_data),
-			'User-Agent: ' . USER_AGENT,
-		];
-        
-		$url = OPAS_MENU_URL;
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $url); 
-        curl_setopt($ch, CURLOPT_POST, TRUE);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $post_data);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-        curl_setopt($ch, CURLOPT_COOKIEFILE, $path);
-        
-        $html = curl_exec($ch);
-		$html = mb_convert_encoding($html, 'utf-8', 'sjis');
-        curl_close($ch);
-        
-        $post_data = [
-            'action'                     => 'Setup',
-            'txtProcId'                  => '/yoyaku/RiyoshaYoyakuList',
-            'txtFunctionCode'            => 'YoyakuQuery',
-            'selectedYoyakuUniqKey'      => '',
-            'hiddenCorrectRiyoShinseiYM' => '',
-            'hiddenCollectDisplayNum'    => '5',
-            'pageIndex'                  => '1',
-            'printedFlg'                 => '',
-            'riyoShinseiYM'              => '201908',
-            'reqDisplayInfoNum'          => '50',
-        ];
-		
-        $post_data = http_build_query($post_data);
-        
-		$headers = [
-			'Content-Type: application/x-www-form-urlencoded',
-			'Content-Length: ' . strlen($post_data),
-			'User-Agent: ' . USER_AGENT,
-		];
-        
-		$url = OPAS_RES_URL;
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $url); 
-        curl_setopt($ch, CURLOPT_POST, TRUE);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $post_data);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-        curl_setopt($ch, CURLOPT_COOKIEFILE, $tmp_path);
-        // curl_setopt($ch, CURLOPT_COOKIEJAR, $tmp_path);
-        
-        $html = curl_exec($ch);
-		$html = mb_convert_encoding($html, 'utf-8', 'sjis');
-		dump($html);
-        curl_close($ch);
-        die;
-
-        // return $tmp_path;
-    }
-
 }
